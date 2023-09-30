@@ -2,10 +2,21 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Game {
-    public void setNumPlayers(Scanner input, PrintWriter error) {
+    private byte numPlayers;
+
+    public Game() {
+        numPlayers = 0;
     }
 
-    public int getNumPlayers() {
-        return -1;
+    public void setNumPlayers(Scanner input, PrintWriter output) {
+        byte result;
+        System.out.println("Please enter the number of players (3-5): ");
+        result = input.nextByte();
+        System.out.println(result);
+        numPlayers =  result;
+    }
+
+    public byte getNumPlayers() {
+        return numPlayers;
     }
 }
