@@ -64,4 +64,18 @@ class GameTest {
         assertTrue(output.toString().split
                 ("ERROR: Player name must be non-empty.", -1).length - 1 == 3);
     }
+
+    @Test
+    @DisplayName("U-TEST 006: Testing that the user is forced to enter valid Player names before proceeding.")
+    void testNameInputLoop() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setNumPlayers(new Scanner("3\n"), new PrintWriter(output));
+        game.setupPlayers(new Scanner("\n\nJake\n\nCaroline\n\nAlex\n"), new PrintWriter(output));
+
+        //Test that the 3 Players were correctly created afterward.
+        assertEquals("Jake", game.playerAt(0).getName());
+        assertEquals("Caroline", game.playerAt(1).getName());
+        assertEquals("Alex", game.playerAt(2).getName());
+    }
 }
