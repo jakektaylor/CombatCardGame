@@ -29,6 +29,10 @@ public class Game {
             System.out.printf("Please enter a name for Player %d:\n", i+1);
             String name = input.nextLine();
             System.out.println(name);
+            if(name.isEmpty()) {
+                System.out.println("ERROR: Player name must be non-empty.");
+                output.println("ERROR: Player name must be non-empty.");
+            }
             players[i] = new Player(name);
         }
     }
