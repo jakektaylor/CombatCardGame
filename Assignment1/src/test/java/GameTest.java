@@ -40,4 +40,16 @@ class GameTest {
         game.setNumPlayers(new Scanner("2\n8\n4\n"), new PrintWriter(output));
         assertEquals(4, game.getNumPlayers());
     }
+
+    @Test
+    @DisplayName("U-TEST 004: Testing valid user input when creating the players.")
+    void testValPlayers() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setNumPlayers(new Scanner("3\n"), new PrintWriter(output));
+        game.setupPlayers(new Scanner("Jake\nCaroline\nAlex\n"), new PrintWriter(output));
+        assertEquals("Jake", game.playerAt(0).getName());
+        assertEquals("Caroline", game.playerAt(1).getName());
+        assertEquals("Alex", game.playerAt(2).getName());
+    }
 }

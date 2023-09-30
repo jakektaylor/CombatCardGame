@@ -25,4 +25,11 @@ public class Game {
     public byte getNumPlayers() {
         return numPlayers;
     }
+
+    public Player playerAt(int i) {
+        return new Player();
+    }
+
+    public void setupPlayers(Scanner input, PrintWriter output) {
+    }
 }
