@@ -52,4 +52,16 @@ class GameTest {
         assertEquals("Caroline", game.playerAt(1).getName());
         assertEquals("Alex", game.playerAt(2).getName());
     }
+
+    @Test
+    @DisplayName("U-TEST 005: Testing invalid user input results in an error message when creating the Players.")
+    void testInvPlayers(){
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setNumPlayers(new Scanner("3\n"), new PrintWriter(output));
+        game.setupPlayers(new Scanner("\n\n\nJake\nCaroline\nAlex\n"), new PrintWriter(output));
+        //Test that the error message was printed 3 times.
+        assertTrue(output.toString().split
+                ("ERROR: Player name must be non-empty.", -1).length - 1 == 3);
+    }
 }
