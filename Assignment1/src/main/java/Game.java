@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class Game {
     private byte numPlayers;
+    private Player[] players;
 
     public Game() {
         numPlayers = 0;
@@ -20,6 +21,16 @@ public class Game {
             }
         }
         numPlayers =  result;
+        players = new Player[numPlayers];
+    }
+
+    public void setupPlayers(Scanner input, PrintWriter output) {
+        for(int i=0;i<numPlayers;i++) {
+            System.out.printf("Please enter a name for Player %d:\n", i+1);
+            String name = input.nextLine();
+            System.out.println(name);
+            players[i] = new Player(name);
+        }
     }
 
     public byte getNumPlayers() {
@@ -27,9 +38,6 @@ public class Game {
     }
 
     public Player playerAt(int i) {
-        return new Player();
-    }
-
-    public void setupPlayers(Scanner input, PrintWriter output) {
+        return players[i];
     }
 }
