@@ -31,4 +31,13 @@ class GameTest {
         game.setNumPlayers(new Scanner("6\n"), new PrintWriter(output));
         assertTrue(output.toString().contains("ERROR: Invalid number of players."));
     }
+
+    @Test
+    @DisplayName("U-TEST 003: Testing that the user is forced to enter a valid number of players before proceeding.")
+    void testPlayerInputLoop() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setNumPlayers(new Scanner("2\n8\n4\n"), new PrintWriter(output));
+        assertEquals(4, game.getNumPlayers());
+    }
 }
