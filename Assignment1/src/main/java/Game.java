@@ -13,6 +13,10 @@ public class Game {
         System.out.println("Please enter the number of players (3-5): ");
         result = input.nextByte();
         System.out.println(result);
+        if(result <3 || result > 5) {
+            System.out.println("ERROR: Invalid number of players.");
+            output.println("ERROR: Invalid number of players.");
+        }
         numPlayers =  result;
     }
 
