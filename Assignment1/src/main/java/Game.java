@@ -9,7 +9,8 @@ public class Game {
         numPlayers = 0;
     }
 
-    public void setNumPlayers(Scanner input, PrintWriter output) {
+    public void setupGame(Scanner input, PrintWriter output) {
+        //Determine the number of players.
         byte result = -1;
         while (result < 3 || result > 5) {
             System.out.println("Please enter the number of players (3-5): ");
@@ -22,9 +23,9 @@ public class Game {
         }
         numPlayers =  result;
         players = new Player[numPlayers];
-    }
+        input.nextLine();
 
-    public void setupPlayers(Scanner input, PrintWriter output) {
+        //Determine the names of the players.
         for(int i=0;i<numPlayers;i++) {
             String name = "";
             while(name.isEmpty()) {

@@ -14,7 +14,7 @@ class GameTest {
         //Testing valid input.
         Game game = new Game();
         StringWriter output = new StringWriter();
-        game.setNumPlayers(new Scanner("3\n"), new PrintWriter(output));
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
         assertEquals(3, game.getNumPlayers());
     }
 
@@ -23,12 +23,12 @@ class GameTest {
     void testInvNumPlayers(){
         Game game = new Game();
         StringWriter output = new StringWriter();
-        game.setNumPlayers(new Scanner("1\n"), new PrintWriter(output));
+        game.setupGame(new Scanner("1\n3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
         assertTrue(output.toString().contains("ERROR: Invalid number of players."));
 
         game = new Game();
         output = new StringWriter();
-        game.setNumPlayers(new Scanner("6\n"), new PrintWriter(output));
+        game.setupGame(new Scanner("6\n3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
         assertTrue(output.toString().contains("ERROR: Invalid number of players."));
     }
 
@@ -37,7 +37,7 @@ class GameTest {
     void testPlayerInputLoop() {
         Game game = new Game();
         StringWriter output = new StringWriter();
-        game.setNumPlayers(new Scanner("2\n8\n4\n"), new PrintWriter(output));
+        game.setupGame(new Scanner("2\n8\n4\nJake\nCaroline\nAlex\nSophie\n300\n"), new PrintWriter(output));
         assertEquals(4, game.getNumPlayers());
     }
 
@@ -46,8 +46,7 @@ class GameTest {
     void testValPlayers() {
         Game game = new Game();
         StringWriter output = new StringWriter();
-        game.setNumPlayers(new Scanner("3\n"), new PrintWriter(output));
-        game.setupPlayers(new Scanner("Jake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
         assertEquals("Jake", game.playerAt(0).getName());
         assertEquals("Caroline", game.playerAt(1).getName());
         assertEquals("Alex", game.playerAt(2).getName());
@@ -58,11 +57,10 @@ class GameTest {
     void testInvPlayers(){
         Game game = new Game();
         StringWriter output = new StringWriter();
-        game.setNumPlayers(new Scanner("3\n"), new PrintWriter(output));
-        game.setupPlayers(new Scanner("\n\n\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+        game.setupGame(new Scanner("3\n\n\n\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
         //Test that the error message was printed 3 times.
-        assertTrue(output.toString().split
-                ("ERROR: Player name must be non-empty.", -1).length - 1 == 3);
+        assertEquals(3, output.toString().split
+                ("ERROR: Player name must be non-empty.", -1).length - 1);
     }
 
     @Test
@@ -70,8 +68,7 @@ class GameTest {
     void testNameInputLoop() {
         Game game = new Game();
         StringWriter output = new StringWriter();
-        game.setNumPlayers(new Scanner("3\n"), new PrintWriter(output));
-        game.setupPlayers(new Scanner("\n\nJake\n\nCaroline\n\nAlex\n300\n"), new PrintWriter(output));
+        game.setupGame(new Scanner("3\n\n\nJake\n\nCaroline\n\nAlex\n300\n"), new PrintWriter(output));
 
         //Test that the 3 Players were correctly created afterward.
         assertEquals("Jake", game.playerAt(0).getName());
@@ -84,8 +81,7 @@ class GameTest {
     void testValHP() {
         Game game = new Game();
         StringWriter output = new StringWriter();
-        game.setNumPlayers(new Scanner("3\n"), new PrintWriter(output));
-        game.setupPlayers(new Scanner("Jake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
 
         assertEquals(300, game.playerAt(0).getHP());
         assertEquals(300, game.playerAt(1).getHP());
@@ -98,8 +94,7 @@ class GameTest {
     void testInvHP() {
         Game game = new Game();
         StringWriter output = new StringWriter();
-        game.setNumPlayers(new Scanner("3\n"), new PrintWriter(output));
-        game.setupPlayers(new Scanner("Jake\nCaroline\nAlex\n-50\n300\n"), new PrintWriter(output));
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n-50\n300\n"), new PrintWriter(output));
 
         //Ensure the error message was printed and the correct values were set afterward.
         assertTrue(output.toString().contains("ERROR: Invalid number of health points."));
@@ -114,8 +109,7 @@ class GameTest {
     void testNonIntHP(){
         Game game = new Game();
         StringWriter output = new StringWriter();
-        game.setNumPlayers(new Scanner("3\n"), new PrintWriter(output));
-        game.setupPlayers(new Scanner("Jake\nCaroline\nAlex\n3.14\n300\n"), new PrintWriter(output));
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n3.14\n300\n"), new PrintWriter(output));
 
         //Ensure the error message was printed and the correct values were set afterward.
         assertTrue(output.toString().contains("ERROR: Invalid number of health points."));
