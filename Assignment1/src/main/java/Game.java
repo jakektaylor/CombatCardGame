@@ -40,10 +40,17 @@ public class Game {
         }
 
         //Get the number of health points.
-        System.out.println("Please enter the number of health points: ");
-        int HP = input.nextInt();
-        System.out.println(HP);
-        for(Player p:players) p.setHP(HP);
+        int HP = -1;
+        while(HP < 0) {
+            System.out.println("Please enter the number of health points: ");
+            HP = input.nextInt();
+            System.out.println(HP);
+            if(HP < 0) {
+                System.out.println("ERROR: Invalid number of health points.");
+                output.println("ERROR: Invalid number of health points.");
+            }
+        }
+        for (Player p : players) p.setHP(HP);
     }
 
     public byte getNumPlayers() {
