@@ -38,6 +38,12 @@ public class Game {
             }
             players[i] = new Player(name);
         }
+
+        //Get the number of health points.
+        System.out.println("Please enter the number of health points: ");
+        int HP = input.nextInt();
+        System.out.println(HP);
+        for(Player p:players) p.setHP(HP);
     }
 
     public byte getNumPlayers() {
