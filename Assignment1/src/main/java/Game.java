@@ -43,8 +43,12 @@ public class Game {
         int HP = -1;
         while(HP < 0) {
             System.out.println("Please enter the number of health points: ");
-            HP = input.nextInt();
-            System.out.println(HP);
+            if(input.hasNextInt()) {
+                HP = input.nextInt();
+                System.out.println(HP);
+            } else {
+                input.nextLine();
+            }
             if(HP < 0) {
                 System.out.println("ERROR: Invalid number of health points.");
                 output.println("ERROR: Invalid number of health points.");
