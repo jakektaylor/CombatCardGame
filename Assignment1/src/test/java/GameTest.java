@@ -91,4 +91,21 @@ class GameTest {
         assertEquals(300, game.playerAt(1).getHP());
         assertEquals(300, game.playerAt(2).getHP());
     }
+
+    @Test
+    @DisplayName("U-TEST 008: Testing a negative number of health points results in an error message" +
+            "and requires the user to enter a valid number before proceeding.")
+    void testInvHP() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setNumPlayers(new Scanner("3\n"), new PrintWriter(output));
+        game.setupPlayers(new Scanner("Jake\nCaroline\nAlex\n-50\n300\n"), new PrintWriter(output));
+
+        //Ensure the error message was printed and the correct values were set afterward.
+        assertTrue(output.toString().contains("ERROR: Invalid number of health points."));
+        assertEquals(300, game.playerAt(0).getHP());
+        assertEquals(300, game.playerAt(1).getHP());
+        assertEquals(300, game.playerAt(2).getHP());
+    }
+
 }
