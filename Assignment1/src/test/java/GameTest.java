@@ -78,4 +78,17 @@ class GameTest {
         assertEquals("Caroline", game.playerAt(1).getName());
         assertEquals("Alex", game.playerAt(2).getName());
     }
+
+    @Test
+    @DisplayName("U-TEST 007: Testing a valid number of health points.")
+    void testValHP() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setNumPlayers(new Scanner("3\n"), new PrintWriter(output));
+        game.setupPlayers(new Scanner("Jake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        assertEquals(300, game.playerAt(0).getHP());
+        assertEquals(300, game.playerAt(1).getHP());
+        assertEquals(300, game.playerAt(2).getHP());
+    }
 }
