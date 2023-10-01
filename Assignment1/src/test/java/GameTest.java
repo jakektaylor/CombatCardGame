@@ -47,7 +47,7 @@ class GameTest {
         Game game = new Game();
         StringWriter output = new StringWriter();
         game.setNumPlayers(new Scanner("3\n"), new PrintWriter(output));
-        game.setupPlayers(new Scanner("Jake\nCaroline\nAlex\n"), new PrintWriter(output));
+        game.setupPlayers(new Scanner("Jake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
         assertEquals("Jake", game.playerAt(0).getName());
         assertEquals("Caroline", game.playerAt(1).getName());
         assertEquals("Alex", game.playerAt(2).getName());
@@ -59,7 +59,7 @@ class GameTest {
         Game game = new Game();
         StringWriter output = new StringWriter();
         game.setNumPlayers(new Scanner("3\n"), new PrintWriter(output));
-        game.setupPlayers(new Scanner("\n\n\nJake\nCaroline\nAlex\n"), new PrintWriter(output));
+        game.setupPlayers(new Scanner("\n\n\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
         //Test that the error message was printed 3 times.
         assertTrue(output.toString().split
                 ("ERROR: Player name must be non-empty.", -1).length - 1 == 3);
@@ -71,7 +71,7 @@ class GameTest {
         Game game = new Game();
         StringWriter output = new StringWriter();
         game.setNumPlayers(new Scanner("3\n"), new PrintWriter(output));
-        game.setupPlayers(new Scanner("\n\nJake\n\nCaroline\n\nAlex\n"), new PrintWriter(output));
+        game.setupPlayers(new Scanner("\n\nJake\n\nCaroline\n\nAlex\n300\n"), new PrintWriter(output));
 
         //Test that the 3 Players were correctly created afterward.
         assertEquals("Jake", game.playerAt(0).getName());
