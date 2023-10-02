@@ -198,4 +198,42 @@ class GameTest {
                 "1 and %d:", game.playerAt(2).displayHand(), game.playerAt(2).getNumCards())));
     }
 
+    @Test
+    @DisplayName("U-TEST 018: Testing that when a Player selects a Card to play, the number they entered is displayed along" +
+            "with the Card they chose.")
+    void testShowSelection() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        //Create the override Decks.
+        Deck[] override = new Deck[3];
+        override[0] = new Deck();
+        override[0].addCard(new Card("So", (byte) 7));
+
+        override[1] = new Deck();
+        override[1].addCard(new Card("Ar", (byte) 2));
+        override[1].addCard(new Card("Sw", (byte) 11));
+
+        override[2] = new Deck();
+        override[2].addCard(new Card("Sw", (byte) 9));
+        override[2].addCard(new Card("De", (byte) 8));
+        override[2].addCard(new Card("De", (byte) 3));
+
+        game.playRound(new Scanner("1\n2\n3\n"), new PrintWriter(output), override);
+
+        //Check that the numbers entered are displayed.
+        assertTrue(output.toString().contains("1\n"));
+        assertTrue(output.toString().contains("2\n"));
+        assertTrue(output.toString().contains("3\n"));
+
+        //Check that the window displays which card each Player plays.
+        assertTrue(output.toString().contains(String.format
+                ("Player 1 played: %s", new Card("So", (byte) 7))));
+        assertTrue(output.toString().contains(String.format
+                ("Player 2 played: %s", new Card("Sw", (byte) 11))));
+        assertTrue(output.toString().contains(String.format
+                ("Player 3 played: %s", new Card("De", (byte) 3))));
+
+    }
 }
