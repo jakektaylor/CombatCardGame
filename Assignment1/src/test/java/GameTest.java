@@ -140,19 +140,19 @@ class GameTest {
 
         //Check that the starting Player changes correctly each round.
         assertEquals(0, game.nextRoundStarter());
-        game.playRound(new Scanner("2\n4\n6\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("2\n4\n6\n1\n2\n"), new PrintWriter(output), null);
 
         assertEquals(1, game.nextRoundStarter());
-        game.playRound(new Scanner("2\n4\n6\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("2\n4\n6\n1\n2\n"), new PrintWriter(output), null);
 
         assertEquals(2, game.nextRoundStarter());
-        game.playRound(new Scanner("1\n3\n5\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("1\n3\n5\n1\n2\n"), new PrintWriter(output), null);
 
         assertEquals(3, game.nextRoundStarter());
-        game.playRound(new Scanner("2\n4\n6\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("2\n4\n6\n1\n2\n"), new PrintWriter(output), null);
 
         assertEquals(4, game.nextRoundStarter());
-        game.playRound(new Scanner("2\n4\n6\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("2\n4\n6\n1\n2\n"), new PrintWriter(output), null);
 
         //Check that it loops around back to 0.
         assertEquals(0, game.nextRoundStarter());
@@ -229,11 +229,11 @@ class GameTest {
 
         //Check that the window displays which card each Player plays.
         assertTrue(output.toString().contains(String.format
-                ("Player 1 played: %s", new Card("So", (byte) 7))));
+                ("Player 1 played: %s\n", new Card("So", (byte) 7))));
         assertTrue(output.toString().contains(String.format
-                ("Player 2 played: %s", new Card("Sw", (byte) 11))));
+                ("Player 2 played: %s\n", new Card("Sw", (byte) 11))));
         assertTrue(output.toString().contains(String.format
-                ("Player 3 played: %s", new Card("De", (byte) 3))));
+                ("Player 3 played: %s\n", new Card("De", (byte) 3))));
 
     }
 }
