@@ -75,4 +75,11 @@ public class Game {
         }
 
     }
+
+    public Player nextRoundStarter() {
+        return new Player("Random");
+    }
+
+    public void playRound() {
+    }
 }

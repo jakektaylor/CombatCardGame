@@ -130,4 +130,31 @@ class GameTest {
         assertEquals(12, game.playerAt(2).getNumCards());
         assertEquals(12, game.playerAt(3).getNumCards());
     }
+
+    @Test
+    @DisplayName("U-TEST 014: Testing that the order of the starting Player chosen each round is respected.")
+    void testRoundStarter() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("5\nJake\nCaroline\nAlex\nJohn\nJessica\n300\n"), new PrintWriter(output));
+
+        //Check that the starting Player changes correctly each round.
+        assertEquals(game.playerAt(0), game.nextRoundStarter());
+        game.playRound();
+
+        assertEquals(game.playerAt(1), game.nextRoundStarter());
+        game.playRound();
+
+        assertEquals(game.playerAt(2), game.nextRoundStarter());
+        game.playRound();
+
+        assertEquals(game.playerAt(3), game.nextRoundStarter());
+        game.playRound();
+
+        assertEquals(game.playerAt(4), game.nextRoundStarter());
+        game.playRound();
+
+        //Check that it loops around back to 0.
+        assertEquals(game.playerAt(0), game.nextRoundStarter());
+    }
 }
