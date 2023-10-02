@@ -65,4 +65,7 @@ public class Game {
     public Player playerAt(int i) {
         return players[i];
     }
+
+    public void dealCards() {
+    }
 }

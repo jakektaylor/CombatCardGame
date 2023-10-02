@@ -18,4 +18,8 @@ public class Player {
     public void setHP(int hp) {
         this.hp = hp;
     }
+
+    public int getNumCards() {
+        return -1;
+    }
 }

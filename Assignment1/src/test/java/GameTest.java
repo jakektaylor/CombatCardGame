@@ -117,4 +117,17 @@ class GameTest {
         assertEquals(300, game.playerAt(1).getHP());
         assertEquals(300, game.playerAt(2).getHP());
     }
+
+    @Test
+    @DisplayName("U-TEST 013: Testing that the dealCards() method gives each player 12 cards.")
+    void testStartingCards(){
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("4\nJake\nCaroline\nAlex\nJohn\n300\n"), new PrintWriter(output));
+        game.dealCards();
+        assertEquals(12, game.playerAt(0).getNumCards());
+        assertEquals(12, game.playerAt(1).getNumCards());
+        assertEquals(12, game.playerAt(2).getNumCards());
+        assertEquals(12, game.playerAt(3).getNumCards());
+    }
 }
