@@ -181,4 +181,21 @@ class GameTest {
         Deck shuffled = game.getDeck();
         assertNotEquals(starting, shuffled);
     }
+
+    @Test
+    @DisplayName("U-TEST 017: Testing that each Player is shown their hand and prompted to enter a number for the Card" +
+            "they want to play when it is their turn in the Melee.")
+    void testShowHand() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+        game.playRound(new Scanner(""), new PrintWriter(output));
+        assertTrue(output.toString().contains(String.format("Player 1 please choose a card:\n%s\nEnter a number between " +
+                        "1 and %d:", game.playerAt(0).displayHand(), game.playerAt(0).getNumCards())));
+        assertTrue(output.toString().contains(String.format("Player 2 please choose a card:\n%s\nEnter a number between " +
+                "1 and %d:", game.playerAt(1).displayHand(), game.playerAt(1).getNumCards())));
+        assertTrue(output.toString().contains(String.format("Player 3 please choose a card:\n%s\nEnter a number between " +
+                "1 and %d:", game.playerAt(2).displayHand(), game.playerAt(2).getNumCards())));
+    }
+
 }
