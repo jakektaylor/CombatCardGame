@@ -140,19 +140,19 @@ class GameTest {
 
         //Check that the starting Player changes correctly each round.
         assertEquals(0, game.nextRoundStarter());
-        game.playRound(new Scanner(""), new PrintWriter(output));
+        game.playRound(new Scanner("2\n4\n6\n"), new PrintWriter(output), null);
 
         assertEquals(1, game.nextRoundStarter());
-        game.playRound(new Scanner(""), new PrintWriter(output));
+        game.playRound(new Scanner("2\n4\n6\n"), new PrintWriter(output), null);
 
         assertEquals(2, game.nextRoundStarter());
-        game.playRound(new Scanner(""), new PrintWriter(output));
+        game.playRound(new Scanner("1\n3\n5\n"), new PrintWriter(output), null);
 
         assertEquals(3, game.nextRoundStarter());
-        game.playRound(new Scanner(""), new PrintWriter(output));
+        game.playRound(new Scanner("2\n4\n6\n"), new PrintWriter(output), null);
 
         assertEquals(4, game.nextRoundStarter());
-        game.playRound(new Scanner(""), new PrintWriter(output));
+        game.playRound(new Scanner("2\n4\n6\n"), new PrintWriter(output), null);
 
         //Check that it loops around back to 0.
         assertEquals(0, game.nextRoundStarter());
@@ -164,7 +164,7 @@ class GameTest {
         Game game = new Game();
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
-        game.playRound(new Scanner(""), new PrintWriter(output));
+        game.playRound(new Scanner("3\n5\n7\n"), new PrintWriter(output), null);
         assertTrue(output.toString().contains(game.playerAt(0).displayHand()));
         assertTrue(output.toString().contains(game.playerAt(1).displayHand()));
         assertTrue(output.toString().contains(game.playerAt(2).displayHand()));
@@ -177,7 +177,7 @@ class GameTest {
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
         Deck starting = game.getDeck().deepCopy();
-        game.playRound(new Scanner(""), new PrintWriter(output));
+        game.playRound(new Scanner("3\n5\n7\n"), new PrintWriter(output), null);
         Deck shuffled = game.getDeck();
         assertNotEquals(starting, shuffled);
     }
@@ -189,7 +189,7 @@ class GameTest {
         Game game = new Game();
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
-        game.playRound(new Scanner(""), new PrintWriter(output));
+        game.playRound(new Scanner("3\n5\n7\n"), new PrintWriter(output), null);
         assertTrue(output.toString().contains(String.format("Player 1 please choose a card:\n%s\nEnter a number between " +
                         "1 and %d:", game.playerAt(0).displayHand(), game.playerAt(0).getNumCards())));
         assertTrue(output.toString().contains(String.format("Player 2 please choose a card:\n%s\nEnter a number between " +

@@ -40,7 +40,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return String.format("{%2s,%2d}", type, value);
+        return String.format("{%2s,%4d}", type, value);
     }
 
     @Override

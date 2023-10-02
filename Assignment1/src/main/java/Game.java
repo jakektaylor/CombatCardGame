@@ -84,7 +84,7 @@ public class Game {
         return nextRoundStarter;
     }
 
-    public void playRound(Scanner input, PrintWriter output) {
+    public void playRound(Scanner input, PrintWriter output, Deck[] overrideDecks) {
         deck.shuffle();
         dealCards();
 

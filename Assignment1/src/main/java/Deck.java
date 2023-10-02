@@ -83,7 +83,7 @@ public class Deck {
         builder.append("\n");
         //Display numbers beneath the cards so that they can be selected.
         for(int i=0;i<getNumCards();i++) {
-            builder.append(String.format("|%-9d", i+1));
+            builder.append(String.format("|%-11d", i+1));
         }
         builder.append("\n");
         return builder.toString();
