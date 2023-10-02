@@ -157,4 +157,16 @@ class GameTest {
         //Check that it loops around back to 0.
         assertEquals(0, game.nextRoundStarter());
     }
+
+    @Test
+    @DisplayName("U-TEST 015: Testing that the initial hand of each Player is displayed in the execution window.")
+    void testInitialHand() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+        game.playRound();
+        assertTrue(output.toString().contains(game.playerAt(0).displayHand()));
+        assertTrue(output.toString().contains(game.playerAt(1).displayHand()));
+        assertTrue(output.toString().contains(game.playerAt(2).displayHand()));
+    }
 }
