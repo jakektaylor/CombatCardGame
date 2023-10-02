@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Deck {
@@ -90,10 +91,25 @@ public class Deck {
 
     @Override
     public boolean equals(Object obj) {
+        Deck other = (Deck) obj;
+        //Check that the two Decks have the same cards in the same order.
+        for(int i=0;i<getNumCards();i++) {
+            if(!this.cards.get(i).equals(other.cards.get(i))) return false;
+        }
         return true;
     }
 
     public Deck deepCopy() {
-        return new Deck();
+        Deck copy = new Deck();
+        for(int i=0;i<getNumCards();i++) {
+            copy.addCard(this.cards.get(i));
+        }
+        return copy;
+    }
+
+    public void shuffle() {
+        Deck previous = deepCopy();
+        //Ensure it is shuffled to a different permutation than original for testing.
+        while(previous.equals(this)) Collections.shuffle(this.cards);
     }
 }

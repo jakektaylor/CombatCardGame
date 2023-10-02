@@ -85,6 +85,7 @@ public class Game {
     }
 
     public void playRound(Scanner input, PrintWriter output) {
+        deck.shuffle();
         dealCards();
         for(int i=0;i<numPlayers;i++) {
             String toPrint = String.format("Hand for Player %d:", i+1);
@@ -100,6 +101,6 @@ public class Game {
     }
 
     public Deck getDeck() {
-        return new Deck();
+        return deck;
     }
 }

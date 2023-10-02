@@ -42,4 +42,12 @@ public class Card {
     public String toString() {
         return String.format("{%2s,%2d}", type, value);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Card other = (Card) obj;
+        //Check that both cards have the same type and value.
+        if (!(this.value == null)) return this.value.equals(other.value) && this.type.equals(other.type);
+        else return this.value == other.value && this.type.equals(other.type);
+    }
 }
