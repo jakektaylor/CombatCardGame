@@ -4,12 +4,12 @@ public class Player {
 
     private String name;
     private int hp;
-    private ArrayList<Card> hand;
+    private Deck hand;
 
     public Player(String name) {
         this.name = name;
         this.hp = 0;
-        this.hand = new ArrayList<>();
+        this.hand = new Deck();
     }
     public String getName(){
         return name;
@@ -24,11 +24,11 @@ public class Player {
     }
 
     public int getNumCards() {
-        return hand.size();
+        return hand.getNumCards();
     }
 
     public void dealCard(Card card) {
-        hand.add(card);
+        hand.addCard(card);
     }
 
     public String displayHand() {
