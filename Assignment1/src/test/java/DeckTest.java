@@ -53,4 +53,21 @@ class DeckTest {
             else if (type.equals("Ap")) assertEquals((byte) 5, damage);
         }
     }
+
+    @Test
+    @DisplayName("U-TEST 012: Testing that poisoned basic weapon cards have the correct damage value.")
+    void testPoison() {
+        Deck deck = Deck.createGameDeck();
+        ArrayList<Card> cards = deck.getCards();
+        for(Card card:cards) {
+            String type = card.getType();
+            Byte value = card.getValue();
+            Byte damage = card.getDamage();
+            if(type.equals("Sw") && !(value < 6 || value > 9)) assertEquals((byte)10, damage);
+            else if (type.equals("Ar") && !(value < 8 || value > 11)) assertEquals((byte) 10, damage);
+            else if (type.equals("So") && (value == 5 || value == 6 || value == 11 || value == 12)) assertEquals((byte)10, damage);
+            else if (type.equals("De") && (value == 6 || value == 7 || value == 9 || value == 10)) assertEquals((byte) 10, damage);
+        }
+    }
+
 }
