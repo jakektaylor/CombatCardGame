@@ -17,4 +17,8 @@ public class Card {
     public Byte getValue() {
         return value;
     }
+
+    public Byte getDamage() {
+        return -1;
+    }
 }

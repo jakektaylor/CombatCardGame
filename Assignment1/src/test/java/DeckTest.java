@@ -33,4 +33,24 @@ class DeckTest {
             } else assertNull(card.getValue());
         }
     }
+
+    @Test
+    @DisplayName("U-TEST 011: Test that non-poisoned Basic Weapon cards and Alchemy cards and Merlin cards and Apprentice" +
+            "cards have the correct damage value.")
+    void testNonPoison() {
+        Deck deck = Deck.createGameDeck();
+        ArrayList<Card> cards = deck.getCards();
+        for(int i=0;i<cards.size();i++) {
+            String type = cards.get(i).getType();
+            Byte value = cards.get(i).getValue();
+            Byte damage = cards.get(i).getDamage();
+            if(type.equals("Sw") && (value < 6 || value > 9)) assertEquals((byte)5, damage);
+            else if (type.equals("Ar") && (value < 8 || value > 11)) assertEquals((byte) 5, damage);
+            else if (type.equals("So") && value != 5 && value != 6 && value != 11 && value != 12) assertEquals((byte)5, damage);
+            else if (type.equals("De") && value != 6 && value != 7 && value != 9 && value != 10) assertEquals((byte) 5, damage);
+            else if(type.equals("Al")) assertEquals((byte)5, damage);
+            else if (type.equals("Me")) assertEquals((byte)25, damage);
+            else if (type.equals("Ap")) assertEquals((byte) 5, damage);
+        }
+    }
 }
