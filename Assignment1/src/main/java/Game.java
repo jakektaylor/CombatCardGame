@@ -5,6 +5,7 @@ public class Game {
     private byte numPlayers;
     private Player[] players;
     private Deck deck;
+    private int nextRoundStarter;               //Index of the Player in 'players' to start the next round.
 
     public Game() {
         numPlayers = 0;
@@ -58,6 +59,9 @@ public class Game {
             }
         }
         for (Player p : players) p.setHP(HP);
+
+        //Set the starter of the next round.
+        nextRoundStarter = 0;
     }
 
     public byte getNumPlayers() {
@@ -77,9 +81,12 @@ public class Game {
     }
 
     public int nextRoundStarter() {
-        return -1;
+        return nextRoundStarter;
     }
 
     public void playRound() {
+
+        //Move to the next Player to start the next round.
+        nextRoundStarter = (nextRoundStarter + 1) % numPlayers;
     }
 }
