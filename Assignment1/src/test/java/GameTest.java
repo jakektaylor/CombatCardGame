@@ -176,7 +176,7 @@ class GameTest {
         Game game = new Game();
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
-        Deck starting = game.getDeck();
+        Deck starting = game.getDeck().deepCopy();
         game.playRound(new Scanner(""), new PrintWriter(output));
         Deck shuffled = game.getDeck();
         assertNotEquals(starting, shuffled);

@@ -92,4 +92,8 @@ public class Deck {
     public boolean equals(Object obj) {
         return true;
     }
+
+    public Deck deepCopy() {
+        return new Deck();
+    }
 }
