@@ -119,13 +119,21 @@ public class Game {
             toPrint = String.format("%d\n", selection);
             System.out.println(toPrint);
             output.println(toPrint);
-            selection -= (byte) 1;                             //Convert to an array index.
 
-            toPrint = String.format
-                    ("Player %d played: %s\n", (nextRoundStarter + i) % numPlayers + 1,
-                            playerAt((nextRoundStarter + i) % numPlayers).getHand().getCards().get(selection));
-            System.out.printf("%s", toPrint);
-            output.printf("%s", toPrint);
+            if(selection < 1 || selection > playerAt((nextRoundStarter + i) % numPlayers).getNumCards()) {
+                toPrint = String.format("ERROR: Card selection must be between 1 and %d.\n",
+                        playerAt((nextRoundStarter + i) % numPlayers).getNumCards());
+                System.out.println(toPrint);
+                output.println(toPrint);
+            }
+            else {
+                selection -= (byte) 1;                             //Convert to an array index.
+                toPrint = String.format
+                        ("Player %d played: %s\n", (nextRoundStarter + i) % numPlayers + 1,
+                                playerAt((nextRoundStarter + i) % numPlayers).getHand().getCards().get(selection));
+                System.out.printf("%s", toPrint);
+                output.printf("%s", toPrint);
+            }
         }
 
         //Move to the next Player to start the next round.
