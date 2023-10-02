@@ -20,6 +20,12 @@ public class Card {
         else if(type.equals("Al")) damage = 5;
         else if (type.equals("Me")) damage = 25;
         else if (type.equals("Ap")) damage = 5;
+
+        //Setting the damage for the poison cards.
+        else if(type.equals("Sw")) damage = 10;
+        else if (type.equals("Ar")) damage = 10;
+        else if (type.equals("So")) damage = 10;
+        else if (type.equals("De")) damage= 10;
     }
 
     public String getType() {
