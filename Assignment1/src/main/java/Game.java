@@ -87,6 +87,8 @@ public class Game {
     public void playRound(Scanner input, PrintWriter output) {
         deck.shuffle();
         dealCards();
+
+        //Display the initial 'hand' of each Player at the start of a round.
         for(int i=0;i<numPlayers;i++) {
             String toPrint = String.format("Hand for Player %d:", i+1);
             System.out.println(toPrint);
@@ -96,6 +98,16 @@ public class Game {
             System.out.println(toPrint);
             output.println(toPrint);
         }
+
+        //Have each Player select a card.
+        for(int i=0;i<numPlayers;i++) {
+            String toPrint = String.format("Player %d please choose a card:\n%s\nEnter a number between " +
+                    "1 and %d:", ((nextRoundStarter + i) % numPlayers + 1), this.playerAt((nextRoundStarter + i) % numPlayers).displayHand(),
+                    this.playerAt((nextRoundStarter + i) % numPlayers).getNumCards());
+            System.out.println(toPrint);
+            output.println(toPrint);
+        }
+
         //Move to the next Player to start the next round.
         nextRoundStarter = (nextRoundStarter + 1) % numPlayers;
     }
