@@ -76,8 +76,8 @@ public class Game {
 
     }
 
-    public Player nextRoundStarter() {
-        return new Player("Random");
+    public int nextRoundStarter() {
+        return -1;
     }
 
     public void playRound() {

@@ -139,22 +139,22 @@ class GameTest {
         game.setupGame(new Scanner("5\nJake\nCaroline\nAlex\nJohn\nJessica\n300\n"), new PrintWriter(output));
 
         //Check that the starting Player changes correctly each round.
-        assertEquals(game.playerAt(0), game.nextRoundStarter());
+        assertEquals(0, game.nextRoundStarter());
         game.playRound();
 
-        assertEquals(game.playerAt(1), game.nextRoundStarter());
+        assertEquals(1, game.nextRoundStarter());
         game.playRound();
 
-        assertEquals(game.playerAt(2), game.nextRoundStarter());
+        assertEquals(2, game.nextRoundStarter());
         game.playRound();
 
-        assertEquals(game.playerAt(3), game.nextRoundStarter());
+        assertEquals(3, game.nextRoundStarter());
         game.playRound();
 
-        assertEquals(game.playerAt(4), game.nextRoundStarter());
+        assertEquals(4, game.nextRoundStarter());
         game.playRound();
 
         //Check that it loops around back to 0.
-        assertEquals(game.playerAt(0), game.nextRoundStarter());
+        assertEquals(0, game.nextRoundStarter());
     }
 }
