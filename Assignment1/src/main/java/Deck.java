@@ -87,4 +87,9 @@ public class Deck {
         builder.append("\n");
         return builder.toString();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return true;
+    }
 }

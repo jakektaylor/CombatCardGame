@@ -98,4 +98,8 @@ public class Game {
         //Move to the next Player to start the next round.
         nextRoundStarter = (nextRoundStarter + 1) % numPlayers;
     }
+
+    public Deck getDeck() {
+        return new Deck();
+    }
 }

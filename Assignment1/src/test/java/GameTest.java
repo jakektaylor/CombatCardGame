@@ -169,4 +169,16 @@ class GameTest {
         assertTrue(output.toString().contains(game.playerAt(1).displayHand()));
         assertTrue(output.toString().contains(game.playerAt(2).displayHand()));
     }
+
+    @Test
+    @DisplayName("U-TEST 016: Testing that the deck is shuffled at the beginning of a round.")
+    void testShuffle() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+        Deck starting = game.getDeck();
+        game.playRound(new Scanner(""), new PrintWriter(output));
+        Deck shuffled = game.getDeck();
+        assertNotEquals(starting, shuffled);
+    }
 }
