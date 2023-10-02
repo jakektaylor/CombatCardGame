@@ -4,9 +4,11 @@ import java.util.Scanner;
 public class Game {
     private byte numPlayers;
     private Player[] players;
+    private Deck deck;
 
     public Game() {
         numPlayers = 0;
+        this.deck = Deck.createGameDeck();
     }
 
     public void setupGame(Scanner input, PrintWriter output) {
@@ -67,5 +69,10 @@ public class Game {
     }
 
     public void dealCards() {
+        System.out.println(this.deck.getNumCards());
+        for(int i=0;i<numPlayers;i++) {
+            for(int j=0; j < 12;j++) players[i].dealCard(this.deck.getCards().get(i*12 + j));
+        }
+
     }
 }
