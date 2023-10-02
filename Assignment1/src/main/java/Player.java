@@ -33,4 +33,12 @@ public class Player {
     public String displayHand() {
         return hand.toString();
     }
+
+    public Deck getHand() {
+        return hand;
+    }
+
+    public void overrideDeck(Deck overrideDeck) {
+        this.hand = overrideDeck;
+    }
 }

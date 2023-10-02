@@ -88,6 +88,13 @@ public class Game {
         deck.shuffle();
         dealCards();
 
+        //Override the Decks of each Player.
+        if (overrideDecks != null) {
+            for(int i=0;i<getNumPlayers();i++) {
+                if (overrideDecks[i] != null) playerAt(i).overrideDeck(overrideDecks[i]);
+            }
+        }
+
         //Display the initial 'hand' of each Player at the start of a round.
         for(int i=0;i<numPlayers;i++) {
             String toPrint = String.format("Hand for Player %d:", i+1);
@@ -106,6 +113,19 @@ public class Game {
                     this.playerAt((nextRoundStarter + i) % numPlayers).getNumCards());
             System.out.println(toPrint);
             output.println(toPrint);
+
+            //Display what each Player chooses.
+            byte selection = input.nextByte();
+            toPrint = String.format("%d\n", selection);
+            System.out.println(toPrint);
+            output.println(toPrint);
+            selection -= (byte) 1;                             //Convert to an array index.
+
+            toPrint = String.format
+                    ("Player %d played: %s\n", (nextRoundStarter + i) % numPlayers + 1,
+                            playerAt((nextRoundStarter + i) % numPlayers).getHand().getCards().get(selection));
+            System.out.printf("%s", toPrint);
+            output.printf("%s", toPrint);
         }
 
         //Move to the next Player to start the next round.
