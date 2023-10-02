@@ -236,4 +236,30 @@ class GameTest {
                 ("Player 3 played: %s\n", new Card("De", (byte) 3))));
 
     }
+
+    @Test
+    @DisplayName("U-TEST 019: Testing invalid user input when selecting a Card to play.")
+    void testInvCard() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        //Testing negative value for card choice.
+        game.playRound(new Scanner("-1\n2\n3\n"), new PrintWriter(output), null);
+        assertTrue(output.toString().contains("ERROR: Card selection must be between 1 and 12.\n"));
+
+        //Testing 0 for the Card choice.
+        game = new Game();
+        output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+        game.playRound(new Scanner("1\n0\n3\n"), new PrintWriter(output), null);
+        assertTrue(output.toString().contains("ERROR: Card selection must be between 1 and 12.\n"));
+
+        //Test a value greater than the number of Cards the Player has in their hand.
+        game = new Game();
+        output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+        game.playRound(new Scanner("1\n2\n20\n"), new PrintWriter(output), null);
+        assertTrue(output.toString().contains("ERROR: Card selection must be between 1 and 12.\n"));
+    }
 }
