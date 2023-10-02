@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 
 public class Player {
 
@@ -32,6 +31,6 @@ public class Player {
     }
 
     public String displayHand() {
-        return name;
+        return hand.toString();
     }
 }

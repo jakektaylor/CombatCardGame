@@ -85,7 +85,16 @@ public class Game {
     }
 
     public void playRound(Scanner input, PrintWriter output) {
+        dealCards();
+        for(int i=0;i<numPlayers;i++) {
+            String toPrint = String.format("Hand for Player %d:", i+1);
+            System.out.println(toPrint);
+            output.println(toPrint);
 
+            toPrint = playerAt(i).displayHand();
+            System.out.println(toPrint);
+            output.println(toPrint);
+        }
         //Move to the next Player to start the next round.
         nextRoundStarter = (nextRoundStarter + 1) % numPlayers;
     }

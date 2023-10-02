@@ -71,4 +71,20 @@ public class Deck {
     public ArrayList<Card> getCards() {
         return cards;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for(Card c: cards) {
+            builder.append(c.toString());
+            builder.append("   ");
+        }
+        builder.append("\n");
+        //Display numbers beneath the cards so that they can be selected.
+        for(int i=0;i<getNumCards();i++) {
+            builder.append(String.format("|%-9d", i+1));
+        }
+        builder.append("\n");
+        return builder.toString();
+    }
 }

@@ -1,8 +1,6 @@
 import java.util.Arrays;
 import java.util.HashSet;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class Card {
     public static final HashSet<String> SUITS = new HashSet<>(Arrays.asList("Sw", "Ar", "So", "De"));
     private String type;
@@ -38,5 +36,10 @@ public class Card {
 
     public Byte getDamage() {
         return damage;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("{%2s,%2d}", type, value);
     }
 }
