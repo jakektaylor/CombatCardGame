@@ -140,19 +140,19 @@ class GameTest {
 
         //Check that the starting Player changes correctly each round.
         assertEquals(0, game.nextRoundStarter());
-        game.playRound();
+        game.playRound(new Scanner(""), new PrintWriter(output));
 
         assertEquals(1, game.nextRoundStarter());
-        game.playRound();
+        game.playRound(new Scanner(""), new PrintWriter(output));
 
         assertEquals(2, game.nextRoundStarter());
-        game.playRound();
+        game.playRound(new Scanner(""), new PrintWriter(output));
 
         assertEquals(3, game.nextRoundStarter());
-        game.playRound();
+        game.playRound(new Scanner(""), new PrintWriter(output));
 
         assertEquals(4, game.nextRoundStarter());
-        game.playRound();
+        game.playRound(new Scanner(""), new PrintWriter(output));
 
         //Check that it loops around back to 0.
         assertEquals(0, game.nextRoundStarter());
@@ -164,7 +164,7 @@ class GameTest {
         Game game = new Game();
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
-        game.playRound();
+        game.playRound(new Scanner(""), new PrintWriter(output));
         assertTrue(output.toString().contains(game.playerAt(0).displayHand()));
         assertTrue(output.toString().contains(game.playerAt(1).displayHand()));
         assertTrue(output.toString().contains(game.playerAt(2).displayHand()));

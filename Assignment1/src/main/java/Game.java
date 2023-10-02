@@ -84,7 +84,7 @@ public class Game {
         return nextRoundStarter;
     }
 
-    public void playRound() {
+    public void playRound(Scanner input, PrintWriter output) {
 
         //Move to the next Player to start the next round.
         nextRoundStarter = (nextRoundStarter + 1) % numPlayers;
