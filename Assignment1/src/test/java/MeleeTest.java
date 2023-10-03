@@ -70,4 +70,28 @@ class MeleeTest {
         assertNull(melee.getPlayed()[1]);
         assertNull(melee.getPlayed()[2]);
     }
+
+    @Test
+    @DisplayName("U-TEST 027: Testing the user is prompted only to enter the value of a Merlin or Apprentice card when " +
+            "played after the first Card has been played. Testing their response is displayed.")
+    void testMerAfterFirst() {
+        Melee melee = new Melee((byte) 3);
+        StringWriter output = new StringWriter();
+
+        //Set the suit for the melee to "Sw".
+        melee.playCard((byte) 0, new Card("Sw", (byte) 10), new Scanner(""), new PrintWriter(output));
+
+        //Play a Merlin card after the suit has been set.
+        melee.playCard((byte) 1, new Card("Me", null), new Scanner("\n2\n"), new PrintWriter(output));
+        assertTrue(output.toString().contains("Please enter a value for the Merlin card: "));
+        assertFalse(output.toString().contains("Please enter a suit for the Merlin card: "));
+        assertTrue(output.toString().contains("\n2"));
+
+        //Play an Apprentice card after the suit has been set.
+        output = new StringWriter();
+        melee.playCard((byte) 2, new Card("Ap", null), new Scanner("\n8\n"), new PrintWriter(output));
+        assertTrue(output.toString().contains("Please enter a value for the Apprentice card: "));
+        assertFalse(output.toString().contains("Please enter a suit for the Apprentice card: "));
+        assertTrue(output.toString().contains("\n8"));
+    }
 }
