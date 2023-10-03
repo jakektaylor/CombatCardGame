@@ -86,22 +86,26 @@ public class Melee {
 
         //Playing a Merlin or Apprentice card after the first Card has been played.
         else if(card.getType().equals("Me") || card.getType().equals("Ap")) {
-            if(card.getType().equals("Me")) toPrint = "Please enter a value for the Merlin card: ";
-            else toPrint = "Please enter a value for the Apprentice card: ";
-            System.out.println(toPrint);
-            output.println(toPrint);
-            Byte value = input.nextByte();
-            toPrint = String.format("%d", value);
-            System.out.println(toPrint);
-            output.println(toPrint);
-
-            //Check if the user entered a valid value.
-            if(value < 1 || value > 15) {
-                toPrint = "ERROR: Please enter a value between 1 and 15.";
+            while(true) {
+                if (card.getType().equals("Me")) toPrint = "Please enter a value for the Merlin card: ";
+                else toPrint = "Please enter a value for the Apprentice card: ";
                 System.out.println(toPrint);
                 output.println(toPrint);
-                return;
-            } else card.setValue(value);
+                Byte value = input.nextByte();
+                toPrint = String.format("%d", value);
+                System.out.println(toPrint);
+                output.println(toPrint);
+
+                //Check if the user entered a valid value.
+                if (value < 1 || value > 15) {
+                    toPrint = "ERROR: Please enter a value between 1 and 15.";
+                    System.out.println(toPrint);
+                    output.println(toPrint);
+                } else {
+                    card.setValue(value);
+                    break;
+                }
+            }
         }
 
         played[currPlayer] = card;

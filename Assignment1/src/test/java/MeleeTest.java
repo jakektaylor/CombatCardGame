@@ -106,17 +106,17 @@ class MeleeTest {
         melee.playCard((byte) 0, new Card("So", (byte) 10), new Scanner(""), new PrintWriter(output));
 
         //Play a Merlin card after the suit has been set and input a value that is too small.
-        melee.playCard((byte) 1, new Card("Me", null), new Scanner("\n-20\n"), new PrintWriter(output));
+        melee.playCard((byte) 1, new Card("Me", null), new Scanner("\n-20\n2\n"), new PrintWriter(output));
         assertTrue(output.toString().contains("ERROR: Please enter a value between 1 and 15."));
 
         //Play an Apprentice card after the suit has been set and input a value that is too large.
         output = new StringWriter();
-        melee.playCard((byte) 2, new Card("Ap", null), new Scanner("\n100\n"), new PrintWriter(output));
+        melee.playCard((byte) 2, new Card("Ap", null), new Scanner("\n100\n10\n"), new PrintWriter(output));
         assertTrue(output.toString().contains("ERROR: Please enter a value between 1 and 15."));
 
-        //Check that the Merlin and Apprentice cards were not played.
-        assertNull(melee.getPlayed()[1]);
-        assertNull(melee.getPlayed()[2]);
+        //Check that the Merlin and Apprentice cards were not played with the invalid value but instead the valid ones.
+        assertEquals(new Card("Me", (byte) 2), melee.getPlayed()[1]);
+        assertEquals(new Card("Ap", (byte) 10), melee.getPlayed()[2]);
     }
 
     @Test
