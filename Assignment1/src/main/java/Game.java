@@ -83,7 +83,7 @@ public class Game {
         return nextRoundStarter;
     }
 
-    public void playRound(Scanner input, PrintWriter output, Deck[] overrideDecks) {
+    public Melee[] playRound(Scanner input, PrintWriter output, Deck[] overrideDecks) {
         deck.shuffle();
         dealCards();
 
@@ -143,6 +143,7 @@ public class Game {
 
         //Move to the next Player to start the next round.
         nextRoundStarter = (nextRoundStarter + 1) % numPlayers;
+        return new Melee[12];
     }
 
     public Deck getDeck() {

@@ -262,4 +262,47 @@ class GameTest {
         game.playRound(new Scanner("1\n2\n20\n3\n"), new PrintWriter(output), null);
         assertTrue(output.toString().contains("ERROR: Card selection must be between 1 and 12.\n"));
     }
+
+    @Test
+    @DisplayName("U-TEST 020: Testing that when a card is played, it leaves the Player's hand and goes into the Melee's" +
+            "'played' deck.")
+    void testPlayCard() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        Card[] played = new Card[]{new Card("So", (byte) 7), new Card("Sw", (byte) 11),
+                new Card("De", (byte) 3)};
+
+        //Create the override Decks.
+        Deck[] override = new Deck[3];
+        override[0] = new Deck();
+        override[0].addCard(played[0]);
+
+        override[1] = new Deck();
+        override[1].addCard(new Card("Ar", (byte) 2));
+        override[1].addCard(played[1]);
+
+        override[2] = new Deck();
+        override[2].addCard(new Card("Sw", (byte) 9));
+        override[2].addCard(new Card("De", (byte) 8));
+        override[2].addCard(played[2]);
+
+        //Play the round (consists of 1 Melee for now)
+        Melee[] summary = game.playRound(new Scanner("1\n2\n3\n"), new PrintWriter(output), override);
+
+        //Check that the selected card is no longer in each Player's deck.
+        assertFalse(game.playerAt(0).getHand().getCards().contains(played[0]));
+        assertEquals(0, game.playerAt(0).getHand().getNumCards());
+
+        assertFalse(game.playerAt(1).getHand().getCards().contains(played[1]));
+        assertEquals(1, game.playerAt(1).getHand().getNumCards());
+
+        assertFalse(game.playerAt(2).getHand().getCards().contains(played[2]));
+        assertEquals(2, game.playerAt(2).getHand().getNumCards());
+
+        //Check that the Cards are added to the Melee's 'played' Deck of cards.
+        for(int i=0;i<game.getNumPlayers();i++) assertEquals(summary[0].getPlayed()[0],
+                played[i]);
+    }
 }
