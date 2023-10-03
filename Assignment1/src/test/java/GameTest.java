@@ -319,4 +319,20 @@ class GameTest {
         for(int i=0;i<game.getNumPlayers();i++) assertEquals(summary[0].getPlayed()[i],
                 played[i]);
     }
+
+    @Test
+    @DisplayName("U-TEST 021: Testing that the first Player playing a basic weapon card sets the Suit for the Melee.")
+    void testFirstBasic() {
+        //Have the first Player play each type of basic weapon card.
+        for(String suit:Card.SUITS) {
+            Game game = new Game();
+            StringWriter output = new StringWriter();
+            game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+            Deck[] override = new Deck[3];
+            override[0] = new Deck();
+            override[0].addCard(new Card(suit, (byte) 3));
+            Melee[] summary = game.playRound(new Scanner("1\n2\n3\n"), new PrintWriter(output), override);
+            assertEquals(suit, summary[0].getSuit());
+        }
+    }
 }

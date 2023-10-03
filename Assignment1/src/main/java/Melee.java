@@ -13,4 +13,8 @@ public class Melee {
     public void playCard(byte currPlayer, Card card) {
         played[currPlayer] = card;
     }
+
+    public String getSuit() {
+        return null;
+    }
 }
