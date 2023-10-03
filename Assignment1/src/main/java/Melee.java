@@ -42,6 +42,14 @@ public class Melee {
             toPrint = suitChoice;
             System.out.println(toPrint);
             output.println(toPrint);
+
+            //Invalid suit entered.
+            if(!Card.SUITS.contains(suitChoice)) {
+                toPrint = String.format("ERROR: Please enter a valid suit from %s.", Card.SUITS);
+                System.out.println(toPrint);
+                output.println(toPrint);
+            }
+
             this.suit = suitChoice;                     //Set the suit for the Melee.
 
             //Getting the value for the Merlin or Apprentice card.
