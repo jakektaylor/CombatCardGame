@@ -15,7 +15,7 @@ public class Melee {
         return played;
     }
 
-    public void playCard(byte currPlayer, Card card, Scanner input, PrintWriter output) {
+    public boolean playCard(byte playerInd, Player player, Card card, Scanner input, PrintWriter output) {
         //Check if this is the first Card played.
         boolean isEmpty = true;
         for (int i = 0; i < played.length; i++) {
@@ -81,7 +81,7 @@ public class Melee {
             toPrint = String.format("ERROR: A basic weapon card can only be played if it is of suit %s.", getSuit());
             System.out.println(toPrint);
             output.println(toPrint);
-            return;
+            return false;
         }
 
         //Playing a Merlin or Apprentice card after the first Card has been played.
@@ -107,8 +107,14 @@ public class Melee {
                 }
             }
         }
-
-        played[currPlayer] = card;
+        //Playing a Card if possible.
+        toPrint = String.format
+                ("Player %d played: %s\n", playerInd + 1,
+                        card);
+        System.out.printf("%s", toPrint);
+        output.printf("%s", toPrint);
+        played[playerInd] = card;
+        return true;
     }
 
     public String getSuit() {

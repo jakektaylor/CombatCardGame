@@ -10,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class MeleeTest {
 
     @Test
-    @DisplayName("U-TEST 023: Testing valid user input for the suit when the first Card played is a Merlin or Apprentice" +
-            "Card.")
+    @DisplayName("U-TEST 023: Testing valid user input for the suit and value when the first Card played is a " +
+            "Merlin or Apprentice Card.")
     void testValInput() {
         Melee melee = new Melee((byte) 3);
         StringWriter output = new StringWriter();
-        melee.playCard((byte) 0, new Card("Me", null), new Scanner("\nSw\n9\n"), new PrintWriter(output));
+        melee.playCard((byte) 0, null, new Card("Me", null), new Scanner("\nSw\n9\n"), new PrintWriter(output));
         assertEquals("Sw", melee.getSuit());
         assertEquals((byte)9, melee.getPlayed()[0].getValue());
     }
@@ -26,7 +26,7 @@ class MeleeTest {
     void testInvInput() {
         Melee melee = new Melee((byte) 3);
         StringWriter output = new StringWriter();
-        melee.playCard((byte) 0, new Card("Ap", null), new Scanner("\nPa\nSo\n2\n"), new PrintWriter(output));
+        melee.playCard((byte) 0, null, new Card("Ap", null), new Scanner("\nPa\nSo\n2\n"), new PrintWriter(output));
         //Check that an error message is displayed.
         assertTrue(output.toString().contains(String.format("ERROR: Please enter a valid suit from %s.", Card.SUITS)));
     }
@@ -38,13 +38,13 @@ class MeleeTest {
         //Testing a value that is too small.
         Melee melee = new Melee((byte) 3);
         StringWriter output = new StringWriter();
-        melee.playCard((byte) 0, new Card("Me", null), new Scanner("\nAr\n-8\n3\n"), new PrintWriter(output));
+        melee.playCard((byte) 0, null, new Card("Me", null), new Scanner("\nAr\n-8\n3\n"), new PrintWriter(output));
         assertTrue(output.toString().contains("ERROR: Please enter a value between 1 and 15."));
 
         //Testing a value that is too large.
         melee = new Melee((byte) 3);
         output = new StringWriter();
-        melee.playCard((byte) 0, new Card("Ap", null), new Scanner("\nSo\n50\n14\n"), new PrintWriter(output));
+        melee.playCard((byte) 0, null, new Card("Ap", null), new Scanner("\nSo\n50\n14\n"), new PrintWriter(output));
         assertTrue(output.toString().contains("ERROR: Please enter a value between 1 and 15."));
     }
 
@@ -55,11 +55,11 @@ class MeleeTest {
         Melee melee = new Melee((byte) (3));
         StringWriter output = new StringWriter();
         //Set the suit for the Melee to "De".
-        melee.playCard((byte) 0, new Card("De", (byte) 12), new Scanner(""), new PrintWriter(output));
+        melee.playCard((byte) 0, null, new Card("De", (byte) 12), new Scanner(""), new PrintWriter(output));
 
         //Try to play Cards of a different suit after.
-        melee.playCard((byte) 1, new Card("Sw", (byte) 8), new Scanner(""), new PrintWriter(output));
-        melee.playCard((byte) 2, new Card("Ar", (byte) 13), new Scanner(""), new PrintWriter(output));
+        melee.playCard((byte) 1, null, new Card("Sw", (byte) 8), new Scanner(""), new PrintWriter(output));
+        melee.playCard((byte) 2, null, new Card("Ar", (byte) 13), new Scanner(""), new PrintWriter(output));
 
         //Check that the error message was printed twice.
         assertEquals(2, output.toString().split
@@ -79,17 +79,17 @@ class MeleeTest {
         StringWriter output = new StringWriter();
 
         //Set the suit for the melee to "Sw".
-        melee.playCard((byte) 0, new Card("Sw", (byte) 10), new Scanner(""), new PrintWriter(output));
+        melee.playCard((byte) 0, null, new Card("Sw", (byte) 10), new Scanner(""), new PrintWriter(output));
 
         //Play a Merlin card after the suit has been set.
-        melee.playCard((byte) 1, new Card("Me", null), new Scanner("\n2\n"), new PrintWriter(output));
+        melee.playCard((byte) 1, null, new Card("Me", null), new Scanner("\n2\n"), new PrintWriter(output));
         assertTrue(output.toString().contains("Please enter a value for the Merlin card: "));
         assertFalse(output.toString().contains("Please enter a suit for the Merlin card: "));
         assertTrue(output.toString().contains("\n2"));
 
         //Play an Apprentice card after the suit has been set.
         output = new StringWriter();
-        melee.playCard((byte) 2, new Card("Ap", null), new Scanner("\n8\n"), new PrintWriter(output));
+        melee.playCard((byte) 2, null, new Card("Ap", null), new Scanner("\n8\n"), new PrintWriter(output));
         assertTrue(output.toString().contains("Please enter a value for the Apprentice card: "));
         assertFalse(output.toString().contains("Please enter a suit for the Apprentice card: "));
         assertTrue(output.toString().contains("\n8"));
@@ -103,15 +103,15 @@ class MeleeTest {
         StringWriter output = new StringWriter();
 
         //Set the suit for the melee to "So".
-        melee.playCard((byte) 0, new Card("So", (byte) 10), new Scanner(""), new PrintWriter(output));
+        melee.playCard((byte) 0, null, new Card("So", (byte) 10), new Scanner(""), new PrintWriter(output));
 
         //Play a Merlin card after the suit has been set and input a value that is too small.
-        melee.playCard((byte) 1, new Card("Me", null), new Scanner("\n-20\n2\n"), new PrintWriter(output));
+        melee.playCard((byte) 1, null, new Card("Me", null), new Scanner("\n-20\n2\n"), new PrintWriter(output));
         assertTrue(output.toString().contains("ERROR: Please enter a value between 1 and 15."));
 
         //Play an Apprentice card after the suit has been set and input a value that is too large.
         output = new StringWriter();
-        melee.playCard((byte) 2, new Card("Ap", null), new Scanner("\n100\n10\n"), new PrintWriter(output));
+        melee.playCard((byte) 2, null, new Card("Ap", null), new Scanner("\n100\n10\n"), new PrintWriter(output));
         assertTrue(output.toString().contains("ERROR: Please enter a value between 1 and 15."));
 
         //Check that the Merlin and Apprentice cards were not played with the invalid value but instead the valid ones.
@@ -127,15 +127,15 @@ class MeleeTest {
         StringWriter output = new StringWriter();
 
         //Set the suit to "So".
-        melee.playCard((byte)0, new Card("So", (byte) 9), new Scanner(""), new PrintWriter(output));
+        melee.playCard((byte)0, null, new Card("So", (byte) 9), new Scanner(""), new PrintWriter(output));
 
         //Play a Merlin card.
-        melee.playCard((byte) 1, new Card("Me", null), new Scanner("\n7\n"), new PrintWriter(output));
+        melee.playCard((byte) 1, null, new Card("Me", null), new Scanner("\n7\n"), new PrintWriter(output));
         assertEquals("Me", melee.getPlayed()[1].getType());
         assertEquals((byte)7, melee.getPlayed()[1].getValue());
 
         //Play an Apprentice card.
-        melee.playCard((byte) 2, new Card("Ap", null), new Scanner("\n5\n"), new PrintWriter(output));
+        melee.playCard((byte) 2, null, new Card("Ap", null), new Scanner("\n5\n"), new PrintWriter(output));
         assertEquals("Ap", melee.getPlayed()[2].getType());
         assertEquals((byte) 5, melee.getPlayed()[2].getValue());
     }

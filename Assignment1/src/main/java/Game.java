@@ -138,17 +138,12 @@ public class Game {
                 }
             }
             selection -= (byte) 1;                             //Convert to an array index.
-            toPrint = String.format
-                    ("Player %d played: %s\n", currPlayer + 1,
-                            playerAt(currPlayer).getHand().getCards().get(selection));
-            System.out.printf("%s", toPrint);
-            output.printf("%s", toPrint);
-
             //Add the played Card to the Melee's 'played' array.
-            summary[0].playCard(currPlayer, playerAt(currPlayer).getHand().getCards().get(selection), input, output);
+            boolean played = summary[0].playCard(currPlayer, playerAt(currPlayer),
+                    playerAt(currPlayer).getHand().getCards().get(selection), input, output);
 
             //Remove the Card from the Player's hand.
-            playerAt(currPlayer).getHand().getCards().remove(selection);
+            if(played) playerAt(currPlayer).getHand().getCards().remove(selection);
 
         }
 

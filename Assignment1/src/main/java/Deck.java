@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Deck {
     private ArrayList<Card> cards;
-    HashMap<String, Integer> cardCounts;         //HashMap to store the number of cards of each type in the Deck.
+    private HashMap<String, Integer> cardCounts;         //HashMap to store the number of cards of each type in the Deck.
 
     public Deck() {
         cards = new ArrayList<>();
