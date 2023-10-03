@@ -245,21 +245,21 @@ class GameTest {
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
 
         //Testing negative value for card choice.
-        game.playRound(new Scanner("-1\n2\n3\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("-1\n2\n2\n3\n"), new PrintWriter(output), null);
         assertTrue(output.toString().contains("ERROR: Card selection must be between 1 and 12.\n"));
 
         //Testing 0 for the Card choice.
         game = new Game();
         output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
-        game.playRound(new Scanner("1\n0\n3\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("1\n0\n2\n3\n"), new PrintWriter(output), null);
         assertTrue(output.toString().contains("ERROR: Card selection must be between 1 and 12.\n"));
 
         //Test a value greater than the number of Cards the Player has in their hand.
         game = new Game();
         output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
-        game.playRound(new Scanner("1\n2\n20\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("1\n2\n20\n3\n"), new PrintWriter(output), null);
         assertTrue(output.toString().contains("ERROR: Card selection must be between 1 and 12.\n"));
     }
 }

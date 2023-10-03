@@ -73,7 +73,6 @@ public class Game {
     }
 
     public void dealCards() {
-        System.out.println(this.deck.getNumCards());
         for(int i=0;i<numPlayers;i++) {
             for(int j=0; j < 12;j++) players[i].dealCard(this.deck.getCards().get(i*12 + j));
         }
@@ -108,32 +107,38 @@ public class Game {
 
         //Have each Player select a card.
         for(int i=0;i<numPlayers;i++) {
-            String toPrint = String.format("Player %d please choose a card:\n%s\nEnter a number between " +
-                    "1 and %d:", ((nextRoundStarter + i) % numPlayers + 1), this.playerAt((nextRoundStarter + i) % numPlayers).displayHand(),
-                    this.playerAt((nextRoundStarter + i) % numPlayers).getNumCards());
-            System.out.println(toPrint);
-            output.println(toPrint);
-
             //Display what each Player chooses.
-            byte selection = input.nextByte();
-            toPrint = String.format("%d\n", selection);
-            System.out.println(toPrint);
-            output.println(toPrint);
-
-            if(selection < 1 || selection > playerAt((nextRoundStarter + i) % numPlayers).getNumCards()) {
-                toPrint = String.format("ERROR: Card selection must be between 1 and %d.\n",
-                        playerAt((nextRoundStarter + i) % numPlayers).getNumCards());
+            byte selection = -1;
+            byte currPlayer = (byte)((nextRoundStarter + i) % numPlayers);          //Index of the current Player.
+            String toPrint;
+            while(selection < 1 || selection > playerAt(currPlayer).getNumCards()) {
+                //Display the prompt.
+                toPrint = String.format("Player %d please choose a card:\n%s\nEnter a number between " +
+                                "1 and %d:", currPlayer + 1, this.playerAt(currPlayer).displayHand(),
+                        this.playerAt(currPlayer).getNumCards());
                 System.out.println(toPrint);
                 output.println(toPrint);
+
+                //Get input from the user.
+                selection = input.nextByte();
+                toPrint = String.format("%d\n", selection);
+                System.out.println(toPrint);
+                output.println(toPrint);
+
+                if (selection < 1 || selection > playerAt(currPlayer).getNumCards()) {
+                    toPrint = String.format("ERROR: Card selection must be between 1 and %d.\n",
+                            playerAt(currPlayer).getNumCards());
+                    System.out.println(toPrint);
+                    output.println(toPrint);
+                }
             }
-            else {
-                selection -= (byte) 1;                             //Convert to an array index.
-                toPrint = String.format
-                        ("Player %d played: %s\n", (nextRoundStarter + i) % numPlayers + 1,
-                                playerAt((nextRoundStarter + i) % numPlayers).getHand().getCards().get(selection));
-                System.out.printf("%s", toPrint);
-                output.printf("%s", toPrint);
-            }
+            selection -= (byte) 1;                             //Convert to an array index.
+            toPrint = String.format
+                    ("Player %d played: %s\n", currPlayer + 1,
+                            playerAt(currPlayer).getHand().getCards().get(selection));
+            System.out.printf("%s", toPrint);
+            output.printf("%s", toPrint);
+
         }
 
         //Move to the next Player to start the next round.
