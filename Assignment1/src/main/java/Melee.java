@@ -94,6 +94,14 @@ public class Melee {
             toPrint = String.format("%d", value);
             System.out.println(toPrint);
             output.println(toPrint);
+
+            //Check if the user entered a valid value.
+            if(value < 1 || value > 15) {
+                toPrint = "ERROR: Please enter a value between 1 and 15.";
+                System.out.println(toPrint);
+                output.println(toPrint);
+                return;
+            }
         }
 
         played[currPlayer] = card;
