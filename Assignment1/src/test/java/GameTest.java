@@ -439,4 +439,56 @@ class GameTest {
         assertTrue(output.toString().contains("\n10"));
     }
 
+    @Test
+    @DisplayName("U-TEST 030: Testing that after the suit for the Melee has been set, a Player cannot play an Alchemy" +
+            "card if they have a Basic Weapon of the same suit or Merlin or Apprentice.")
+    void testInvAlc() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("4\nJake\nCaroline\nAlex\nJohn\n300\n"), new PrintWriter(output));
+
+        //Create the override decks.
+        Deck[] overrideDecks = new Deck[4];
+        overrideDecks[0] = new Deck();
+        //Set the suit of the Melee to "Sw".
+        overrideDecks[0].addCard(new Card("Sw", (byte) 5));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Al", (byte) 15));
+        overrideDecks[1].addCard(new Card("Sw", (byte) 12));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Al", (byte) 12));
+        overrideDecks[2].addCard(new Card("Me", null));
+
+        overrideDecks[3] = new Deck();
+        overrideDecks[3].addCard(new Card("Al", (byte)10));
+        overrideDecks[3].addCard(new Card("Ap", null));
+
+
+
+        output = new StringWriter();
+        Melee[] summary = game.playRound(new Scanner("1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks);
+
+        //Check that the  error message was printed 3 times.
+        int currIndex = 0;
+        String toFind = String.format("\nERROR: Cannot play an Alchemy card as you have a basic weapon card of the " +
+        "same suit as the melee (%s) or a Merlin or Apprentice card.\n", summary[0].getSuit());
+        String toSearch = output.toString();
+        int numOccurences = 0;                                          //Number of occurences of the error message.
+        while(currIndex != -1) {
+            currIndex = toSearch.indexOf(toFind, currIndex);
+            if(currIndex != -1) {
+                numOccurences++;
+                currIndex+=toFind.length();
+            }
+        }
+        //Check that the error message was displayed 3 times.
+        assertEquals(3, numOccurences);
+        //Check that the Alchemy cards weren't played.
+        assertNull(summary[0].getPlayed()[1]);
+        assertNull(summary[0].getPlayed()[2]);
+        assertNull(summary[0].getPlayed()[3]);
+    }
+
 }
