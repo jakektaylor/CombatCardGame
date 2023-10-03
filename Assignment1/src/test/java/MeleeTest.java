@@ -119,4 +119,25 @@ class MeleeTest {
         assertNull(melee.getPlayed()[2]);
     }
 
+    @Test
+    @DisplayName("U-TEST 029: Testing that valid user input for the value of a Merlin or Apprentice Card after the first" +
+            "Card has been played sets the value of the Card and causes it to be played.")
+    void testPlayMerAfter() {
+        Melee melee = new Melee((byte) 3);
+        StringWriter output = new StringWriter();
+
+        //Set the suit to "So".
+        melee.playCard((byte)0, new Card("So", (byte) 9), new Scanner(""), new PrintWriter(output));
+
+        //Play a Merlin card.
+        melee.playCard((byte) 1, new Card("Me", null), new Scanner("\n7\n"), new PrintWriter(output));
+        assertEquals("Me", melee.getPlayed()[1].getType());
+        assertEquals((byte)7, melee.getPlayed()[1].getValue());
+
+        //Play an Apprentice card.
+        melee.playCard((byte) 2, new Card("Ap", null), new Scanner("\n5\n"), new PrintWriter(output));
+        assertEquals("Ap", melee.getPlayed()[2].getType());
+        assertEquals((byte) 5, melee.getPlayed()[2].getValue());
+    }
+
 }
