@@ -399,5 +399,44 @@ class GameTest {
         }
     }
 
+    @Test
+    @DisplayName("U-TEST 022: Testing that if the first Player plays a Merlin or Apprentice card, they are prompted to enter" +
+            "the value and suit of the Card and their responses are displayed.")
+    void testFirstMeAp() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        //Create the override Decks.
+        Deck[] overrideDecks = new Deck[3];
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Me", null));
+        overrideDecks[0].addCard(new Card("Ap", null));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Sw", (byte) 7));
+        overrideDecks[1].addCard(new Card("So", (byte) 2));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Sw", (byte) 15));
+        overrideDecks[2].addCard(new Card("So", (byte) 5));
+
+        game.playRound(new Scanner("1\nSw\n2" +
+                "\n1\n1\n"), new PrintWriter(output), overrideDecks);
+        assertTrue(output.toString().contains("Please enter a suit for the Merlin card: "));
+        assertTrue(output.toString().contains("\nSw"));
+        assertTrue(output.toString().contains("Please enter a value for the Merlin card: "));
+        assertTrue(output.toString().contains("\n2"));
+
+        game = new Game();
+        output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+        game.playRound(new Scanner("1\nSo\n10" +
+                "\n1\n1\n"), new PrintWriter(output), overrideDecks);
+        assertTrue(output.toString().contains("Please enter a suit for the Apprentice card: "));
+        assertTrue(output.toString().contains("\nSo"));
+        assertTrue(output.toString().contains("Please enter a value for the Apprentice card: "));
+        assertTrue(output.toString().contains("\n10"));
+    }
 
 }
