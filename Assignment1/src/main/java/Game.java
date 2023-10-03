@@ -145,7 +145,7 @@ public class Game {
             output.printf("%s", toPrint);
 
             //Add the played Card to the Melee's 'played' array.
-            summary[0].playCard(currPlayer, playerAt(currPlayer).getHand().getCards().get(selection));
+            summary[0].playCard(currPlayer, playerAt(currPlayer).getHand().getCards().get(selection), input, output);
 
             //Remove the Card from the Player's hand.
             playerAt(currPlayer).getHand().getCards().remove(selection);
