@@ -50,4 +50,8 @@ public class Card {
         if (!(this.value == null)) return this.value.equals(other.value) && this.type.equals(other.type);
         else return this.value == other.value && this.type.equals(other.type);
     }
+
+    public void setValue(Byte valChoice) {
+        value = valChoice;
+    }
 }

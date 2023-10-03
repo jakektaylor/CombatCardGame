@@ -42,6 +42,7 @@ public class Melee {
             toPrint = suitChoice;
             System.out.println(toPrint);
             output.println(toPrint);
+            this.suit = suitChoice;                     //Set the suit for the Melee.
 
             //Getting the value for the Merlin or Apprentice card.
             if(card.getType().equals("Me")) toPrint = "Please enter a value for the Merlin card: ";
@@ -52,6 +53,7 @@ public class Melee {
             toPrint = String.format("%d", valChoice);
             System.out.println(toPrint);
             output.println(toPrint);
+            card.setValue(valChoice);                   //Set the value of the card.
         }
         played[currPlayer] = card;
     }
