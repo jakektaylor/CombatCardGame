@@ -61,6 +61,13 @@ public class Melee {
             toPrint = String.format("%d", valChoice);
             System.out.println(toPrint);
             output.println(toPrint);
+
+            //Invalid value.
+            if(valChoice < 1 || valChoice > 15) {
+                toPrint = "ERROR: Please enter a value between 1 and 15.";
+                System.out.println(toPrint);
+                output.println(toPrint);
+            }
             card.setValue(valChoice);                   //Set the value of the card.
         }
         played[currPlayer] = card;
