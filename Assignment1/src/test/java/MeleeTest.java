@@ -30,4 +30,21 @@ class MeleeTest {
         //Check that an error message is displayed.
         assertTrue(output.toString().contains(String.format("ERROR: Please enter a valid suit from %s.", Card.SUITS)));
     }
+
+    @Test
+    @DisplayName("U-TEST 025: Testing invalid user input for the value when the first Card played is a Merlin or Apprentice" +
+            "Card.")
+    void testInvVal() {
+        //Testing a value that is too small.
+        Melee melee = new Melee((byte) 3);
+        StringWriter output = new StringWriter();
+        melee.playCard((byte) 0, new Card("Me", null), new Scanner("\nAr\n-8\n"), new PrintWriter(output));
+        assertTrue(output.toString().contains("ERROR: Please enter a value between 1 and 15."));
+
+        //Testing a value that is too large.
+        melee = new Melee((byte) 3);
+        output = new StringWriter();
+        melee.playCard((byte) 0, new Card("Ap", null), new Scanner("\nSo\n50\n"), new PrintWriter(output));
+        assertTrue(output.toString().contains("ERROR: Please enter a value between 1 and 15."));
+    }
 }
