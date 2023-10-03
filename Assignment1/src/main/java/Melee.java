@@ -25,13 +25,14 @@ public class Melee {
             }
         }
 
+        String toPrint;
+
         //Basic Weapon as first card.
         if(isEmpty && Card.SUITS.contains(card.getType())) this.suit = card.getType();
 
         //Merlin or Apprentice as first Card.
         else if(isEmpty && (card.getType().equals("Me") || card.getType().equals("Ap"))) {
             input.nextLine();
-            String toPrint;
 
             String suitChoice;
             while(true) {
@@ -75,6 +76,14 @@ public class Melee {
             }
             card.setValue(valChoice);                   //Set the value of the card.
         }
+        //Trying to play a Basic Weapon of a different suit.
+        else if(Card.SUITS.contains(card.getType()) && !suit.equals(card.getType())) {
+            toPrint = String.format("ERROR: A basic weapon card can only be played if it is of suit %s.", getSuit());
+            System.out.println(toPrint);
+            output.println(toPrint);
+            return;
+        }
+
         played[currPlayer] = card;
     }
 
