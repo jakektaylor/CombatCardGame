@@ -62,6 +62,10 @@ public class Game {
 
         //Set the starter of the next round.
         nextRoundStarter = 0;
+
+        //Deal cards
+        deck.shuffle();
+        dealCards();
     }
 
     public byte getNumPlayers() {
@@ -84,8 +88,6 @@ public class Game {
     }
 
     public Melee[] playRound(Scanner input, PrintWriter output, Deck[] overrideDecks) {
-        deck.shuffle();
-        dealCards();
 
         //Override the Decks of each Player.
         if (overrideDecks != null) {

@@ -124,7 +124,6 @@ class GameTest {
         Game game = new Game();
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("4\nJake\nCaroline\nAlex\nJohn\n300\n"), new PrintWriter(output));
-        game.dealCards();
         assertEquals(12, game.playerAt(0).getNumCards());
         assertEquals(12, game.playerAt(1).getNumCards());
         assertEquals(12, game.playerAt(2).getNumCards());
@@ -164,19 +163,24 @@ class GameTest {
         Game game = new Game();
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        String p1Hand = game.playerAt(0).displayHand();
+        String p2Hand = game.playerAt(1).displayHand();
+        String p3Hand = game.playerAt(2).displayHand();
+
         game.playRound(new Scanner("3\n5\n7\n"), new PrintWriter(output), null);
-        assertTrue(output.toString().contains(game.playerAt(0).displayHand()));
-        assertTrue(output.toString().contains(game.playerAt(1).displayHand()));
-        assertTrue(output.toString().contains(game.playerAt(2).displayHand()));
+        assertTrue(output.toString().contains(p1Hand));
+        assertTrue(output.toString().contains(p2Hand));
+        assertTrue(output.toString().contains(p3Hand));
     }
 
     @Test
     @DisplayName("U-TEST 016: Testing that the deck is shuffled at the beginning of a round.")
     void testShuffle() {
         Game game = new Game();
+        Deck starting = game.getDeck().deepCopy();
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
-        Deck starting = game.getDeck().deepCopy();
         game.playRound(new Scanner("3\n5\n7\n"), new PrintWriter(output), null);
         Deck shuffled = game.getDeck();
         assertNotEquals(starting, shuffled);
@@ -189,13 +193,23 @@ class GameTest {
         Game game = new Game();
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        String p1Hand = game.playerAt(0).displayHand();
+        int p1NumCards = game.playerAt(0).getNumCards();
+
+        String p2Hand = game.playerAt(1).displayHand();
+        int p2NumCards = game.playerAt(1).getNumCards();
+
+        String p3Hand = game.playerAt(2).displayHand();
+        int p3NumCards = game.playerAt(2).getNumCards();
+
         game.playRound(new Scanner("3\n5\n7\n"), new PrintWriter(output), null);
         assertTrue(output.toString().contains(String.format("Player 1 please choose a card:\n%s\nEnter a number between " +
-                        "1 and %d:", game.playerAt(0).displayHand(), game.playerAt(0).getNumCards())));
+                        "1 and %d:", p1Hand, p1NumCards)));
         assertTrue(output.toString().contains(String.format("Player 2 please choose a card:\n%s\nEnter a number between " +
-                "1 and %d:", game.playerAt(1).displayHand(), game.playerAt(1).getNumCards())));
+                "1 and %d:", p2Hand, p2NumCards)));
         assertTrue(output.toString().contains(String.format("Player 3 please choose a card:\n%s\nEnter a number between " +
-                "1 and %d:", game.playerAt(2).displayHand(), game.playerAt(2).getNumCards())));
+                "1 and %d:", p3Hand, p3NumCards)));
     }
 
     @Test
@@ -302,7 +316,7 @@ class GameTest {
         assertEquals(2, game.playerAt(2).getHand().getNumCards());
 
         //Check that the Cards are added to the Melee's 'played' Deck of cards.
-        for(int i=0;i<game.getNumPlayers();i++) assertEquals(summary[0].getPlayed()[0],
+        for(int i=0;i<game.getNumPlayers();i++) assertEquals(summary[0].getPlayed()[i],
                 played[i]);
     }
 }
