@@ -107,6 +107,9 @@ public class Game {
             output.println(toPrint);
         }
 
+        //Start the Melees.
+        Melee[] summary = new Melee[12];
+        summary[0] = new Melee(getNumPlayers());
         //Have each Player select a card.
         for(int i=0;i<numPlayers;i++) {
             //Display what each Player chooses.
@@ -141,11 +144,17 @@ public class Game {
             System.out.printf("%s", toPrint);
             output.printf("%s", toPrint);
 
+            //Add the played Card to the Melee's 'played' array.
+            summary[0].playCard(currPlayer, playerAt(currPlayer).getHand().getCards().get(selection));
+
+            //Remove the Card from the Player's hand.
+            playerAt(currPlayer).getHand().getCards().remove(selection);
+
         }
 
         //Move to the next Player to start the next round.
         nextRoundStarter = (nextRoundStarter + 1) % numPlayers;
-        return new Melee[12];
+        return summary;
     }
 
     public Deck getDeck() {
