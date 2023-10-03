@@ -94,4 +94,29 @@ class MeleeTest {
         assertFalse(output.toString().contains("Please enter a suit for the Apprentice card: "));
         assertTrue(output.toString().contains("\n8"));
     }
+
+    @Test
+    @DisplayName("U-TEST 028: Testing that invalid user input when entering the value of a Merlin or Apprentice Card " +
+            "when played after the first Card has been played results in an error message and the Card is not played.")
+    void testInvMer() {
+        Melee melee = new Melee((byte) 3);
+        StringWriter output = new StringWriter();
+
+        //Set the suit for the melee to "So".
+        melee.playCard((byte) 0, new Card("So", (byte) 10), new Scanner(""), new PrintWriter(output));
+
+        //Play a Merlin card after the suit has been set and input a value that is too small.
+        melee.playCard((byte) 1, new Card("Me", null), new Scanner("\n-20\n"), new PrintWriter(output));
+        assertTrue(output.toString().contains("ERROR: Please enter a value between 1 and 15."));
+
+        //Play an Apprentice card after the suit has been set and input a value that is too large.
+        output = new StringWriter();
+        melee.playCard((byte) 2, new Card("Ap", null), new Scanner("\n100\n"), new PrintWriter(output));
+        assertTrue(output.toString().contains("ERROR: Please enter a value between 1 and 15."));
+
+        //Check that the Merlin and Apprentice cards were not played.
+        assertNull(melee.getPlayed()[1]);
+        assertNull(melee.getPlayed()[2]);
+    }
+
 }
