@@ -137,21 +137,28 @@ class GameTest {
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("5\nJake\nCaroline\nAlex\nJohn\nJessica\n300\n"), new PrintWriter(output));
 
+        //Create the override decks.
+        Deck[] overrideDecks = new Deck[game.getNumPlayers()];
+        for(int i=0;i<game.getNumPlayers();i++) {
+            overrideDecks[i] = new Deck();
+            for(int j=0;j<5;j++) overrideDecks[i].addCard(new Card("Sw", (byte)9));
+        }
+
         //Check that the starting Player changes correctly each round.
         assertEquals(0, game.nextRoundStarter());
-        game.playRound(new Scanner("2\n4\n6\n1\n2\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks);
 
         assertEquals(1, game.nextRoundStarter());
-        game.playRound(new Scanner("2\n4\n6\n1\n2\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks);
 
         assertEquals(2, game.nextRoundStarter());
-        game.playRound(new Scanner("1\n3\n5\n1\n2\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks);
 
         assertEquals(3, game.nextRoundStarter());
-        game.playRound(new Scanner("2\n4\n6\n1\n2\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks);
 
         assertEquals(4, game.nextRoundStarter());
-        game.playRound(new Scanner("2\n4\n6\n1\n2\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks);
 
         //Check that it loops around back to 0.
         assertEquals(0, game.nextRoundStarter());
@@ -164,11 +171,24 @@ class GameTest {
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
 
-        String p1Hand = game.playerAt(0).displayHand();
-        String p2Hand = game.playerAt(1).displayHand();
-        String p3Hand = game.playerAt(2).displayHand();
+        //Create the override deck.
+        Deck[] overrideDecks = new Deck[3];
+        overrideDecks[0] = new Deck();
+        overrideDecks[1] = new Deck();
+        overrideDecks[2] = new Deck();
+        for(String suit: Card.SUITS) {
+            for(int j=0;j<3;j++) {
+                overrideDecks[0].addCard(new Card(suit, (byte)(j+1)));
+                overrideDecks[1].addCard(new Card(suit, (byte)(4+j)));
+                overrideDecks[2].addCard(new Card(suit, (byte)(7+j)));
+            }
+        }
 
-        game.playRound(new Scanner("3\n5\n7\n"), new PrintWriter(output), null);
+        String p1Hand = overrideDecks[0].toString();
+        String p2Hand = overrideDecks[1].toString();
+        String p3Hand = overrideDecks[2].toString();
+
+        game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), overrideDecks);
         assertTrue(output.toString().contains(p1Hand));
         assertTrue(output.toString().contains(p2Hand));
         assertTrue(output.toString().contains(p3Hand));
@@ -181,7 +201,21 @@ class GameTest {
         Deck starting = game.getDeck().deepCopy();
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
-        game.playRound(new Scanner("3\n5\n7\n"), new PrintWriter(output), null);
+
+        //Create the override deck.
+        Deck[] overrideDecks = new Deck[3];
+        overrideDecks[0] = new Deck();
+        overrideDecks[1] = new Deck();
+        overrideDecks[2] = new Deck();
+        for(String suit: Card.SUITS) {
+            for(int j=0;j<3;j++) {
+                overrideDecks[0].addCard(new Card(suit, (byte)(j+1)));
+                overrideDecks[1].addCard(new Card(suit, (byte)(4+j)));
+                overrideDecks[2].addCard(new Card(suit, (byte)(7+j)));
+            }
+        }
+
+        game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), overrideDecks);
         Deck shuffled = game.getDeck();
         assertNotEquals(starting, shuffled);
     }
@@ -194,16 +228,29 @@ class GameTest {
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
 
-        String p1Hand = game.playerAt(0).displayHand();
-        int p1NumCards = game.playerAt(0).getNumCards();
+        //Create the override deck.
+        Deck[] overrideDecks = new Deck[3];
+        overrideDecks[0] = new Deck();
+        overrideDecks[1] = new Deck();
+        overrideDecks[2] = new Deck();
+        for(String suit: Card.SUITS) {
+            for(int j=0;j<3;j++) {
+                overrideDecks[0].addCard(new Card(suit, (byte)(j+1)));
+                overrideDecks[1].addCard(new Card(suit, (byte)(4+j)));
+                overrideDecks[2].addCard(new Card(suit, (byte)(7+j)));
+            }
+        }
 
-        String p2Hand = game.playerAt(1).displayHand();
-        int p2NumCards = game.playerAt(1).getNumCards();
+        String p1Hand = overrideDecks[0].toString();
+        int p1NumCards = overrideDecks[0].getNumCards();
 
-        String p3Hand = game.playerAt(2).displayHand();
-        int p3NumCards = game.playerAt(2).getNumCards();
+        String p2Hand = overrideDecks[1].toString();
+        int p2NumCards = overrideDecks[1].getNumCards();
 
-        game.playRound(new Scanner("3\n5\n7\n"), new PrintWriter(output), null);
+        String p3Hand = overrideDecks[2].toString();
+        int p3NumCards = overrideDecks[2].getNumCards();
+
+        game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), overrideDecks);
         assertTrue(output.toString().contains(String.format("Player 1 please choose a card:\n%s\nEnter a number between " +
                         "1 and %d:", p1Hand, p1NumCards)));
         assertTrue(output.toString().contains(String.format("Player 2 please choose a card:\n%s\nEnter a number between " +
@@ -223,7 +270,7 @@ class GameTest {
         //Create the override Decks.
         Deck[] override = new Deck[3];
         override[0] = new Deck();
-        override[0].addCard(new Card("So", (byte) 7));
+        override[0].addCard(new Card("Sw", (byte) 7));
 
         override[1] = new Deck();
         override[1].addCard(new Card("Ar", (byte) 2));
@@ -232,7 +279,7 @@ class GameTest {
         override[2] = new Deck();
         override[2].addCard(new Card("Sw", (byte) 9));
         override[2].addCard(new Card("De", (byte) 8));
-        override[2].addCard(new Card("De", (byte) 3));
+        override[2].addCard(new Card("Sw", (byte) 3));
 
         game.playRound(new Scanner("1\n2\n3\n"), new PrintWriter(output), override);
 
@@ -243,11 +290,11 @@ class GameTest {
 
         //Check that the window displays which card each Player plays.
         assertTrue(output.toString().contains(String.format
-                ("Player 1 played: %s\n", new Card("So", (byte) 7))));
+                ("Player 1 played: %s\n", new Card("Sw", (byte) 7))));
         assertTrue(output.toString().contains(String.format
                 ("Player 2 played: %s\n", new Card("Sw", (byte) 11))));
         assertTrue(output.toString().contains(String.format
-                ("Player 3 played: %s\n", new Card("De", (byte) 3))));
+                ("Player 3 played: %s\n", new Card("Sw", (byte) 3))));
 
     }
 
@@ -258,22 +305,29 @@ class GameTest {
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
 
+        //Create the override deck.
+        Deck[] overrideDecks = new Deck[3];
+        overrideDecks[0] = new Deck();
+        overrideDecks[1] = new Deck();
+        overrideDecks[2] = new Deck();
+        for(String suit: Card.SUITS) {
+            for(int j=0;j<3;j++) {
+                overrideDecks[0].addCard(new Card(suit, (byte)(j+1)));
+                overrideDecks[1].addCard(new Card(suit, (byte)(4+j)));
+                overrideDecks[2].addCard(new Card(suit, (byte)(7+j)));
+            }
+        }
+
         //Testing negative value for card choice.
-        game.playRound(new Scanner("-1\n2\n2\n3\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("-1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks);
         assertTrue(output.toString().contains("ERROR: Card selection must be between 1 and 12.\n"));
 
         //Testing 0 for the Card choice.
-        game = new Game();
-        output = new StringWriter();
-        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
-        game.playRound(new Scanner("1\n0\n2\n3\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("1\n0\n1\n1\n"), new PrintWriter(output), overrideDecks);
         assertTrue(output.toString().contains("ERROR: Card selection must be between 1 and 12.\n"));
 
         //Test a value greater than the number of Cards the Player has in their hand.
-        game = new Game();
-        output = new StringWriter();
-        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
-        game.playRound(new Scanner("1\n2\n20\n3\n"), new PrintWriter(output), null);
+        game.playRound(new Scanner("1\n1\n20\n1\n"), new PrintWriter(output), overrideDecks);
         assertTrue(output.toString().contains("ERROR: Card selection must be between 1 and 12.\n"));
     }
 
@@ -285,8 +339,8 @@ class GameTest {
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
 
-        Card[] played = new Card[]{new Card("So", (byte) 7), new Card("Sw", (byte) 11),
-                new Card("De", (byte) 3)};
+        Card[] played = new Card[]{new Card("So", (byte) 7), new Card("So", (byte) 11),
+                new Card("So", (byte) 3)};
 
         //Create the override Decks.
         Deck[] override = new Deck[3];
@@ -328,11 +382,22 @@ class GameTest {
             Game game = new Game();
             StringWriter output = new StringWriter();
             game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+            //Create the override Decks.
             Deck[] override = new Deck[3];
             override[0] = new Deck();
             override[0].addCard(new Card(suit, (byte) 3));
-            Melee[] summary = game.playRound(new Scanner("1\n2\n3\n"), new PrintWriter(output), override);
+
+            override[1] = new Deck();
+            override[1].addCard(new Card(suit, (byte) 5));
+
+            override[2] = new Deck();
+            override[2].addCard(new Card(suit, (byte) 7));
+
+            Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), override);
             assertEquals(suit, summary[0].getSuit());
         }
     }
+
+
 }
