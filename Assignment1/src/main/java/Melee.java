@@ -84,6 +84,18 @@ public class Melee {
             return;
         }
 
+        //Playing a Merlin or Apprentice card after the first Card has been played.
+        else if(card.getType().equals("Me") || card.getType().equals("Ap")) {
+            if(card.getType().equals("Me")) toPrint = "Please enter a value for the Merlin card: ";
+            else toPrint = "Please enter a value for the Apprentice card: ";
+            System.out.println(toPrint);
+            output.println(toPrint);
+            Byte value = input.nextByte();
+            toPrint = String.format("%d", value);
+            System.out.println(toPrint);
+            output.println(toPrint);
+        }
+
         played[currPlayer] = card;
     }
 
