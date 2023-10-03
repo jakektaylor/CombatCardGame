@@ -33,40 +33,45 @@ public class Melee {
             input.nextLine();
             String toPrint;
 
-            //Getting the suit for the Merlin or Apprentice card.
-            if(card.getType().equals("Me")) toPrint = "Please enter a suit for the Merlin card: ";
-            else toPrint = "Please enter a suit for the Apprentice card: ";
-            System.out.println(toPrint);
-            output.println(toPrint);
-            String suitChoice = input.nextLine();
-            toPrint = suitChoice;
-            System.out.println(toPrint);
-            output.println(toPrint);
-
-            //Invalid suit entered.
-            if(!Card.SUITS.contains(suitChoice)) {
-                toPrint = String.format("ERROR: Please enter a valid suit from %s.", Card.SUITS);
+            String suitChoice;
+            while(true) {
+                //Getting the suit for the Merlin or Apprentice card.
+                if (card.getType().equals("Me")) toPrint = "Please enter a suit for the Merlin card: ";
+                else toPrint = "Please enter a suit for the Apprentice card: ";
                 System.out.println(toPrint);
                 output.println(toPrint);
-            }
+                suitChoice = input.nextLine();
+                toPrint = suitChoice;
+                System.out.println(toPrint);
+                output.println(toPrint);
 
+                //Invalid suit entered.
+                if (!Card.SUITS.contains(suitChoice)) {
+                    toPrint = String.format("ERROR: Please enter a valid suit from %s.", Card.SUITS);
+                    System.out.println(toPrint);
+                    output.println(toPrint);
+                } else break;
+            }
             this.suit = suitChoice;                     //Set the suit for the Melee.
 
-            //Getting the value for the Merlin or Apprentice card.
-            if(card.getType().equals("Me")) toPrint = "Please enter a value for the Merlin card: ";
-            else toPrint = "Please enter a value for the Apprentice card: ";
-            System.out.println(toPrint);
-            output.println(toPrint);
-            Byte valChoice = input.nextByte();
-            toPrint = String.format("%d", valChoice);
-            System.out.println(toPrint);
-            output.println(toPrint);
-
-            //Invalid value.
-            if(valChoice < 1 || valChoice > 15) {
-                toPrint = "ERROR: Please enter a value between 1 and 15.";
+            Byte valChoice;
+            while(true) {
+                //Getting the value for the Merlin or Apprentice card.
+                if (card.getType().equals("Me")) toPrint = "Please enter a value for the Merlin card: ";
+                else toPrint = "Please enter a value for the Apprentice card: ";
                 System.out.println(toPrint);
                 output.println(toPrint);
+                valChoice = input.nextByte();
+                toPrint = String.format("%d", valChoice);
+                System.out.println(toPrint);
+                output.println(toPrint);
+
+                //Invalid value.
+                if (valChoice < 1 || valChoice > 15) {
+                    toPrint = "ERROR: Please enter a value between 1 and 15.";
+                    System.out.println(toPrint);
+                    output.println(toPrint);
+                } else break;
             }
             card.setValue(valChoice);                   //Set the value of the card.
         }
