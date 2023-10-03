@@ -101,7 +101,7 @@ public class Melee {
                 System.out.println(toPrint);
                 output.println(toPrint);
                 return;
-            }
+            } else card.setValue(value);
         }
 
         played[currPlayer] = card;
