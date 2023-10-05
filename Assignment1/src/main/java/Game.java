@@ -114,37 +114,44 @@ public class Game {
         for(int i=0;i<numPlayers;i++) {
             //Display what each Player chooses.
             byte selection = -1;
-            byte currPlayer = (byte)((nextRoundStarter + i) % numPlayers);          //Index of the current Player.
+            byte currPlayer = (byte) ((nextRoundStarter + i) % numPlayers);          //Index of the current Player.
             String toPrint;
-            while(selection < 1 || selection > playerAt(currPlayer).getNumCards()) {
-                //Display the prompt.
-                toPrint = String.format("Player %d please choose a card:\n%s\nEnter a number between " +
-                                "1 and %d:", currPlayer + 1, this.playerAt(currPlayer).displayHand(),
-                        this.playerAt(currPlayer).getNumCards());
-                System.out.println(toPrint);
-                output.println(toPrint);
 
-                //Get input from the user.
-                selection = input.nextByte();
-                toPrint = String.format("%d\n", selection);
-                System.out.println(toPrint);
-                output.println(toPrint);
-
-                if (selection < 1 || selection > playerAt(currPlayer).getNumCards()) {
-                    toPrint = String.format("ERROR: Card selection must be between 1 and %d.\n",
-                            playerAt(currPlayer).getNumCards());
+            //Player cannot play a Card.
+            if (!summary[0].canPlayCard(playerAt(currPlayer))) {
+                summary[0].discardCard(input, output, currPlayer, playerAt(currPlayer));
+            }
+            //Play can play a Card.
+            else {
+                while (selection < 1 || selection > playerAt(currPlayer).getNumCards()) {
+                    //Display the prompt.
+                    toPrint = String.format("Player %d please choose a card:\n%s\nEnter a number between " +
+                                    "1 and %d:", currPlayer + 1, this.playerAt(currPlayer).displayHand(),
+                            this.playerAt(currPlayer).getNumCards());
                     System.out.println(toPrint);
                     output.println(toPrint);
+
+                    //Get input from the user.
+                    selection = input.nextByte();
+                    toPrint = String.format("%d\n", selection);
+                    System.out.println(toPrint);
+                    output.println(toPrint);
+
+                    if (selection < 1 || selection > playerAt(currPlayer).getNumCards()) {
+                        toPrint = String.format("ERROR: Card selection must be between 1 and %d.\n",
+                                playerAt(currPlayer).getNumCards());
+                        System.out.println(toPrint);
+                        output.println(toPrint);
+                    }
                 }
+                selection -= (byte) 1;                             //Convert to an array index.
+                //Add the played Card to the Melee's 'played' array.
+                boolean played = summary[0].playCard(currPlayer, playerAt(currPlayer),
+                        playerAt(currPlayer).getHand().getCards().get(selection), input, output);
+
+                //Remove the Card from the Player's hand.
+                if (played) playerAt(currPlayer).getHand().getCards().remove(selection);
             }
-            selection -= (byte) 1;                             //Convert to an array index.
-            //Add the played Card to the Melee's 'played' array.
-            boolean played = summary[0].playCard(currPlayer, playerAt(currPlayer),
-                    playerAt(currPlayer).getHand().getCards().get(selection), input, output);
-
-            //Remove the Card from the Player's hand.
-            if(played) playerAt(currPlayer).getHand().getCards().remove(selection);
-
         }
 
         //Move to the next Player to start the next round.

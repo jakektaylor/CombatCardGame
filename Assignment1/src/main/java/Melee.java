@@ -143,4 +143,41 @@ public class Melee {
     public String getSuit() {
         return suit;
     }
+
+    //Method used to determine whether 'player' can play a card.
+    public boolean canPlayCard(Player player) {
+        //Can always play with Merlin or Apprentice.
+        if(player.getHand().getNumMe() > 0 || player.getHand().getNumAp() > 0) return true;
+        else if(suit == null && (player.getHand().getNumSw() > 0 || player.getHand().getNumAr() > 0 ||
+                player.getHand().getNumSo() > 0 || player.getHand().getNumDe() > 0)) return true;
+        else if (suit != null) {
+            //Sw
+            if(suit.equals("Sw") && player.getHand().getNumSw() > 0) return true;
+                //Ar
+            else if(suit.equals("Ar") && player.getHand().getNumAr() > 0) return true;
+                //So
+            else if(suit.equals("So") && player.getHand().getNumSo() > 0) return true;
+                //De
+            else if(suit.equals("De") && player.getHand().getNumDe() > 0) return true;
+                //Al
+            else return player.getHand().getNumAl() > 0;
+        }
+        return false;
+    }
+
+    public void discardCard(Scanner input, PrintWriter output, byte currPlayer, Player player) {
+        String toPrint =  String.format("Player %d please choose a card to discard as there is no Card you can play: ",
+                currPlayer + 1);
+        System.out.println(toPrint);
+        output.println(toPrint);
+
+        toPrint = player.getHand().toString();
+        System.out.printf(toPrint);
+        output.println(toPrint);
+
+        byte choice = input.nextByte();
+        toPrint = String.format("%d\n", choice);
+        System.out.printf(toPrint);
+        output.printf(toPrint);
+    }
 }
