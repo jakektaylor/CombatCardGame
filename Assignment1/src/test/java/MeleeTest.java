@@ -246,4 +246,33 @@ class MeleeTest {
         assertTrue(output.toString().contains("ERROR: Cannot play an Alchemy Card as the first Card when you have an " +
                 "Apprentice card."));
     }
+
+    @Test
+    @DisplayName("U-TEST 037: Testing that if the first Player plays an Alchemy Card, the following Players can play" +
+            "a Basic Weapon Card of any suit.")
+    void testAnyBasic() {
+        Melee melee = new Melee((byte) 5);
+        Player[] players = new Player[5];
+
+        //Play the Alchemy Card.
+        players[0] = new Player("");
+        players[0].getHand().addCard(new Card("Al", (byte) 12));
+        melee.playCard((byte) 0, players[0], players[0].getHand().getCards().get(0), new Scanner(""),
+                new PrintWriter(new StringWriter()));
+
+        //Play the Basic Weapon Cards.
+        String[] suits = Card.SUITS.toArray(new String[Card.SUITS.size()]);
+        for(int i=1;i<5;i++) {
+            players[i] = new Player("");
+            players[i].getHand().addCard(new Card(suits[i-1], (byte)i));
+            melee.playCard((byte) i, players[i], players[i].getHand().getCards().get(0), new Scanner(""),
+                    new PrintWriter(new StringWriter()));
+        }
+
+        //Check that all the correct cards were played.
+        assertEquals(new Card("Al", (byte) 12), melee.getPlayed()[0]);
+        for(int i=1;i<5;i++) {
+            assertEquals(new Card(suits[i-1], (byte) i), melee.getPlayed()[i]);
+        }
+    }
 }
