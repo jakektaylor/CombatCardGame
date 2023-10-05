@@ -179,5 +179,9 @@ public class Melee {
         toPrint = String.format("%d\n", choice);
         System.out.printf(toPrint);
         output.printf(toPrint);
+        choice -=1;                                                 //Convert to array index.
+        //Remove the Card from the Player's hand and remove 5 HP.
+        player.getHand().getCards().remove(choice);
+        player.setHP(player.getHP() - 5);
     }
 }
