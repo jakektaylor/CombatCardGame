@@ -140,4 +140,20 @@ class MeleeTest {
         assertEquals((byte) 5, melee.getPlayed()[2].getValue());
     }
 
+    @Test
+    @DisplayName("U-TEST 032: Testing valid user input when entering the number corresponding to the Card to be discarded " +
+            "results in the Card being removed from the Player's hand, the Player losing 5 HP and the Card not being " +
+            "played.")
+    void testValDiscard() {
+        Melee melee = new Melee((byte)1);
+
+        Player player = new Player("Jake");
+        player.setHP(300);
+        player.getHand().addCard(new Card("Sw", (byte) 8));
+
+        melee.discardCard(new Scanner("1\n"), new PrintWriter(new StringWriter()), (byte) 0, player);
+        assertEquals(0, player.getHand().getNumCards());
+        assertEquals(295, player.getHP());
+        assertNull(melee.getPlayed()[0]);
+    }
 }
