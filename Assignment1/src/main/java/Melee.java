@@ -127,6 +127,13 @@ public class Melee {
                     output.println(toPrint);
                     return false;
                 }
+                else if(player.getHand().getNumMe() > 0) {
+                    toPrint = "ERROR: Cannot play an Alchemy Card as the first Card when you have a " +
+                            "Merlin card.";
+                    System.out.println(toPrint);
+                    output.println(toPrint);
+                    return false;
+                }
             }
         }
 
