@@ -206,4 +206,24 @@ class MeleeTest {
         assertTrue(output.toString().contains("ERROR: Cannot play an Alchemy Card as the first Card when you have a " +
                 "basic weapon card."));
     }
+
+    @Test
+    @DisplayName("U-TEST 035: Testing that if the first Player has a Merlin Card, they" +
+            "cannot play an Alchemy card to start the Melee and an error message is displayed.")
+    void testStartAl2() {
+        Melee melee = new Melee((byte) 3);
+        Player player = new Player("Jake");
+        Card alchemy = new Card("Al", (byte) 12);
+
+        player.getHand().addCard(alchemy);
+        player.getHand().addCard(new Card("Me", null));
+
+        StringWriter output = new StringWriter();
+        melee.playCard((byte) 0, player, alchemy, new Scanner(""), new PrintWriter(
+                output));
+
+        assertNull(melee.getPlayed()[0]);
+        assertTrue(output.toString().contains("ERROR: Cannot play an Alchemy Card as the first Card when you have a " +
+                "Merlin card."));
+    }
 }
