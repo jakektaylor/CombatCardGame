@@ -117,6 +117,17 @@ public class Melee {
                 output.println(toPrint);
                 return false;
             }
+            //Trying to play an Alchemy Card as the first Card.
+            else if (isEmpty) {
+                if(player.getHand().getNumSw() > 0|| player.getHand().getNumAr() > 0 || player.getHand().getNumSo() > 0
+                || player.getHand().getNumDe() > 0) {
+                    toPrint = "ERROR: Cannot play an Alchemy Card as the first Card when you have a " +
+                            "basic weapon card.";
+                    System.out.println(toPrint);
+                    output.println(toPrint);
+                    return false;
+                }
+            }
         }
 
         //Playing a Card if possible.
