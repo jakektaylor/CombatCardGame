@@ -491,4 +491,48 @@ class GameTest {
         assertNull(summary[0].getPlayed()[3]);
     }
 
+    @Test
+    @DisplayName("U-TEST 031: Testing that after the suit has been set, if a Player does not have a Basic Weapon of " +
+            "the same suit or Merlin or Apprentice or Alchemy card, they are prompted to choose a Card to discard. Testing" +
+            " that their response is displayed on screen.")
+    void testDiscardPrompt() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        //Create the override decks.
+        Deck[] overrideDecks = new Deck[3];
+        overrideDecks[0] = new Deck();
+        //Set the suit of the Melee to "Sw".
+        overrideDecks[0].addCard(new Card("Sw", (byte) 5));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Ar", (byte) 7));
+        overrideDecks[1].addCard(new Card("Ar", (byte) 9));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Sw", (byte) 8));
+
+        String toFind = overrideDecks[1].toString();
+        game.playRound(new Scanner("1\n2\n1\n"), new PrintWriter(output), overrideDecks);
+
+        //Check that the prompt was displayed and the user's response was displayed.
+        assertTrue(output.toString().contains("\nPlayer 2 please choose a card to discard as there is no Card you" +
+                " can play: "));
+        assertTrue(output.toString().contains("2\n"));
+        //Ensure the Deck of Player 2 was displayed twice: once at the beginning and once after being asked to discard
+        //a Card.
+        int currIndex = 0;
+        String toSearch = output.toString();
+        int numOccurences = 0;                                          //Number of occurrences of the error message.
+        while(currIndex != -1) {
+            currIndex = toSearch.indexOf(toFind, currIndex);
+            if(currIndex != -1) {
+                numOccurences++;
+                currIndex+=toFind.length();
+            }
+        }
+        assertEquals(2, numOccurences);
+    }
+
 }
