@@ -134,6 +134,13 @@ public class Melee {
                     output.println(toPrint);
                     return false;
                 }
+                else if(player.getHand().getNumAp() > 0) {
+                    toPrint = "ERROR: Cannot play an Alchemy Card as the first Card when you have an " +
+                    "Apprentice card.";
+                    System.out.println(toPrint);
+                    output.println(toPrint);
+                    return false;
+                }
             }
         }
 
