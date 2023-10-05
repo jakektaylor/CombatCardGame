@@ -156,4 +156,34 @@ class MeleeTest {
         assertEquals(295, player.getHP());
         assertNull(melee.getPlayed()[0]);
     }
+
+    @Test
+    @DisplayName("U-TEST 033: Testing invalid user input when entering the number corresponding to the Card to be discarded " +
+    "results in all Cards remaining in the Player's hand, the Player's HP remaining the same, the Card not being played and" +
+            "an error message being displayed.")
+    void testInvDiscard() {
+
+        Melee melee = new Melee((byte) 1);
+        StringWriter output = new StringWriter();
+
+        Player player = new Player("Alex");
+        player.setHP(300);
+        player.getHand().addCard(new Card("Ar", (byte) 9));
+
+        //Testing a value that is too large.
+        melee.discardCard(new Scanner("10\n"), new PrintWriter(output), (byte) 0, player);
+        assertEquals(1, player.getHand().getNumCards());
+        assertEquals(300, player.getHP());
+        assertNull(melee.getPlayed()[0]);
+        assertTrue(output.toString().contains("ERROR: Please enter a value between 1 and 1."));
+
+        //Testing a value that is too small.
+        melee = new Melee((byte) 1);
+        output = new StringWriter();
+        melee.discardCard(new Scanner("0\n"), new PrintWriter(output), (byte) 0, player);
+        assertEquals(1, player.getHand().getNumCards());
+        assertEquals(300, player.getHP());
+        assertNull(melee.getPlayed()[0]);
+        assertTrue(output.toString().contains("ERROR: Please enter a value between 1 and 1."));
+    }
 }
