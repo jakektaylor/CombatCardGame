@@ -186,4 +186,24 @@ class MeleeTest {
         assertNull(melee.getPlayed()[0]);
         assertTrue(output.toString().contains("ERROR: Please enter a value between 1 and 1."));
     }
+
+    @Test
+    @DisplayName("U-TEST 034: Testing that if the first Player has a Basic Weapon Card, they" +
+            "cannot play an Alchemy card to start the Melee and an error message is displayed.")
+    void testStartAl() {
+        Melee melee = new Melee((byte) 3);
+        Player player = new Player("Jake");
+        Card alchemy = new Card("Al", (byte) 12);
+
+        player.getHand().addCard(alchemy);
+        player.getHand().addCard(new Card("Sw", (byte) 7));
+
+        StringWriter output = new StringWriter();
+        melee.playCard((byte) 0, player, alchemy, new Scanner(""), new PrintWriter(
+                output));
+
+        assertNull(melee.getPlayed()[0]);
+        assertTrue(output.toString().contains("ERROR: Cannot play an Alchemy Card as the first Card when you have a " +
+                "basic weapon card."));
+    }
 }
