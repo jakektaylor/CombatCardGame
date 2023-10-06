@@ -535,4 +535,31 @@ class GameTest {
         assertEquals(2, numOccurences);
     }
 
+    @Test
+    @DisplayName("U-TEST 038: Testing that the resulting hand of each Player is displayed after they play a Card.")
+    void testResultingHand() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        //Create the override decks.
+        Deck[] overrideDecks = new Deck[3];
+
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Sw", (byte) 5));
+        overrideDecks[0].addCard(new Card("Ar", (byte) 8));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Ar", (byte) 7));
+        overrideDecks[1].addCard(new Card("Ar", (byte) 9));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Ar", (byte) 14));
+        overrideDecks[2].addCard(new Card("Ar", (byte) 12));
+
+        game.playRound(new Scanner("2\n1\n2\n"), new PrintWriter(output), overrideDecks);
+        assertTrue(output.toString().contains("Resulting hand:\n" + game.playerAt(0).displayHand()));
+        assertTrue(output.toString().contains("Resulting hand:\n" + game.playerAt(1).displayHand()));
+        assertTrue(output.toString().contains("Resulting hand:\n" + game.playerAt(2).displayHand()));
+    }
 }
