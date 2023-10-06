@@ -150,7 +150,12 @@ public class Game {
                         playerAt(currPlayer).getHand().getCards().get(selection), input, output);
 
                 //Remove the Card from the Player's hand.
-                if (played) playerAt(currPlayer).getHand().getCards().remove(selection);
+                if (played) {
+                    playerAt(currPlayer).getHand().getCards().remove(selection);
+                    toPrint = "Resulting hand:\n" + playerAt(currPlayer).displayHand();
+                    System.out.println(toPrint);
+                    output.println(toPrint);
+                }
             }
         }
 
