@@ -335,4 +335,28 @@ class MeleeTest {
         assertTrue(output.toString().contains("Please enter a value for the Apprentice card: "));
         assertFalse(output.toString().contains("Please enter a suit for the Apprentice card: "));
     }
+
+    @Test
+    @DisplayName("U-TEST 048: Testing that the correct winner of a melee is computed when no Cards with the same value" +
+            " are played.")
+    void testNoneSame() {
+        Melee melee = new Melee((byte) 5);
+        StringWriter output = new StringWriter();
+        melee.playCard((byte) 0, null, new Card("Sw", (byte) 2), new Scanner(""),
+                new PrintWriter(output));
+        melee.playCard((byte) 1, null, new Card("Sw", (byte) 3), new Scanner(""),
+                new PrintWriter(output));
+        melee.playCard((byte) 2, null, new Card("Me", null), new Scanner("\n4\n"),
+                new PrintWriter(output));
+        melee.playCard((byte) 3, null, new Card("Ap", null), new Scanner("\n5\n"),
+                new PrintWriter(output));
+
+        //Need to create a Player object to play the Alchemy Card.
+        Player p4 = new Player("");
+        p4.getHand().addCard(new Card("Al", (byte) 12));
+        melee.playCard((byte) 4, p4, p4.getHand().getCards().get(0), new Scanner(""),
+                new PrintWriter(output));
+        assertEquals((byte) 0, melee.computeLoser());
+    }
+
 }

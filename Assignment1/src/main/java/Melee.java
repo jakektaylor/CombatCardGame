@@ -237,4 +237,8 @@ public class Melee {
     public void setStarter(int starter) {
         this.starter = starter;
     }
+
+    public byte computeLoser() {
+        return -1;
+    }
 }
