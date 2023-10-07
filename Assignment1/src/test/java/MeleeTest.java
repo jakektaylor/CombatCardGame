@@ -302,4 +302,37 @@ class MeleeTest {
         assertEquals(new Card("Al", (byte) 9), melee.getPlayed()[1]);
         assertEquals(new Card("Al", (byte) 10), melee.getPlayed()[2]);
     }
+
+    @Test
+    @DisplayName("U-TEST 047: Testing that if the first Player plays an Alchemy Card, the following Players can play a " +
+            "Merlin or Apprentice Card and are only prompted to enter the value for the Card.")
+    void testAnyMerApp() {
+        Melee melee = new Melee((byte) 3);
+        StringWriter output = new StringWriter();
+        Player[] players = new Player[3];
+        players[0] = new Player("Jake");
+        players[1] = new Player("Alex");
+        players[2] = new Player("Jeff");
+
+        players[0].getHand().addCard(new Card("Al", (byte) 7));
+        melee.playCard((byte) 0, players[0], players[0].getHand().getCards().get(0), new Scanner(""),
+                new PrintWriter(output));
+
+        players[1].getHand().addCard(new Card("Me", null));
+        melee.playCard((byte) 1, players[1], players[1].getHand().getCards().get(0), new Scanner("\n8\n"),
+                new PrintWriter(output));
+
+        players[2].getHand().addCard(new Card("Ap", null));
+        melee.playCard((byte) 2, players[2], players[2].getHand().getCards().get(0), new Scanner("\n10\n"),
+                new PrintWriter(output));
+
+        assertEquals(new Card("Al", (byte) 7), melee.getPlayed()[0]);
+        assertEquals(new Card("Me", (byte)8), melee.getPlayed()[1]);
+        assertEquals(new Card("Ap", (byte)10), melee.getPlayed()[2]);
+
+        assertTrue(output.toString().contains("Please enter a value for the Merlin card: "));
+        assertFalse(output.toString().contains("Please enter a suit for the Merlin card: "));
+        assertTrue(output.toString().contains("Please enter a value for the Apprentice card: "));
+        assertFalse(output.toString().contains("Please enter a suit for the Apprentice card: "));
+    }
 }
