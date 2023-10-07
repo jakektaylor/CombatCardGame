@@ -115,7 +115,7 @@ public class Deck {
 
     public int getInjuryPoints() {
         if(getNumCards() == 0) return 0;
-        else if(getNumCards() == (getNumSw() + getNumAr() + getNumSo() + getNumDe())) {
+        else if(getNumCards() == (getNumSw() + getNumAr() + getNumSo() + getNumDe()) || getNumCards() == getNumMe()) {
             int total = 0;
             for(Card c: cards) total += c.getDamage();
             return total;
