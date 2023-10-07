@@ -404,4 +404,26 @@ class MeleeTest {
         assertEquals((byte) 1, melee.computeLoser());
     }
 
+    @Test
+    @DisplayName("U-TEST 052: Testing that there is no winner (i.e. the winner is null) when all Cards played in a " +
+            "Melee have the same value.")
+    void testNoWinner() {
+        Melee melee = new Melee((byte) 5);
+        StringWriter output = new StringWriter();
+        melee.playCard((byte) 0, null, new Card("Ar", (byte) 10), new Scanner(""),
+                new PrintWriter(output));
+        melee.playCard((byte) 1, null, new Card("Me", null), new Scanner("\n10\n"),
+                new PrintWriter(output));
+        melee.playCard((byte) 2, null, new Card("Me", null), new Scanner("\n10\n"),
+                new PrintWriter(output));
+        melee.playCard((byte) 3, null, new Card("Ap", null), new Scanner("\n10\n"),
+                new PrintWriter(output));
+
+        //Need to create a Player object to play the Alchemy Card.
+        Player p5 = new Player("");
+        p5.getHand().addCard(new Card("Al", (byte) 10));
+        melee.playCard((byte) 4, p5, p5.getHand().getCards().get(0), new Scanner(""),
+                new PrintWriter(output));
+        assertNull(melee.computeLoser());
+    }
 }
