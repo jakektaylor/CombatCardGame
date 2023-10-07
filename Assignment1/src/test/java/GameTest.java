@@ -647,4 +647,25 @@ class GameTest {
        }
     }
 
+    @Test
+    @DisplayName("U-TEST 054: Testing that if a Melee has a loser, their identity is displayed along with the total " +
+            "injury points they accumulated from this Melee.")
+    void testDisplayLoser() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        //Create the override decks.
+        Deck[] overrideDecks = new Deck[game.getNumPlayers()];
+        //The first Player is given the lowest valued Card and will lose the Melee.
+        for (int i = 0; i < game.getNumPlayers(); i++) {
+            overrideDecks[i] = new Deck();
+            overrideDecks[i].addCard(new Card("Sw", (byte) (i + 1)));
+        }
+        Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output),
+                overrideDecks);
+        Byte loser = summary[0].computeLoser();
+        assertTrue(output.toString().contains(String.format("Player %d-%s lost the Melee. The total injury points they " +
+                        "accumulated from this Melee is %d.\n", loser + 1, game.playerAt(loser).getName(), 15)));
+    }
 }
