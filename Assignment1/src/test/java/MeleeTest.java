@@ -359,4 +359,27 @@ class MeleeTest {
         assertEquals((byte) 0, melee.computeLoser());
     }
 
+    @Test
+    @DisplayName("U-TEST 050: Testing that the correct winner of a melee is computed when some, but not all, of the " +
+            "Cards played have the same value.")
+    void testSomeSame() {
+        Melee melee = new Melee((byte) 5);
+        StringWriter output = new StringWriter();
+        melee.playCard((byte) 0, null, new Card("Sw", (byte) 2), new Scanner(""),
+                new PrintWriter(output));
+        melee.playCard((byte) 1, null, new Card("Me", null), new Scanner("\n2\n"),
+                new PrintWriter(output));
+        melee.playCard((byte) 2, null, new Card("Ap", null), new Scanner("\n14\n"),
+                new PrintWriter(output));
+        melee.playCard((byte) 3, null, new Card("Sw", (byte) 12), new Scanner(""),
+                new PrintWriter(output));
+
+        //Need to create a Player object to play the Alchemy Card.
+        Player p4 = new Player("");
+        p4.getHand().addCard(new Card("Al", (byte) 2));
+        melee.playCard((byte) 4, p4, p4.getHand().getCards().get(0), new Scanner(""),
+                new PrintWriter(output));
+        assertEquals((byte) 3, melee.computeLoser());
+    }
+
 }
