@@ -112,4 +112,8 @@ public class Deck {
         //Ensure it is shuffled to a different permutation than original for testing.
         while(previous.equals(this)) Collections.shuffle(this.cards);
     }
+
+    public int getInjuryPoints() {
+        return -1;
+    }
 }

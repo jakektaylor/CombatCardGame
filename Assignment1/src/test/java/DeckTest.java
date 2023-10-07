@@ -70,4 +70,11 @@ class DeckTest {
         }
     }
 
+    @Test
+    @DisplayName("U-TEST 041: Testing that for an empty Deck, the total injury points is 0.")
+    void testInjuryEmpty() {
+        Deck deck = new Deck();
+        assertEquals(0, deck.getInjuryPoints());
+    }
+
 }
