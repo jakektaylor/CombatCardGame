@@ -77,4 +77,19 @@ class DeckTest {
         assertEquals(0, deck.getInjuryPoints());
     }
 
+    @Test
+    @DisplayName("U-TEST 042: Testing that for a Deck consisting of all Basic Weapon cards, the total" +
+            " injury points is equal to 10 * (number of poisoned Cards) + 5 * (number of non-poisoned cards).")
+    void testInjuryPoisoned() {
+        Deck deck = new Deck();
+
+        //Add poisoned Cards.
+        deck.addCard(new Card("Sw", (byte) 6));
+        deck.addCard(new Card("De", (byte) 9));
+
+        //Add non-poisoned Cards.
+        deck.addCard(new Card("So", (byte) 15));
+        deck.addCard(new Card("Ar", (byte) 3));
+        assertEquals(30, deck.getInjuryPoints());
+    }
 }
