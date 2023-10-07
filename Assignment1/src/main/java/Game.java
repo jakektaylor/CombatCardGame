@@ -110,11 +110,12 @@ public class Game {
         //Start the Melees.
         Melee[] summary = new Melee[12];
         summary[0] = new Melee(getNumPlayers());
+        summary[0].setStarter(nextRoundStarter);
         //Have each Player select a card.
         for(int i=0;i<numPlayers;i++) {
             //Display what each Player chooses.
             byte selection = -1;
-            byte currPlayer = (byte) ((nextRoundStarter + i) % numPlayers);          //Index of the current Player.
+            byte currPlayer = (byte) ((summary[0].getStarter()+ i) % numPlayers);          //Index of the current Player.
             String toPrint;
 
             //Player cannot play a Card.

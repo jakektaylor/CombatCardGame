@@ -5,6 +5,7 @@ public class Melee {
 
     private Card[] played;
     private String suit;
+    private int starter;
     public Melee(byte numPlayers) {
         played = new Card[numPlayers];
         for(int i=0;i<numPlayers;i++) played[i] = null;
@@ -230,6 +231,10 @@ public class Melee {
     }
 
     public int getStarter() {
-        return 0;
+        return starter;
+    }
+
+    public void setStarter(int starter) {
+        this.starter = starter;
     }
 }
