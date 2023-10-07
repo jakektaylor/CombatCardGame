@@ -159,10 +159,10 @@ public class Melee {
     //Helper method used to determine if a a Player can play an Alchemy Card after the suit for the melee has been set.
     private boolean canPlayAl(Player player) {
         boolean canPlay = true;
-        if(this.suit.equals("Sw") && player.getHand().getNumSw() > 0) canPlay = false;
-        else if(this.suit.equals("Ar") && player.getHand().getNumAr() > 0) canPlay = false;
-        else if(this.suit.equals("So") && player.getHand().getNumSo() > 0) canPlay = false;
-        else if(this.suit.equals("De") && player.getHand().getNumDe() > 0) canPlay = false;
+        if("Sw".equals(this.suit) && player.getHand().getNumSw() > 0) canPlay = false;
+        else if("Ar".equals(this.suit) && player.getHand().getNumAr() > 0) canPlay = false;
+        else if("So".equals(this.suit) && player.getHand().getNumSo() > 0) canPlay = false;
+        else if("De".equals(this.suit) && player.getHand().getNumDe() > 0) canPlay = false;
         else if(player.getHand().getNumMe() > 0 || player.getHand().getNumAp() > 0) canPlay = false;
         return canPlay;
     }
