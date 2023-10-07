@@ -92,4 +92,15 @@ class DeckTest {
         deck.addCard(new Card("Ar", (byte) 3));
         assertEquals(30, deck.getInjuryPoints());
     }
+
+    @Test
+    @DisplayName("U-TEST 043: Testing that for a Deck consisting of all Merlin cards, the total injury points is equal" +
+            " to 25 * (the number of Cards).")
+    void testInjuryMerlin() {
+        Deck deck = new Deck();
+
+        //Add Merlin cards.
+        for(int i=0;i<3;i++) deck.addCard(new Card("Me", null));
+        assertEquals(75, deck.getInjuryPoints());
+    }
 }
