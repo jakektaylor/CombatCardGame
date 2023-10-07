@@ -625,4 +625,26 @@ class GameTest {
         assertEquals(summary[0].getPlayed()[2], new Card("Al", (byte) 7));
     }
 
+    @Test
+    @DisplayName("U-TEST 053: Testing that all of the Cards played in the Melee are added to the loser's injury deck.")
+    void testInjuryDeck() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        //Create the override decks.
+        Deck[] overrideDecks = new Deck[game.getNumPlayers()];
+        //The first Player is given the lowest valued Card and will lose the Melee.
+        for(int i=0;i<game.getNumPlayers();i++) {
+            overrideDecks[i] = new Deck();
+            overrideDecks[i].addCard(new Card("Sw", (byte)(i+1)));
+        }
+        Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(new StringWriter()),
+                overrideDecks);
+        Player loser = game.getPlayers()[0];
+       for(int i=0;i<game.getNumPlayers();i++) {
+           assertEquals(summary[0].getPlayed()[i], loser.getInjuryDeck().getCards().get(i));
+       }
+    }
+
 }

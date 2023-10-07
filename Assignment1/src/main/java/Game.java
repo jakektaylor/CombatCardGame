@@ -173,4 +173,8 @@ public class Game {
     public Deck getDeck() {
         return deck;
     }
+
+    public Player[] getPlayers() {
+        return new Player[getNumPlayers()];
+    }
 }

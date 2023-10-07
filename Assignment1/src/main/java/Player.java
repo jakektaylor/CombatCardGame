@@ -41,4 +41,8 @@ public class Player {
     public void overrideDeck(Deck overrideDeck) {
         this.hand = overrideDeck;
     }
+
+    public Deck getInjuryDeck() {
+        return Deck.createGameDeck();
+    }
 }
