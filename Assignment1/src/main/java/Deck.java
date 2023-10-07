@@ -120,7 +120,10 @@ public class Deck {
             int total = 0;
             for(Card c: cards) total += c.getDamage();
             return total;
+        } else {
+            int total = 0;
+            for(Card c: cards) total += c.getDamage();
+            return total;
         }
-        return -1;
     }
 }
