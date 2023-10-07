@@ -164,6 +164,9 @@ public class Game {
                 }
             }
         }
+        //Determine the loser and add the Cards played in the Melee to their injury Deck.
+        Byte loser = summary[0].computeLoser();
+        if(loser != null) for(Card c: summary[0].getPlayed()) playerAt(loser).addInjuryCard(c);
 
         //Move to the next Player to start the next round.
         nextRoundStarter = (nextRoundStarter + 1) % numPlayers;
@@ -175,6 +178,6 @@ public class Game {
     }
 
     public Player[] getPlayers() {
-        return new Player[getNumPlayers()];
+        return players;
     }
 }

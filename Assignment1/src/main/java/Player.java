@@ -4,11 +4,13 @@ public class Player {
     private String name;
     private int hp;
     private Deck hand;
+    private Deck injuryDeck;
 
     public Player(String name) {
         this.name = name;
         this.hp = 0;
         this.hand = new Deck();
+        this.injuryDeck = new Deck();
     }
     public String getName(){
         return name;
@@ -43,6 +45,10 @@ public class Player {
     }
 
     public Deck getInjuryDeck() {
-        return Deck.createGameDeck();
+        return injuryDeck;
+    }
+
+    public void addInjuryCard(Card c) {
+        injuryDeck.getCards().add(c);
     }
 }
