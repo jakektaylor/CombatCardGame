@@ -228,4 +228,8 @@ public class Melee {
             return false;
         }
     }
+
+    public int getStarter() {
+        return 0;
+    }
 }

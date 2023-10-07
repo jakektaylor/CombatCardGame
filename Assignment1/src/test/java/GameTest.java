@@ -562,4 +562,41 @@ class GameTest {
         assertTrue(output.toString().contains("Resulting hand:\n" + game.playerAt(1).displayHand()));
         assertTrue(output.toString().contains("Resulting hand:\n" + game.playerAt(2).displayHand()));
     }
+
+    @Test
+    @DisplayName("U-TEST 040: Testing that the order of play for the first Melee of a round follows the same order as" +
+            " is defined for each successive round i.e. if there are 3 Players, the first player starts the first" +
+            "melee of the first round, the second Player starts the first melee of the second round etc.")
+    void testFirstMelee() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        //Create the override decks.
+        Deck[] overrideDecks = new Deck[game.getNumPlayers()];
+        Deck[] overrideCopy = new Deck[game.getNumPlayers()];
+
+        for(int i=0;i<game.getNumPlayers();i++) {
+            overrideDecks[i] = new Deck();
+            overrideCopy[i] = new Deck();
+            for(int j=(i*4) + 1;j<=(i*4) + 4;j++) {
+                overrideDecks[i].addCard(new Card("Sw", (byte)(j)));
+                overrideCopy[i].addCard(new Card("Sw", (byte)(j)));
+            }
+        }
+        for(int i=0;i<3;i++) {
+            Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"),
+                    new PrintWriter(new StringWriter()), overrideDecks);
+            assertEquals(i % game.getNumPlayers(), summary[0].getStarter());
+
+            //Check that the right Players played at the right time.
+            assertEquals(overrideCopy[i % game.getNumPlayers()].getCards().get(i),
+                    summary[0].getPlayed()[i % game.getNumPlayers()]);
+            assertEquals(overrideCopy[(i+1) % game.getNumPlayers()].getCards().get(i),
+                    summary[0].getPlayed()[(i+1) % game.getNumPlayers()]);
+            assertEquals(overrideCopy[(i+2) % game.getNumPlayers()].getCards().get(i),
+                    summary[0].getPlayed()[(i+2) % game.getNumPlayers()]);
+        }
+    }
+
 }
