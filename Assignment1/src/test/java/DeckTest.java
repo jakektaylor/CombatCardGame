@@ -125,4 +125,34 @@ class DeckTest {
         for(int i=0;i<12;i++) deck.addCard(new Card("Al", (byte) (i+1)));
         assertEquals(60, deck.getInjuryPoints());
     }
+
+    @Test
+    @DisplayName("U-TEST 046: Testing that for a Deck consisting of many different types of Cards, the total injury" +
+            " points is computed correctly.")
+    void testInjury() {
+        Deck deck = new Deck();
+
+        //Add poisoned basic weapon Cards.
+        deck.addCard(new Card("Sw", (byte) 8));
+        deck.addCard(new Card("Ar", (byte) 11));
+        deck.addCard(new Card("So", (byte) 12));
+        deck.addCard(new Card("De", (byte) 10));
+
+        //Add non-poisoned basic weapon Cards.
+        deck.addCard(new Card("Sw", (byte) 3));
+        deck.addCard(new Card("Ar", (byte) 13));
+        deck.addCard(new Card("So", (byte) 7));
+        deck.addCard(new Card("De", (byte) 12));
+
+        //Add a Merlin card.
+        deck.addCard(new Card("Me", null));
+
+        //Add an Apprentice card.
+        deck.addCard(new Card("Ap", null));
+
+        //Add an Alchemy card.
+        deck.addCard(new Card("Al", null));
+
+        assertEquals(95, deck.getInjuryPoints());
+    }
 }
