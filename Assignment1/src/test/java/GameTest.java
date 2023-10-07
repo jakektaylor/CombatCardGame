@@ -468,7 +468,7 @@ class GameTest {
 
 
         output = new StringWriter();
-        Melee[] summary = game.playRound(new Scanner("1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks);
+        Melee[] summary = game.playRound(new Scanner("1\n1\n2\n1\n2\n12\n1\n2\n8\n"), new PrintWriter(output), overrideDecks);
 
         //Check that the  error message was printed 3 times.
         int currIndex = 0;
@@ -486,9 +486,9 @@ class GameTest {
         //Check that the error message was displayed 3 times.
         assertEquals(3, numOccurences);
         //Check that the Alchemy cards weren't played.
-        assertNull(summary[0].getPlayed()[1]);
-        assertNull(summary[0].getPlayed()[2]);
-        assertNull(summary[0].getPlayed()[3]);
+        assertEquals(new Card("Sw", (byte) 12), summary[0].getPlayed()[1]);
+        assertEquals(new Card("Me", (byte) 12), summary[0].getPlayed()[2]);
+        assertEquals(new Card("Ap", (byte)8), summary[0].getPlayed()[3]);
     }
 
     @Test

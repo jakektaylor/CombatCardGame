@@ -119,11 +119,14 @@ public class Game {
 
             //Player cannot play a Card.
             if (!summary[0].canPlayCard(playerAt(currPlayer))) {
-                summary[0].discardCard(input, output, currPlayer, playerAt(currPlayer));
+                while(!summary[0].discardCard(input, output, currPlayer, playerAt(currPlayer)));
+                toPrint = "Resulting hand:\n" + playerAt(currPlayer).displayHand();
+                System.out.println(toPrint);
+                output.println(toPrint);
             }
             //Play can play a Card.
             else {
-                while (selection < 1 || selection > playerAt(currPlayer).getNumCards()) {
+                while (true) {
                     //Display the prompt.
                     toPrint = String.format("Player %d please choose a card:\n%s\nEnter a number between " +
                                     "1 and %d:", currPlayer + 1, this.playerAt(currPlayer).displayHand(),
@@ -142,19 +145,21 @@ public class Game {
                                 playerAt(currPlayer).getNumCards());
                         System.out.println(toPrint);
                         output.println(toPrint);
-                    }
-                }
-                selection -= (byte) 1;                             //Convert to an array index.
-                //Add the played Card to the Melee's 'played' array.
-                boolean played = summary[0].playCard(currPlayer, playerAt(currPlayer),
-                        playerAt(currPlayer).getHand().getCards().get(selection), input, output);
+                    } else {
+                        selection -= (byte) 1;                             //Convert to an array index.
+                        //Add the played Card to the Melee's 'played' array.
+                        boolean played = summary[0].playCard(currPlayer, playerAt(currPlayer),
+                                playerAt(currPlayer).getHand().getCards().get(selection), input, output);
 
-                //Remove the Card from the Player's hand.
-                if (played) {
-                    playerAt(currPlayer).getHand().getCards().remove(selection);
-                    toPrint = "Resulting hand:\n" + playerAt(currPlayer).displayHand();
-                    System.out.println(toPrint);
-                    output.println(toPrint);
+                        //Remove the Card from the Player's hand.
+                        if (played) {
+                            playerAt(currPlayer).getHand().getCards().remove(selection);
+                            toPrint = "Resulting hand:\n" + playerAt(currPlayer).displayHand();
+                            System.out.println(toPrint);
+                            output.println(toPrint);
+                            break;
+                        }
+                    }
                 }
             }
         }

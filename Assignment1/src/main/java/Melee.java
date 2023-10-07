@@ -192,7 +192,7 @@ public class Melee {
         return false;
     }
 
-    public void discardCard(Scanner input, PrintWriter output, byte currPlayer, Player player) {
+    public boolean discardCard(Scanner input, PrintWriter output, byte currPlayer, Player player) {
         String toPrint = String.format("Player %d please choose a card to discard as there is no Card you can play: ",
                 currPlayer + 1);
         System.out.println(toPrint);
@@ -209,13 +209,23 @@ public class Melee {
 
         if (choice >= 1 && choice <= player.getHand().getNumCards()) {
             choice -= 1;                                                 //Convert to array index.
+
+            //Display the Card to be removed.
+            toPrint = String.format
+                    ("Player %d discarded: %s\n", currPlayer + 1,
+                            player.getHand().getCards().get(choice));
+            System.out.printf("%s", toPrint);
+            output.printf("%s", toPrint);
+
             //Remove the Card from the Player's hand and remove 5 HP.
             player.getHand().getCards().remove(choice);
             player.setHP(player.getHP() - 5);
+            return true;
         } else {
             toPrint = String.format("ERROR: Please enter a value between 1 and %d.", player.getNumCards());
             System.out.println(toPrint);
             output.println(toPrint);
+            return false;
         }
     }
 }
