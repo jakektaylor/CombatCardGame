@@ -114,6 +114,7 @@ public class Deck {
     }
 
     public int getInjuryPoints() {
+        if(getNumCards() == 0) return 0;
         return -1;
     }
 }
