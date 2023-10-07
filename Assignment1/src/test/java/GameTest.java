@@ -599,4 +599,30 @@ class GameTest {
         }
     }
 
+    @Test
+    @DisplayName("U-TEST 049: Testing that after the suit for a Melee has been set, if a Player does not have a " +
+            "Basic Weapon of the right suit or Merlin or Apprentice, they can play an Alchemy card.")
+    void testAl() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        //Create the override decks.
+        Deck[] overrideDecks = new Deck[game.getNumPlayers()];
+
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Sw", (byte) 7));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Sw", (byte) 8));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Al", (byte) 7));
+        overrideDecks[2].addCard(new Card("Ar", (byte) 5));
+
+        Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(new StringWriter()),
+                overrideDecks);
+        assertEquals(summary[0].getPlayed()[2], new Card("Al", (byte) 7));
+    }
+
 }
