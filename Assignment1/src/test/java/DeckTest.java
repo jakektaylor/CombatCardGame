@@ -114,4 +114,15 @@ class DeckTest {
         for(int i=0;i<2;i++) deck.addCard(new Card("Ap", null));
         assertEquals(10, deck.getInjuryPoints());
     }
+
+    @Test
+    @DisplayName("U-TEST 045: Testing that for a Deck consisting of all Alchemy cards, the total injury points is " +
+            " equal to 5 * (the number of Cards).")
+    void testInjuryAl() {
+        Deck deck = new Deck();
+
+        //Add Alchemy cards.
+        for(int i=0;i<12;i++) deck.addCard(new Card("Al", (byte) (i+1)));
+        assertEquals(60, deck.getInjuryPoints());
+    }
 }
