@@ -111,12 +111,12 @@ public class Game {
         Melee[] summary = new Melee[12];
         summary[0] = new Melee(getNumPlayers());
         summary[0].setStarter(nextRoundStarter);
+        String toPrint;
         //Have each Player select a card.
         for(int i=0;i<numPlayers;i++) {
             //Display what each Player chooses.
             byte selection = -1;
             byte currPlayer = (byte) ((summary[0].getStarter()+ i) % numPlayers);          //Index of the current Player.
-            String toPrint;
 
             //Player cannot play a Card.
             if (!summary[0].canPlayCard(playerAt(currPlayer))) {
@@ -166,7 +166,20 @@ public class Game {
         }
         //Determine the loser and add the Cards played in the Melee to their injury Deck.
         Byte loser = summary[0].computeLoser();
-        if(loser != null) for(Card c: summary[0].getPlayed()) playerAt(loser).addInjuryCard(c);
+        if(loser != null) {
+            //Compute the total injury points the loser accumulated this round.
+            int totalInjury = 0;
+            for(Card c: summary[0].getPlayed()) {
+                if(c != null) {
+                    playerAt(loser).addInjuryCard(c);
+                    totalInjury += c.getDamage();
+                }
+            }
+            toPrint = String.format("Player %d-%s lost the Melee. The total injury points they " +
+                    "accumulated from this Melee is %d.\n", loser + 1, playerAt(loser).getName(), totalInjury);
+            System.out.println(toPrint);
+            output.println(toPrint);
+        }
 
         //Move to the next Player to start the next round.
         nextRoundStarter = (nextRoundStarter + 1) % numPlayers;
