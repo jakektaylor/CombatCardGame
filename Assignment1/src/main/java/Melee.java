@@ -238,7 +238,17 @@ public class Melee {
         this.starter = starter;
     }
 
+    /*This method is used to determine the loser of a Melee. It returns the index
+    of the Player in the Game's 'players' array that lost the Melee.*/
     public byte computeLoser() {
-        return -1;
+        byte min_value = Byte.MAX_VALUE;
+        byte loser = -1;
+        for(int i=0;i<played.length;i++) {
+            if(played[i].getValue() < min_value) {
+                min_value = played[i].getValue();
+                loser=(byte)i;
+            }
+        }
+        return loser;
     }
 }
