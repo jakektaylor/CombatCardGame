@@ -244,11 +244,11 @@ public class Melee {
         byte min_value = Byte.MAX_VALUE;
         byte loser = -1;
         for(int i=0;i<played.length;i++) {
+            if(played[i] == null) continue;
             boolean ignore = false;
-
             //Check if this Card has a repeated value.
             for(int j=0;j<played.length;j++) {
-                if(i != j && played[i].getValue() == played[j].getValue()) {
+                if(i != j && played[j] != null && played[i].getValue() == played[j].getValue()) {
                     ignore = true;
                     break;
                 }
