@@ -275,4 +275,31 @@ class MeleeTest {
             assertEquals(new Card(suits[i-1], (byte) i), melee.getPlayed()[i]);
         }
     }
+
+    @Test
+    @DisplayName("U-TEST 039: Testing that if the first Player plays an Alchemy Card, the following Players can play an" +
+            " Alchemy Card if they have no Basic Weapon, Merlin, or Apprentice Cards.")
+    void testAnyAl() {
+        Melee melee = new Melee((byte) 3);
+        Player[] players = new Player[3];
+
+        //Create the Players and their Decks.
+        players[0] = new Player("");
+        players[0].getHand().addCard(new Card("Al", (byte) 7));
+
+        players[1] = new Player("");
+        players[1].getHand().addCard(new Card("Al", (byte) 9));
+
+        players[2] = new Player("");
+        players[2].getHand().addCard(new Card("Al", (byte) 10));
+
+        for(int i=0;i<3;i++) {
+            melee.playCard((byte) i, players[i], players[i].getHand().getCards().get(0), new Scanner(""),
+                    new PrintWriter(new StringWriter()));
+        }
+
+        assertEquals(new Card("Al", (byte) 7), melee.getPlayed()[0]);
+        assertEquals(new Card("Al", (byte) 9), melee.getPlayed()[1]);
+        assertEquals(new Card("Al", (byte) 10), melee.getPlayed()[2]);
+    }
 }
