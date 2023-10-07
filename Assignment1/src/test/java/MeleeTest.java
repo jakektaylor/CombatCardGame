@@ -382,4 +382,26 @@ class MeleeTest {
         assertEquals((byte) 3, melee.computeLoser());
     }
 
+    @Test
+    @DisplayName("U-TEST 051: Testing that if a Player has to discard a Card, they are ineligible to lose the Melee.")
+    void testIneligible() {
+        Melee melee = new Melee((byte) 5);
+        StringWriter output = new StringWriter();
+        melee.playCard((byte) 0, null, new Card("Sw", (byte) 15), new Scanner(""),
+                new PrintWriter(output));
+        melee.playCard((byte) 1, null, new Card("Sw", (byte) 8), new Scanner(""),
+                new PrintWriter(output));
+        melee.playCard((byte) 2, null, new Card("Me", null), new Scanner("\n12\n"),
+                new PrintWriter(output));
+        melee.playCard((byte) 3, null, new Card("Ap", null), new Scanner("\n10\n"),
+                new PrintWriter(output));
+
+        //Need to create a Player object to play the Alchemy Card.
+        Player p5 = new Player("");
+        p5.getHand().addCard(new Card("Ar", (byte) 2));
+        melee.discardCard(new Scanner("1\n"), new PrintWriter(output), (byte) 4, p5);
+
+        assertEquals((byte) 1, melee.computeLoser());
+    }
+
 }
