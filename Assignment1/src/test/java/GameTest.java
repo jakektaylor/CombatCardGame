@@ -668,4 +668,30 @@ class GameTest {
         assertTrue(output.toString().contains(String.format("Player %d-%s lost the Melee. The total injury points they " +
                         "accumulated from this Melee is %d.\n", loser + 1, game.playerAt(loser).getName(), 15)));
     }
+
+    @Test
+    @DisplayName("U-TEST 055: Testing that if the first Player has no Basic Weapon, Merlin or Apprentice cards, they" +
+            " can start the Melee with an Alchemy Card and the suit for the Melee is not set.")
+    void testAlFirst() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        //Create the override decks.
+        Deck[] overrideDecks = new Deck[3];
+
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Al", (byte) 7));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Sw", (byte) 8));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Ar", (byte) 9));
+
+        Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output),
+                overrideDecks);
+        assertAll(()->assertEquals(new Card("Al", (byte) 7), summary[0].getPlayed()[0]),
+                ()->assertNull(summary[0].getSuit()));
+    }
 }
