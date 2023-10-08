@@ -179,6 +179,10 @@ public class Game {
                     "accumulated from this Melee is %d.\n", loser + 1, playerAt(loser).getName(), totalInjury);
             System.out.println(toPrint);
             output.println(toPrint);
+        } else {
+            toPrint = "No loser for this Melee. All Cards played have the same value.\n";
+            System.out.println(toPrint);
+            output.println(toPrint);
         }
 
         //Move to the next Player to start the next round.
