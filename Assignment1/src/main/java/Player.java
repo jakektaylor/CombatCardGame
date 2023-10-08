@@ -21,7 +21,8 @@ public class Player {
     }
 
     public void setHP(int hp) {
-        this.hp = hp;
+        if(hp > 0) this.hp = hp;
+        else this.hp = 0;
     }
 
     public int getNumCards() {
