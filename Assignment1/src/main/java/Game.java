@@ -181,6 +181,7 @@ public class Game {
                         "accumulated from this Melee is %d.\n", loser + 1, playerAt(loser).getName(), totalInjury);
                 System.out.println(toPrint);
                 output.println(toPrint);
+                nextMeleeStarter = loser;               //Have the loser start the next Melee.
             } else {
                 toPrint = "No loser for this Melee. All Cards played have the same value.\n";
                 System.out.println(toPrint);
