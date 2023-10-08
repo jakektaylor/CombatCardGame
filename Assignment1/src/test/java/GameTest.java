@@ -146,19 +146,19 @@ class GameTest {
 
         //Check that the starting Player changes correctly each round.
         assertEquals(0, game.nextRoundStarter());
-        game.playRound(new Scanner("1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks);
+        game.playRound(new Scanner("1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
 
         assertEquals(1, game.nextRoundStarter());
-        game.playRound(new Scanner("1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks);
+        game.playRound(new Scanner("1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
 
         assertEquals(2, game.nextRoundStarter());
-        game.playRound(new Scanner("1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks);
+        game.playRound(new Scanner("1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
 
         assertEquals(3, game.nextRoundStarter());
-        game.playRound(new Scanner("1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks);
+        game.playRound(new Scanner("1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
 
         assertEquals(4, game.nextRoundStarter());
-        game.playRound(new Scanner("1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks);
+        game.playRound(new Scanner("1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
 
         //Check that it loops around back to 0.
         assertEquals(0, game.nextRoundStarter());
@@ -188,7 +188,7 @@ class GameTest {
         String p2Hand = overrideDecks[1].toString();
         String p3Hand = overrideDecks[2].toString();
 
-        game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), overrideDecks);
+        game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
         assertTrue(output.toString().contains(p1Hand));
         assertTrue(output.toString().contains(p2Hand));
         assertTrue(output.toString().contains(p3Hand));
@@ -215,7 +215,7 @@ class GameTest {
             }
         }
 
-        game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), overrideDecks);
+        game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
         Deck shuffled = game.getDeck();
         assertNotEquals(starting, shuffled);
     }
@@ -250,7 +250,7 @@ class GameTest {
         String p3Hand = overrideDecks[2].toString();
         int p3NumCards = overrideDecks[2].getNumCards();
 
-        game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), overrideDecks);
+        game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
         assertTrue(output.toString().contains(String.format("Player 1 please choose a card:\n%s\nEnter a number between " +
                         "1 and %d:", p1Hand, p1NumCards)));
         assertTrue(output.toString().contains(String.format("Player 2 please choose a card:\n%s\nEnter a number between " +
@@ -281,7 +281,7 @@ class GameTest {
         override[2].addCard(new Card("De", (byte) 8));
         override[2].addCard(new Card("Sw", (byte) 3));
 
-        game.playRound(new Scanner("1\n2\n3\n"), new PrintWriter(output), override);
+        game.playRound(new Scanner("1\n2\n3\n"), new PrintWriter(output), override, 1);
 
         //Check that the numbers entered are displayed.
         assertTrue(output.toString().contains("1\n"));
@@ -319,15 +319,15 @@ class GameTest {
         }
 
         //Testing negative value for card choice.
-        game.playRound(new Scanner("-1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks);
+        game.playRound(new Scanner("-1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
         assertTrue(output.toString().contains("ERROR: Card selection must be between 1 and 12.\n"));
 
         //Testing 0 for the Card choice.
-        game.playRound(new Scanner("1\n0\n1\n1\n"), new PrintWriter(output), overrideDecks);
+        game.playRound(new Scanner("1\n0\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
         assertTrue(output.toString().contains("ERROR: Card selection must be between 1 and 12.\n"));
 
         //Test a value greater than the number of Cards the Player has in their hand.
-        game.playRound(new Scanner("1\n1\n20\n1\n"), new PrintWriter(output), overrideDecks);
+        game.playRound(new Scanner("1\n1\n20\n1\n"), new PrintWriter(output), overrideDecks, 1);
         assertTrue(output.toString().contains("ERROR: Card selection must be between 1 and 12.\n"));
     }
 
@@ -357,7 +357,7 @@ class GameTest {
         override[2].addCard(played[2]);
 
         //Play the round (consists of 1 Melee for now)
-        Melee[] summary = game.playRound(new Scanner("1\n2\n3\n"), new PrintWriter(output), override);
+        Melee[] summary = game.playRound(new Scanner("1\n2\n3\n"), new PrintWriter(output), override,1);
 
         //Check that the selected card is no longer in each Player's deck.
         assertFalse(game.playerAt(0).getHand().getCards().contains(played[0]));
@@ -394,7 +394,7 @@ class GameTest {
             override[2] = new Deck();
             override[2].addCard(new Card(suit, (byte) 7));
 
-            Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), override);
+            Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), override, 1);
             assertEquals(suit, summary[0].getSuit());
         }
     }
@@ -422,7 +422,7 @@ class GameTest {
         overrideDecks[2].addCard(new Card("So", (byte) 5));
 
         game.playRound(new Scanner("1\nSw\n2" +
-                "\n1\n1\n"), new PrintWriter(output), overrideDecks);
+                "\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
         assertTrue(output.toString().contains("Please enter a suit for the Merlin card: "));
         assertTrue(output.toString().contains("\nSw"));
         assertTrue(output.toString().contains("Please enter a value for the Merlin card: "));
@@ -432,7 +432,7 @@ class GameTest {
         output = new StringWriter();
         game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
         game.playRound(new Scanner("1\nSo\n10" +
-                "\n1\n1\n"), new PrintWriter(output), overrideDecks);
+                "\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
         assertTrue(output.toString().contains("Please enter a suit for the Apprentice card: "));
         assertTrue(output.toString().contains("\nSo"));
         assertTrue(output.toString().contains("Please enter a value for the Apprentice card: "));
@@ -468,7 +468,8 @@ class GameTest {
 
 
         output = new StringWriter();
-        Melee[] summary = game.playRound(new Scanner("1\n1\n2\n1\n2\n12\n1\n2\n8\n"), new PrintWriter(output), overrideDecks);
+        Melee[] summary = game.playRound(new Scanner("1\n1\n2\n1\n2\n12\n1\n2\n8\n"), new PrintWriter(output),
+                overrideDecks, 1);
 
         //Check that the  error message was printed 3 times.
         int currIndex = 0;
@@ -514,7 +515,7 @@ class GameTest {
         overrideDecks[2].addCard(new Card("Sw", (byte) 8));
 
         String toFind = overrideDecks[1].toString();
-        game.playRound(new Scanner("1\n2\n1\n"), new PrintWriter(output), overrideDecks);
+        game.playRound(new Scanner("1\n2\n1\n"), new PrintWriter(output), overrideDecks, 1);
 
         //Check that the prompt was displayed and the user's response was displayed.
         assertTrue(output.toString().contains("\nPlayer 2 please choose a card to discard as there is no Card you" +
@@ -557,7 +558,7 @@ class GameTest {
         overrideDecks[2].addCard(new Card("Ar", (byte) 14));
         overrideDecks[2].addCard(new Card("Ar", (byte) 12));
 
-        game.playRound(new Scanner("2\n1\n2\n"), new PrintWriter(output), overrideDecks);
+        game.playRound(new Scanner("2\n1\n2\n"), new PrintWriter(output), overrideDecks, 1);
         assertTrue(output.toString().contains("Resulting hand:\n" + game.playerAt(0).displayHand()));
         assertTrue(output.toString().contains("Resulting hand:\n" + game.playerAt(1).displayHand()));
         assertTrue(output.toString().contains("Resulting hand:\n" + game.playerAt(2).displayHand()));
@@ -586,7 +587,7 @@ class GameTest {
         }
         for(int i=0;i<3;i++) {
             Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"),
-                    new PrintWriter(new StringWriter()), overrideDecks);
+                    new PrintWriter(new StringWriter()), overrideDecks, 1);
             assertEquals(i % game.getNumPlayers(), summary[0].getStarter());
 
             //Check that the right Players played at the right time.
@@ -621,7 +622,7 @@ class GameTest {
         overrideDecks[2].addCard(new Card("Ar", (byte) 5));
 
         Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(new StringWriter()),
-                overrideDecks);
+                overrideDecks, 1);
         assertEquals(summary[0].getPlayed()[2], new Card("Al", (byte) 7));
     }
 
@@ -640,7 +641,7 @@ class GameTest {
             overrideDecks[i].addCard(new Card("Sw", (byte)(i+1)));
         }
         Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(new StringWriter()),
-                overrideDecks);
+                overrideDecks, 1);
         Player loser = game.getPlayers()[0];
        for(int i=0;i<game.getNumPlayers();i++) {
            assertEquals(summary[0].getPlayed()[i], loser.getInjuryDeck().getCards().get(i));
@@ -663,7 +664,7 @@ class GameTest {
             overrideDecks[i].addCard(new Card("Sw", (byte) (i + 1)));
         }
         Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output),
-                overrideDecks);
+                overrideDecks, 1);
         Byte loser = summary[0].computeLoser();
         assertTrue(output.toString().contains(String.format("Player %d-%s lost the Melee. The total injury points they " +
                         "accumulated from this Melee is %d.\n", loser + 1, game.playerAt(loser).getName(), 15)));
@@ -690,7 +691,7 @@ class GameTest {
         overrideDecks[2].addCard(new Card("Ar", (byte) 9));
 
         Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output),
-                overrideDecks);
+                overrideDecks, 1);
         assertAll(()->assertEquals(new Card("Al", (byte) 7), summary[0].getPlayed()[0]),
                 ()->assertNull(summary[0].getSuit()));
     }
@@ -714,7 +715,7 @@ class GameTest {
         overrideDecks[2] = new Deck();
         overrideDecks[2].addCard(new Card("De", (byte) 12));
         Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output),
-                overrideDecks);
+                overrideDecks, 1);
         //Check that there was no loser and that the message was displayed.
         assertAll(()->assertTrue(output.toString().contains("No loser for this Melee. All Cards played have the same value.\n")),
                 ()->assertNull(summary[0].computeLoser()));

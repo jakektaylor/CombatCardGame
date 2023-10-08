@@ -37,6 +37,12 @@ public class Deck {
         cardCounts.put(card.getType(), cardCounts.get(card.getType()) + 1);
     }
 
+    public void removeCard(int index) {
+        String cardType = cards.get(index).getType();
+        cardCounts.put(cardType, cardCounts.get(cardType) - 1);
+        cards.remove(index);
+    }
+
     public int getNumCards() {
         return cards.size();
     }

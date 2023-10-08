@@ -221,7 +221,7 @@ public class Melee {
             output.printf("%s", toPrint);
 
             //Remove the Card from the Player's hand and remove 5 HP.
-            player.getHand().getCards().remove(choice);
+            player.getHand().removeCard(choice);
             player.setHP(player.getHP() - 5);
             return true;
         } else {

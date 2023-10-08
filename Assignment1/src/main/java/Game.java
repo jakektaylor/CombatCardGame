@@ -87,7 +87,7 @@ public class Game {
         return nextRoundStarter;
     }
 
-    public Melee[] playRound(Scanner input, PrintWriter output, Deck[] overrideDecks) {
+    public Melee[] playRound(Scanner input, PrintWriter output, Deck[] overrideDecks, int numMelees) {
 
         //Override the Decks of each Player.
         if (overrideDecks != null) {
@@ -108,83 +108,85 @@ public class Game {
         }
 
         //Start the Melees.
-        Melee[] summary = new Melee[12];
-        summary[0] = new Melee(getNumPlayers());
-        summary[0].setStarter(nextRoundStarter);
-        String toPrint;
-        //Have each Player select a card.
-        for(int i=0;i<numPlayers;i++) {
-            //Display what each Player chooses.
-            byte selection = -1;
-            byte currPlayer = (byte) ((summary[0].getStarter()+ i) % numPlayers);          //Index of the current Player.
+        Melee[] summary = new Melee[numMelees];
+        int nextMeleeStarter = nextRoundStarter;    //Variable to store the index of the Player to start the next Melee.
+        for(int i=0;i<numMelees;i++) {
+            summary[i] = new Melee(getNumPlayers());
+            summary[i].setStarter(nextMeleeStarter);
+            String toPrint;
+            //Have each Player select a card.
+            for (int j = 0; j < numPlayers; j++) {
+                //Display what each Player chooses.
+                byte selection;
+                byte currPlayer = (byte) ((summary[i].getStarter() + j) % numPlayers);          //Index of the current Player.
 
-            //Player cannot play a Card.
-            if (!summary[0].canPlayCard(playerAt(currPlayer))) {
-                while(!summary[0].discardCard(input, output, currPlayer, playerAt(currPlayer)));
-                toPrint = "Resulting hand:\n" + playerAt(currPlayer).displayHand();
-                System.out.println(toPrint);
-                output.println(toPrint);
-            }
-            //Play can play a Card.
-            else {
-                while (true) {
-                    //Display the prompt.
-                    toPrint = String.format("Player %d please choose a card:\n%s\nEnter a number between " +
-                                    "1 and %d:", currPlayer + 1, this.playerAt(currPlayer).displayHand(),
-                            this.playerAt(currPlayer).getNumCards());
+                //Player cannot play a Card.
+                if (!summary[i].canPlayCard(playerAt(currPlayer))) {
+                    while (!summary[i].discardCard(input, output, currPlayer, playerAt(currPlayer))) ;
+                    toPrint = "Resulting hand:\n" + playerAt(currPlayer).displayHand();
                     System.out.println(toPrint);
                     output.println(toPrint);
-
-                    //Get input from the user.
-                    selection = input.nextByte();
-                    toPrint = String.format("%d\n", selection);
-                    System.out.println(toPrint);
-                    output.println(toPrint);
-
-                    if (selection < 1 || selection > playerAt(currPlayer).getNumCards()) {
-                        toPrint = String.format("ERROR: Card selection must be between 1 and %d.\n",
-                                playerAt(currPlayer).getNumCards());
+                }
+                //Player can play a Card.
+                else {
+                    while (true) {
+                        //Display the prompt.
+                        toPrint = String.format("Player %d please choose a card:\n%s\nEnter a number between " +
+                                        "1 and %d:", currPlayer + 1, this.playerAt(currPlayer).displayHand(),
+                                this.playerAt(currPlayer).getNumCards());
                         System.out.println(toPrint);
                         output.println(toPrint);
-                    } else {
-                        selection -= (byte) 1;                             //Convert to an array index.
-                        //Add the played Card to the Melee's 'played' array.
-                        boolean played = summary[0].playCard(currPlayer, playerAt(currPlayer),
-                                playerAt(currPlayer).getHand().getCards().get(selection), input, output);
 
-                        //Remove the Card from the Player's hand.
-                        if (played) {
-                            playerAt(currPlayer).getHand().getCards().remove(selection);
-                            toPrint = "Resulting hand:\n" + playerAt(currPlayer).displayHand();
+                        //Get input from the user.
+                        selection = input.nextByte();
+                        toPrint = String.format("%d\n", selection);
+                        System.out.println(toPrint);
+                        output.println(toPrint);
+
+                        if (selection < 1 || selection > playerAt(currPlayer).getNumCards()) {
+                            toPrint = String.format("ERROR: Card selection must be between 1 and %d.\n",
+                                    playerAt(currPlayer).getNumCards());
                             System.out.println(toPrint);
                             output.println(toPrint);
-                            break;
+                        } else {
+                            selection -= (byte) 1;                             //Convert to an array index.
+                            //Add the played Card to the Melee's 'played' array.
+                            boolean played = summary[i].playCard(currPlayer, playerAt(currPlayer),
+                                    playerAt(currPlayer).getHand().getCards().get(selection), input, output);
+
+                            //Remove the Card from the Player's hand.
+                            if (played) {
+                                playerAt(currPlayer).getHand().removeCard(selection);
+                                toPrint = "Resulting hand:\n" + playerAt(currPlayer).displayHand();
+                                System.out.println(toPrint);
+                                output.println(toPrint);
+                                break;
+                            }
                         }
                     }
                 }
             }
-        }
-        //Determine the loser and add the Cards played in the Melee to their injury Deck.
-        Byte loser = summary[0].computeLoser();
-        if(loser != null) {
-            //Compute the total injury points the loser accumulated this round.
-            int totalInjury = 0;
-            for(Card c: summary[0].getPlayed()) {
-                if(c != null) {
-                    playerAt(loser).addInjuryCard(c);
-                    totalInjury += c.getDamage();
+            //Determine the loser and add the Cards played in the Melee to their injury Deck.
+            Byte loser = summary[i].computeLoser();
+            if (loser != null) {
+                //Compute the total injury points the loser accumulated this round.
+                int totalInjury = 0;
+                for (Card c : summary[i].getPlayed()) {
+                    if (c != null) {
+                        playerAt(loser).addInjuryCard(c);
+                        totalInjury += c.getDamage();
+                    }
                 }
+                toPrint = String.format("Player %d-%s lost the Melee. The total injury points they " +
+                        "accumulated from this Melee is %d.\n", loser + 1, playerAt(loser).getName(), totalInjury);
+                System.out.println(toPrint);
+                output.println(toPrint);
+            } else {
+                toPrint = "No loser for this Melee. All Cards played have the same value.\n";
+                System.out.println(toPrint);
+                output.println(toPrint);
             }
-            toPrint = String.format("Player %d-%s lost the Melee. The total injury points they " +
-                    "accumulated from this Melee is %d.\n", loser + 1, playerAt(loser).getName(), totalInjury);
-            System.out.println(toPrint);
-            output.println(toPrint);
-        } else {
-            toPrint = "No loser for this Melee. All Cards played have the same value.\n";
-            System.out.println(toPrint);
-            output.println(toPrint);
         }
-
         //Move to the next Player to start the next round.
         nextRoundStarter = (nextRoundStarter + 1) % numPlayers;
         return summary;
