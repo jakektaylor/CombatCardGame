@@ -694,4 +694,29 @@ class GameTest {
         assertAll(()->assertEquals(new Card("Al", (byte) 7), summary[0].getPlayed()[0]),
                 ()->assertNull(summary[0].getSuit()));
     }
+
+    @Test
+    @DisplayName("U-TEST 056: Testing that if a Melee has no loser, a message is displayed explaining this.")
+    void testNoWinner() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        //Create the override Decks.
+        Deck[] overrideDecks = new Deck[3];
+
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Al", (byte) 12));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("So", (byte) 12));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("De", (byte) 12));
+        Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output),
+                overrideDecks);
+        //Check that there was no loser and that the message was displayed.
+        assertAll(()->assertTrue(output.toString().contains("No loser for this Melee. All Cards played have the same value.\n")),
+                ()->assertNull(summary[0].computeLoser()));
+    }
 }
