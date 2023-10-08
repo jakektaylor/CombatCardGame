@@ -176,6 +176,8 @@ public class Melee {
     public boolean canPlayCard(Player player) {
         //Can always play with Merlin or Apprentice.
         if(player.getHand().getNumMe() > 0 || player.getHand().getNumAp() > 0) return true;
+        //For playing an Alchemy card first.
+        else if (suit == null && player.getHand().getNumCards() == player.getHand().getNumAl()) return true;
         else if(suit == null && (player.getHand().getNumSw() > 0 || player.getHand().getNumAr() > 0 ||
                 player.getHand().getNumSo() > 0 || player.getHand().getNumDe() > 0)) return true;
         else if (suit != null) {
