@@ -720,4 +720,33 @@ class GameTest {
         assertAll(()->assertTrue(output.toString().contains("No loser for this Melee. All Cards played have the same value.\n")),
                 ()->assertNull(summary[0].computeLoser()));
     }
+
+    @Test
+    @DisplayName("U-TEST 057: Testing that if there is a loser for a Melee, the loser starts the following Melee.")
+    void testLoserStarts() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        //Create the override Decks.
+        Deck[] overrideDecks = new Deck[3];
+
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Al", (byte) 12));
+        overrideDecks[0].addCard(new Card("Al", (byte) 10));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("So", (byte) 10));
+        overrideDecks[1].addCard(new Card("De", (byte) 9));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("De", (byte) 3));
+        overrideDecks[2].addCard(new Card("Al", (byte) 15));
+
+        Melee[] summary = game.playRound(new Scanner("1\n1\n1\n1" +
+                        "\n1\n1\n"), new PrintWriter(output),
+                overrideDecks, 2);
+        //Check that the loser of the first Melee, Player 3, started the second Melee.
+        assertEquals((int)summary[0].computeLoser(), summary[1].getStarter());
+    }
 }
