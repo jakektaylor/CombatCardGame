@@ -254,9 +254,11 @@ public class Game {
             }
         }
 
-        //Add the winners to the list.
-        for(int i=0;i<numPlayers;i++) {
-            if(playerAt(i).getHP() == maxHP) winners.add(playerAt(i));
+        if(maxHP > 0) {
+            //Add the winners to the list.
+            for (int i = 0; i < numPlayers; i++) {
+                if (playerAt(i).getHP() == maxHP) winners.add(playerAt(i));
+            }
         }
 
         StringBuilder toPrint = new StringBuilder();
@@ -267,6 +269,12 @@ public class Game {
                 toPrint.append(String.format(", %s", winners.get(i).getName()));
             }
             toPrint.append("\n");
+            System.out.printf(toPrint.toString());
+            output.printf(toPrint.toString());
+        }
+        //No winners.
+        else {
+            toPrint.append("\nGAME OVER\nNo winners...\n");
             System.out.printf(toPrint.toString());
             output.printf(toPrint.toString());
         }
