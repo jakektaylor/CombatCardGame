@@ -196,7 +196,10 @@ public class Game {
 
         //End the Game if a Player has reached 0 HP.
         for(Player p:players) {
-            if(p.getHP() == 0) return null;
+            if(p.getHP() == 0) {
+                displayWinner(output);
+                return null;
+            }
         }
 
         //Move to the next Player to start the next round.
@@ -235,5 +238,23 @@ public class Game {
             playRound(input, output, overrideDeckArray[i], meleesPerRound);
             for(Player p:players) p.getInjuryDeck().clear();
         }
+    }
+
+    //Helper method used to indicate that the game is over and display the winners(s) of the Game.
+    void displayWinner(PrintWriter output) {
+        Player winner = null;
+        int maxHP = 0;
+        for(Player p:players) {
+            if(p.getHP() > maxHP) {
+                maxHP = p.getHP();
+                winner = p;
+            }
+        }
+        if(winner != null) {
+            String toPrint = String.format("\nGAME OVER\nWinners: %s\n", winner.getName());
+            System.out.printf(toPrint);
+            output.printf(toPrint);
+        }
+
     }
 }
