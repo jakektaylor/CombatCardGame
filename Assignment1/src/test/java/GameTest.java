@@ -945,4 +945,38 @@ class GameTest {
                 ()->assertTrue(output.toString().contains(String.format("GAME OVER\nWinners: %s, %s\n",
                         game.playerAt(1).getName(), game.playerAt(2).getName()))));
     }
+
+    @Test
+    @DisplayName("U-TEST 066: Testing that if all Players reach 0 HP at the end of a round, the Game ends, there is no " +
+            "winner and a message is displayed indicating this.")
+    void testNoGameWinner() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n15\n"), new PrintWriter(output));
+
+        //Create the override Decks.
+        Deck[] overrideDecks = new Deck[3];
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Ar", (byte) 12));
+        overrideDecks[0].addCard(new Card("Sw", (byte) 14));
+        overrideDecks[0].addCard(new Card("So", (byte) 15));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Ar", (byte) 14));
+        overrideDecks[1].addCard(new Card("Sw", (byte) 12));
+        overrideDecks[1].addCard(new Card("So", (byte) 6));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Ar", (byte) 13));
+        overrideDecks[2].addCard(new Card("Sw", (byte) 10));
+        overrideDecks[2].addCard(new Card("So", (byte) 14));
+
+        Melee[] result = game.playRound(new Scanner("1\n1\n1\n1\n1\n1\n1\n1\n1\n"), new PrintWriter(output),
+                overrideDecks, 3);
+        assertAll(()->assertNull(result),
+                ()->assertTrue(output.toString().contains("GAME OVER\nNo winners...\n")),
+                ()->assertEquals(0, game.playerAt(0).getHP()),
+                ()->assertEquals(0, game.playerAt(1).getHP()),
+                ()->assertEquals(0, game.playerAt(2).getHP()));
+    }
 }
