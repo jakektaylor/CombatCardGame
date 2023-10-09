@@ -1,4 +1,5 @@
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
@@ -242,18 +243,32 @@ public class Game {
 
     //Helper method used to indicate that the game is over and display the winners(s) of the Game.
     void displayWinner(PrintWriter output) {
-        Player winner = null;
+        ArrayList<Player> winners = new ArrayList<>();
         int maxHP = 0;
-        for(Player p:players) {
+
+        //Determine the max HP among the Players.
+        for(int i=0;i<numPlayers;i++) {
+            Player p = playerAt(i);
             if(p.getHP() > maxHP) {
                 maxHP = p.getHP();
-                winner = p;
             }
         }
-        if(winner != null) {
-            String toPrint = String.format("\nGAME OVER\nWinners: %s\n", winner.getName());
-            System.out.printf(toPrint);
-            output.printf(toPrint);
+
+        //Add the winners to the list.
+        for(int i=0;i<numPlayers;i++) {
+            if(playerAt(i).getHP() == maxHP) winners.add(playerAt(i));
+        }
+
+        StringBuilder toPrint = new StringBuilder();
+        //Multiple winners.
+        if(!winners.isEmpty()) {
+            toPrint.append(String.format("\nGAME OVER\nWinners: %s", winners.get(0).getName()));
+            for(int i=1;i<winners.size();i++) {
+                toPrint.append(String.format(", %s", winners.get(i).getName()));
+            }
+            toPrint.append("\n");
+            System.out.printf(toPrint.toString());
+            output.printf(toPrint.toString());
         }
 
     }
