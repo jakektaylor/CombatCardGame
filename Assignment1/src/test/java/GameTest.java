@@ -864,4 +864,28 @@ class GameTest {
                 1, 1);
         for(int i=0;i<game.getNumPlayers();i++) assertEquals(0, game.playerAt(i).getInjuryDeck().getNumCards());
     }
+
+    @Test
+    @DisplayName("U-TEST 063: Testing that if a Player reaches 0 HP at the end of a round, playRound() returns 'null'" +
+            " to indicate that the Game is over.")
+    void testGameOver() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n10\n"), new PrintWriter(output));
+
+        //Create the override Decks.
+        Deck[] overrideDecks= new Deck[3];
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Ar", (byte) 12));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Ar", (byte) 14));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Ar", (byte) 13));
+
+        Melee[] result = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output),
+                overrideDecks, 1);
+        assertNull(result);
+    }
 }
