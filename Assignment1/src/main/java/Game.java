@@ -188,6 +188,9 @@ public class Game {
                 output.println(toPrint);
             }
         }
+        //Inflict the injury points each Player has accumulated.
+        for(Player p: players) p.setHP(p.getHP() - p.getInjuryDeck().getInjuryPoints());
+
         //Move to the next Player to start the next round.
         nextRoundStarter = (nextRoundStarter + 1) % numPlayers;
         return summary;
