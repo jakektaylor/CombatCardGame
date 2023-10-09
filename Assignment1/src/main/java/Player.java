@@ -50,6 +50,6 @@ public class Player {
     }
 
     public void addInjuryCard(Card c) {
-        injuryDeck.getCards().add(c);
+        injuryDeck.addCard(c);
     }
 }
