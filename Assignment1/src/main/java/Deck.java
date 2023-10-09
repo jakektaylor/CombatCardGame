@@ -124,4 +124,10 @@ public class Deck {
         for(Card c: cards) total += c.getDamage();
         return total;
     }
+
+    public void clear() {
+        cards.clear();
+        //Set all Card counts to 0.
+        for(String key: cardCounts.keySet()) cardCounts.put(key, 0);
+    }
 }

@@ -228,6 +228,7 @@ public class Game {
         setupGame(input, output);
         for(int i=0;i<numRounds;i++) {
             playRound(input, output, overrideDeckArray[i], meleesPerRound);
+            for(Player p:players) p.getInjuryDeck().clear();
         }
     }
 }
