@@ -888,4 +888,34 @@ class GameTest {
                 overrideDecks, 1);
         assertNull(result);
     }
+
+    @Test
+    @DisplayName("U-TEST 064: Testing that if the game ends after a Player reaches 0 HP at the end of a round " +
+            "and of the remaining Players there is one with more HP than the others, the Player with the most HP is the " +
+            "winner and their name is displayed.")
+    void testOneWinner() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n20\n"), new PrintWriter(output));
+
+        //Create the override Decks.
+        Deck[] overrideDecks= new Deck[3];
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Ar", (byte) 12));
+        overrideDecks[0].addCard(new Card("Ar", (byte) 11));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Ar", (byte) 14));
+        overrideDecks[1].addCard(new Card("Ar", (byte) 8));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Ar", (byte) 13));
+        overrideDecks[2].addCard(new Card("Ar", (byte) 10));
+
+        Melee[] result = game.playRound(new Scanner("1\n1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks,
+                2);
+        assertAll(()->assertNull(result),
+                ()->assertTrue(output.toString().contains(String.format("GAME OVER\nWinners: %s\n",
+                        game.playerAt(2).getName()))));
+    }
 }
