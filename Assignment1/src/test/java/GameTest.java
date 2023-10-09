@@ -840,4 +840,28 @@ class GameTest {
                         "%-28s%-28d%-28d\n%-28s%-28d%-28d\n%-28s%-28d%-28d\n","","Injury Points Inflicted", "Remaining HP",
                 "Player 1: Jake", 15, 285, "Player 2: Caroline", 15, 285, "Player 3: Alex", 0, 300)));
     }
+
+    @Test
+    @DisplayName("U-TEST 062: Testing that at the end of a Round, each Player's injury Deck is cleared when playing" +
+            " the Game.")
+    void testNumMelees() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+
+        //Create the override Decks (one per Player for each Round we are playing (1 in this case)).
+        Deck[][] overrideDeckArray = new Deck[1][3];
+        overrideDeckArray[0] = new Deck[3];
+        overrideDeckArray[0][0] = new Deck();
+        overrideDeckArray[0][0].addCard(new Card("Ar", (byte) 12));
+
+        overrideDeckArray[0][1] = new Deck();
+        overrideDeckArray[0][1].addCard(new Card("Ar", (byte) 14));
+
+        overrideDeckArray[0][2] = new Deck();
+        overrideDeckArray[0][2].addCard(new Card("Ar", (byte) 13));
+
+        game.play(new Scanner("3\nJake\nCaroline\nAlex\n300\n1\n1\n1\n"), new PrintWriter(output), overrideDeckArray,
+                1, 1);
+        for(int i=0;i<game.getNumPlayers();i++) assertEquals(0, game.playerAt(i).getInjuryDeck().getNumCards());
+    }
 }

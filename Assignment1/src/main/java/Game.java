@@ -223,4 +223,11 @@ public class Game {
     public Player[] getPlayers() {
         return players;
     }
+
+    public void play(Scanner input, PrintWriter output, Deck[][] overrideDeckArray, int numRounds, int meleesPerRound) {
+        setupGame(input, output);
+        for(int i=0;i<numRounds;i++) {
+            playRound(input, output, overrideDeckArray[i], meleesPerRound);
+        }
+    }
 }
