@@ -191,9 +191,29 @@ public class Game {
         //Inflict the injury points each Player has accumulated.
         for(Player p: players) p.setHP(p.getHP() - p.getInjuryDeck().getInjuryPoints());
 
+        //Display a summary at the end of the round.
+        displayRoundSummary(output);
+
         //Move to the next Player to start the next round.
         nextRoundStarter = (nextRoundStarter + 1) % numPlayers;
         return summary;
+    }
+
+    /*Helper method used to display the number of health points suffered by each Player in a round and the number of
+    * remaining health points (HP) that they have.
+    */
+    private void displayRoundSummary(PrintWriter output) {
+        String toPrint = String.format("End of round summary:\n%-28s%-28s%-28s\n", "","Injury Points Inflicted",
+                "Remaining HP");
+        System.out.printf(toPrint);
+        output.printf(toPrint);
+
+        for(int i = 0;i<numPlayers;i++) {
+            toPrint = String.format("%-28s%-28d%-28d\n", String.format("Player %d: %s", i + 1, playerAt(i).getName()),
+                    playerAt(i).getInjuryDeck().getInjuryPoints(), playerAt(i).getHP());
+            System.out.printf(toPrint);
+            output.printf(toPrint);
+        }
     }
 
     public Deck getDeck() {
