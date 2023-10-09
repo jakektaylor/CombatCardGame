@@ -918,4 +918,31 @@ class GameTest {
                 ()->assertTrue(output.toString().contains(String.format("GAME OVER\nWinners: %s\n",
                         game.playerAt(2).getName()))));
     }
+
+    @Test
+    @DisplayName("U-TEST 065: Testing that if the Game ends after a Player reaches 0 HP at the end of a round " +
+            "and all the remaining Players with positive HP have the same HP, all the remaining Players with positive " +
+            "HP are the winners and their names are displayed.")
+    void testMultipleWinners() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n10\n"), new PrintWriter(output));
+
+        //Create the override Decks.
+        Deck[] overrideDecks = new Deck[3];
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Ar", (byte) 12));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Ar", (byte) 14));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Ar", (byte) 13));
+
+        Melee[] result = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), overrideDecks,
+                1);
+        assertAll(()->assertNull(result),
+                ()->assertTrue(output.toString().contains(String.format("GAME OVER\nWinners: %s, %s\n",
+                        game.playerAt(1).getName(), game.playerAt(2).getName()))));
+    }
 }
