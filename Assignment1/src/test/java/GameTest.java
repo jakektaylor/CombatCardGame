@@ -811,4 +811,33 @@ class GameTest {
                 ()->assertEquals(startingHP - 15, game.playerAt(1).getHP()),
                 ()->assertEquals(startingHP, game.playerAt(2).getHP()));
     }
+
+    @Test
+    @DisplayName("U-TEST 061: Testing that at the end of a round, the number of injury points suffered by each " +
+            "Player in this round is displayed along with their current number of remaining health points.")
+    void testRoundSummary() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        //Create the override Decks.
+        Deck[] overrideDecks = new Deck[3];
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Ar", (byte) 12));
+        overrideDecks[0].addCard(new Card("So", (byte) 8));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Ar", (byte) 14));
+        overrideDecks[1].addCard(new Card("So", (byte) 7));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Ar", (byte) 13));
+        overrideDecks[2].addCard(new Card("So", (byte) 10));
+
+        /*Playing a round with 2 Melees.*/
+        game.playRound(new Scanner("1\n1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks, 2);
+        assertTrue(output.toString().contains(String.format("End of round summary:\n%-28s%-28s%-28s\n" +
+                        "%-28s%-28d%-28d\n%-28s%-28d%-28d\n%-28s%-28d%-28d\n","","Injury Points Inflicted", "Remaining HP",
+                "Player 1: Jake", 15, 285, "Player 2: Caroline", 15, 285, "Player 3: Alex", 0, 300)));
+    }
 }
