@@ -779,4 +779,36 @@ class GameTest {
         //Check that the Player who started the first Melee also started the second one.
         assertEquals(summary[0].getStarter(), summary[1].getStarter());
     }
+
+    @Test
+    @DisplayName("U-TEST 060: Testing that at the end of each round, the total injury points a Player has accumulated" +
+            " in the round are deducted from their hp.")
+    void testInflictInjury() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n300\n"), new PrintWriter(output));
+
+        int startingHP = 300;
+
+        //Create the override Decks.
+        Deck[] overrideDecks = new Deck[3];
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Ar", (byte) 12));
+        overrideDecks[0].addCard(new Card("So", (byte) 8));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Ar", (byte) 14));
+        overrideDecks[1].addCard(new Card("So", (byte) 7));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Ar", (byte) 13));
+        overrideDecks[2].addCard(new Card("So", (byte) 10));
+
+        /*Player 1 will lose the first Melee, accumulating 15 injury points. Player 2 will lose the second Melee,
+        accumulating 15 injury points. Player 3 never loses and accumulates 0 injury points.*/
+        game.playRound(new Scanner("1\n1\n1\n1\n1\n1\n"), new PrintWriter(output), overrideDecks, 2);
+        assertAll(()->assertEquals(startingHP - 15, game.playerAt(0).getHP()),
+                ()->assertEquals(startingHP - 15, game.playerAt(1).getHP()),
+                ()->assertEquals(startingHP, game.playerAt(2).getHP()));
+    }
 }
