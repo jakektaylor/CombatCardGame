@@ -194,6 +194,11 @@ public class Game {
         //Display a summary at the end of the round.
         displayRoundSummary(output);
 
+        //End the Game if a Player has reached 0 HP.
+        for(Player p:players) {
+            if(p.getHP() == 0) return null;
+        }
+
         //Move to the next Player to start the next round.
         nextRoundStarter = (nextRoundStarter + 1) % numPlayers;
         return summary;
