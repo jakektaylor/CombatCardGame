@@ -127,6 +127,11 @@ public class Game {
                     toPrint = "Resulting hand:\n" + playerAt(currPlayer).displayHand();
                     System.out.println(toPrint);
                     output.println(toPrint);
+
+                    //Check if the Player reached 0 HP.
+                    if(playerAt(currPlayer).getHP() == 0) {
+                        return null;
+                    }
                 }
                 //Player can play a Card.
                 else {
