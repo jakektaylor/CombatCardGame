@@ -979,4 +979,28 @@ class GameTest {
                 ()->assertEquals(0, game.playerAt(1).getHP()),
                 ()->assertEquals(0, game.playerAt(2).getHP()));
     }
+
+    @Test
+    @DisplayName("U-TEST 067: Testing that each time a Player is shamed, the Player member variable 'numTimesShamed' " +
+            "is incremented, beginning from 0 before the round.")
+    void testIncrementShaming() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n35\n"), new PrintWriter(output));
+
+        //Create the override Decks.
+        Deck[] overrideDecks = new Deck[3];
+
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Sw", (byte) 7));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Ar", (byte) 2));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Sw", (byte) 10));
+
+        game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
+        assertEquals(1, game.playerAt(1).getNumTimesShamed());
+    }
 }

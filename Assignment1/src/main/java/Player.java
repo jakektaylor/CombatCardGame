@@ -52,4 +52,8 @@ public class Player {
     public void addInjuryCard(Card c) {
         injuryDeck.addCard(c);
     }
+
+    public int getNumTimesShamed() {
+        return -1;
+    }
 }
