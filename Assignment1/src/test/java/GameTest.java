@@ -1109,4 +1109,30 @@ class GameTest {
                 ()->assertEquals(0, game.playerAt(2).computeTotalInjury()));
     }
 
+    @Test
+    @DisplayName("U-TEST 072: Testing that if a Player loses 5 HP during a round due to shaming and their HP reaches 0, " +
+            "a round (so far) summary is displayed.")
+    void testShamingSummary() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n5\n"), new PrintWriter(output));
+
+        //Create the override Decks.
+        Deck[] overrideDecks = new Deck[3];
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Ar", (byte) 12));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Sw", (byte) 11));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Ar", (byte) 10));
+
+        game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output),
+                overrideDecks, 12);
+        assertTrue(output.toString().contains(String.format("End of round summary:\n%-28s%-28s%-28s\n" +
+                        "%-28s%-28d%-28d\n%-28s%-28d%-28d\n%-28s%-28d%-28d\n","","Injury Points Inflicted",
+                "Remaining HP", "Player 1: Jake", 0, 5, "Player 2: Caroline", 5, 0, "Player 3: Alex", 0, 5)));
+    }
+
 }
