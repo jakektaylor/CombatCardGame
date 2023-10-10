@@ -1078,4 +1078,35 @@ class GameTest {
         assertNull(result);
     }
 
+    @Test
+    @DisplayName("U-TEST 071: Testing that if a Player loses 5 HP during a round due to shaming and their HP reaches 0, " +
+            "the injury points for the other Players are not computed (i.e. their total injury points are 0).")
+    void testShamingInjury() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n5\n"), new PrintWriter(output));
+
+        //Create the override Decks.
+        Deck[] overrideDecks = new Deck[3];
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Ar", (byte) 12));
+        overrideDecks[0].addCard(new Card("Sw", (byte) 12));
+        overrideDecks[0].addCard(new Card("De", (byte) 2));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Ar", (byte) 11));
+        overrideDecks[1].addCard(new Card("Sw", (byte) 10));
+        overrideDecks[1].addCard(new Card("So", (byte) 12));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Ar", (byte) 10));
+        overrideDecks[2].addCard(new Card("Sw", (byte) 15));
+        overrideDecks[2].addCard(new Card("So", (byte) 10));
+
+        game.playRound(new Scanner("1\n1\n1\n1\n1\n1\n1\n1\n1\n"), new PrintWriter(output),
+                overrideDecks, 12);
+        assertAll(()->assertEquals(0, game.playerAt(1).computeTotalInjury()),
+                ()->assertEquals(0, game.playerAt(2).computeTotalInjury()));
+    }
+
 }
