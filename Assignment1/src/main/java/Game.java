@@ -137,6 +137,7 @@ public class Game {
                                 playerAt(k).setNumTimesShamed(0);
                             }
                         }
+                        displayRoundSummary(output);
                         return null;
                     }
                 }
