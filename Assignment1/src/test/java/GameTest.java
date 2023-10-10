@@ -1029,4 +1029,29 @@ class GameTest {
                 ()->assertEquals(0, game.playerAt(2).getNumTimesShamed()));
     }
 
+    @Test
+    @DisplayName("U-TEST 069: Testing that injury points suffered from shaming are displayed in the round summary.")
+    void testDisplayShaming() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n35\n"), new PrintWriter(output));
+
+        //Create the override Decks.
+        Deck[] overrideDecks = new Deck[3];
+
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Sw", (byte) 7));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Ar", (byte) 2));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("De", (byte) 10));
+
+        game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
+        assertTrue(output.toString().contains(String.format("End of round summary:\n%-28s%-28s%-28s\n" +
+                        "%-28s%-28d%-28d\n%-28s%-28d%-28d\n%-28s%-28d%-28d\n","","Injury Points Inflicted",
+                "Remaining HP", "Player 1: Jake", 10, 25, "Player 2: Caroline", 5, 30, "Player 3: Alex", 5, 30)));
+    }
+
 }
