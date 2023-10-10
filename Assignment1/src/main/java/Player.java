@@ -5,12 +5,14 @@ public class Player {
     private int hp;
     private Deck hand;
     private Deck injuryDeck;
+    private int numTimesShamed;
 
     public Player(String name) {
         this.name = name;
         this.hp = 0;
         this.hand = new Deck();
         this.injuryDeck = new Deck();
+        this.numTimesShamed = 0;
     }
     public String getName(){
         return name;
@@ -54,6 +56,10 @@ public class Player {
     }
 
     public int getNumTimesShamed() {
-        return -1;
+        return numTimesShamed;
+    }
+
+    public void setNumTimesShamed(int numTimes) {
+        this.numTimesShamed = numTimes;
     }
 }

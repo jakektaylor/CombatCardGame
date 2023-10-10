@@ -223,6 +223,9 @@ public class Melee {
             //Remove the Card from the Player's hand and remove 5 HP.
             player.getHand().removeCard(choice);
             player.setHP(player.getHP() - 5);
+
+            //Increment the number of times the Player has been shamed.
+            player.setNumTimesShamed(player.getNumTimesShamed() + 1);
             return true;
         } else {
             toPrint = String.format("ERROR: Please enter a value between 1 and %d.", player.getNumCards());
