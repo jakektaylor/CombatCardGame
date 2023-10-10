@@ -130,6 +130,13 @@ public class Game {
 
                     //Check if the Player reached 0 HP.
                     if(playerAt(currPlayer).getHP() == 0) {
+                        //Clear the injury decks and number of times shamed of the other Players.
+                        for(int k =0;k<numPlayers;k++) {
+                            if(k != currPlayer) {
+                                playerAt(k).getInjuryDeck().clear();
+                                playerAt(k).setNumTimesShamed(0);
+                            }
+                        }
                         return null;
                     }
                 }
