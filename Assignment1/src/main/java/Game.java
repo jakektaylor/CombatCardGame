@@ -219,7 +219,7 @@ public class Game {
 
         for(int i = 0;i<numPlayers;i++) {
             toPrint = String.format("%-28s%-28d%-28d\n", String.format("Player %d: %s", i + 1, playerAt(i).getName()),
-                    playerAt(i).getInjuryDeck().getInjuryPoints(), playerAt(i).getHP());
+                    playerAt(i).computeTotalInjury(), playerAt(i).getHP());
             System.out.printf(toPrint);
             output.printf(toPrint);
         }

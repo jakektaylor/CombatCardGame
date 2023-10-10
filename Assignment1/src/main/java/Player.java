@@ -62,4 +62,8 @@ public class Player {
     public void setNumTimesShamed(int numTimes) {
         this.numTimesShamed = numTimes;
     }
+
+    public int computeTotalInjury() {
+        return injuryDeck.getInjuryPoints() + (5 * numTimesShamed);
+    }
 }
