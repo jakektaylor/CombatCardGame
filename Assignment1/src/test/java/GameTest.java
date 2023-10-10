@@ -1003,4 +1003,30 @@ class GameTest {
         game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
         assertEquals(1, game.playerAt(1).getNumTimesShamed());
     }
+
+    @Test
+    @DisplayName("U-TEST 068: Testing that when the game is actually played (by calling game.play()), at the end of a " +
+            "round the variable 'numTimesShamed' is reset to 0 for each Player.")
+    void testResetShamed() {
+        //Create the override Decks.
+        Deck[][] overrideDeckArray = new Deck[1][3];
+
+        overrideDeckArray[0][0] = new Deck();
+        overrideDeckArray[0][0].addCard(new Card("Sw", (byte) 7));
+
+        overrideDeckArray[0][1] = new Deck();
+        overrideDeckArray[0][1].addCard(new Card("Ar", (byte) 2));
+
+        overrideDeckArray[0][2] = new Deck();
+        overrideDeckArray[0][2].addCard(new Card("De", (byte) 10));
+
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.play(new Scanner("3\nJake\nCaroline\nAlex\n35\n1\n1\n1\n"), new PrintWriter(output),
+                overrideDeckArray, 1, 1);
+        assertAll(()->assertEquals(0, game.playerAt(0).getNumTimesShamed()),
+                ()->assertEquals(0, game.playerAt(1).getNumTimesShamed()),
+                ()->assertEquals(0, game.playerAt(2).getNumTimesShamed()));
+    }
+
 }
