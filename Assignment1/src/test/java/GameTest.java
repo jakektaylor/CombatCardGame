@@ -1054,4 +1054,28 @@ class GameTest {
                 "Remaining HP", "Player 1: Jake", 10, 25, "Player 2: Caroline", 5, 30, "Player 3: Alex", 5, 30)));
     }
 
+    @Test
+    @DisplayName("U-TEST 070: Testing that if a Player loses 5 HP during a round due to shaming and their HP reaches 0, " +
+            "the Game ends here (playRound() returns null immediately).")
+    void testShamingEnd() {
+        Game game = new Game();
+        StringWriter output = new StringWriter();
+        game.setupGame(new Scanner("3\nJake\nCaroline\nAlex\n5\n"), new PrintWriter(output));
+
+        //Create the override Decks.
+        Deck[] overrideDecks = new Deck[3];
+        overrideDecks[0] = new Deck();
+        overrideDecks[0].addCard(new Card("Ar", (byte) 12));
+
+        overrideDecks[1] = new Deck();
+        overrideDecks[1].addCard(new Card("Sw", (byte) 11));
+
+        overrideDecks[2] = new Deck();
+        overrideDecks[2].addCard(new Card("Ar", (byte) 10));
+
+        Melee[] result = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output),
+                overrideDecks, 12);
+        assertNull(result);
+    }
+
 }
