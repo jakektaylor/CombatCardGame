@@ -138,6 +138,7 @@ public class Game {
                             }
                         }
                         displayRoundSummary(output);
+                        displayWinner(output, true);
                         return null;
                     }
                 }
@@ -211,7 +212,7 @@ public class Game {
         //End the Game if a Player has reached 0 HP.
         for(Player p:players) {
             if(p.getHP() == 0) {
-                displayWinner(output);
+                displayWinner(output, false);
                 return null;
             }
         }
@@ -258,7 +259,7 @@ public class Game {
     }
 
     //Helper method used to indicate that the game is over and display the winners(s) of the Game.
-    void displayWinner(PrintWriter output) {
+    void displayWinner(PrintWriter output, boolean isShamingEnding) {
         ArrayList<Player> winners = new ArrayList<>();
         int maxHP = 0;
 
@@ -278,9 +279,11 @@ public class Game {
         }
 
         StringBuilder toPrint = new StringBuilder();
+        if(!isShamingEnding) toPrint.append("\nGAME OVER\n");
+        else toPrint.append("\nGAME OVER DUE TO SHAMING\n");
         //Multiple winners.
         if(!winners.isEmpty()) {
-            toPrint.append(String.format("\nGAME OVER\nWinners: %s", winners.get(0).getName()));
+            toPrint.append(String.format("Winners: %s", winners.get(0).getName()));
             for(int i=1;i<winners.size();i++) {
                 toPrint.append(String.format(", %s", winners.get(i).getName()));
             }
@@ -290,7 +293,7 @@ public class Game {
         }
         //No winners.
         else {
-            toPrint.append("\nGAME OVER\nNo winners...\n");
+            toPrint.append("No winners...\n");
             System.out.printf(toPrint.toString());
             output.printf(toPrint.toString());
         }
