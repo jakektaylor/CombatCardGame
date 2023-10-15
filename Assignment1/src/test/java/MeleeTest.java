@@ -337,7 +337,7 @@ class MeleeTest {
     }
 
     @Test
-    @DisplayName("U-TEST 048: Testing that the correct winner of a melee is computed when no Cards with the same value" +
+    @DisplayName("U-TEST 048: Testing that the correct loser of a melee is computed when no Cards with the same value" +
             " are played.")
     void testNoneSame() {
         Melee melee = new Melee((byte) 5);
@@ -360,7 +360,7 @@ class MeleeTest {
     }
 
     @Test
-    @DisplayName("U-TEST 050: Testing that the correct winner of a melee is computed when some, but not all, of the " +
+    @DisplayName("U-TEST 050: Testing that the correct loser of a melee is computed when some, but not all, of the " +
             "Cards played have the same value.")
     void testSomeSame() {
         Melee melee = new Melee((byte) 5);
@@ -405,7 +405,7 @@ class MeleeTest {
     }
 
     @Test
-    @DisplayName("U-TEST 052: Testing that there is no winner (i.e. the winner is null) when all Cards played in a " +
+    @DisplayName("U-TEST 052: Testing that there is no loser (i.e. the loser is null) when all Cards played in a " +
             "Melee have the same value.")
     void testNoWinner() {
         Melee melee = new Melee((byte) 5);

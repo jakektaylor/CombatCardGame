@@ -3,19 +3,28 @@ import java.util.Scanner;
 
 public class Melee {
 
+    /*Array to hold all the Cards played in a Melee, where the index 'i' corresponds to the Card played by the ith
+    Player in the Game's 'players' array.*/
     private Card[] played;
-    private String suit;
-    private int starter;
+    private String suit;                        //One of {"Sw", "Ar", "So", "De"}
+    private int starter;                  //The index of the Player in the Game's 'players' array who started the Melee
     public Melee(byte numPlayers) {
         played = new Card[numPlayers];
         for(int i=0;i<numPlayers;i++) played[i] = null;
         suit = null;
     }
 
-    public Card[] getPlayed() {
-        return played;
-    }
-
+    /*
+    * Purpose: This method allows a Player to play a Card by adding it to the 'played' array at the same index as the index
+    * the Player is found at in the Game's 'players' array.
+    * Parameters: -playerInd: The index of the Player in the Game's 'players' array.
+    *             -player: The Player object that represents the player playing the Card.
+    *             -card: The Card that is being played.
+    *             -input: Scanner from which input is given.
+    *             -output: output to which output is written for testing.
+    * Returns: true if the Card was played successfully (i.e. if it was allowed to be played according to the rules),
+    *          false otherwise
+    */
     public boolean playCard(byte playerInd, Player player, Card card, Scanner input, PrintWriter output) {
         //Check if this is the first Card played.
         boolean isEmpty = true;
@@ -26,10 +35,11 @@ public class Melee {
             }
         }
 
-        String toPrint;
+        String toPrint;                                                 //String to hold the next value to be printed.
 
         //Case where there is no suit for the melee (goes to the bottom).
         if(!isEmpty && suit == null && Card.SUITS.contains(card.getType()));
+
         //Basic Weapon as first card.
         else if(isEmpty && Card.SUITS.contains(card.getType())) this.suit = card.getType();
 
@@ -37,13 +47,14 @@ public class Melee {
         else if(isEmpty && (card.getType().equals("Me") || card.getType().equals("Ap"))) {
             input.nextLine();
 
-            String suitChoice;
+            String suitChoice;                                              //The suit the user chooses for the Card.
             while(true) {
-                //Getting the suit for the Merlin or Apprentice card.
+                //Getting the suit for the Merlin or Apprentice card and displaying it.
                 if (card.getType().equals("Me")) toPrint = "Please enter a suit for the Merlin card: ";
                 else toPrint = "Please enter a suit for the Apprentice card: ";
                 System.out.println(toPrint);
                 output.println(toPrint);
+
                 suitChoice = input.nextLine();
                 toPrint = suitChoice;
                 System.out.println(toPrint);
@@ -54,17 +65,20 @@ public class Melee {
                     toPrint = String.format("ERROR: Please enter a valid suit from %s.", Card.SUITS);
                     System.out.println(toPrint);
                     output.println(toPrint);
-                } else break;
+                }
+                //Valid suit entered.
+                else break;
             }
             this.suit = suitChoice;                     //Set the suit for the Melee.
 
-            Byte valChoice;
+            Byte valChoice;                             //The value chosen for the Card.
             while(true) {
                 //Getting the value for the Merlin or Apprentice card.
                 if (card.getType().equals("Me")) toPrint = "Please enter a value for the Merlin card: ";
                 else toPrint = "Please enter a value for the Apprentice card: ";
                 System.out.println(toPrint);
                 output.println(toPrint);
+
                 valChoice = input.nextByte();
                 toPrint = String.format("%d", valChoice);
                 System.out.println(toPrint);
@@ -75,7 +89,9 @@ public class Melee {
                     toPrint = "ERROR: Please enter a value between 1 and 15.";
                     System.out.println(toPrint);
                     output.println(toPrint);
-                } else break;
+                }
+                //Valid value.
+                else break;
             }
             card.setValue(valChoice);                   //Set the value of the card.
         }
@@ -90,10 +106,12 @@ public class Melee {
         //Playing a Merlin or Apprentice card after the first Card has been played.
         else if(card.getType().equals("Me") || card.getType().equals("Ap")) {
             while(true) {
+                //Get the value of the Card and display it.
                 if (card.getType().equals("Me")) toPrint = "Please enter a value for the Merlin card: ";
                 else toPrint = "Please enter a value for the Apprentice card: ";
                 System.out.println(toPrint);
                 output.println(toPrint);
+
                 Byte value = input.nextByte();
                 toPrint = String.format("%d", value);
                 System.out.println(toPrint);
@@ -122,6 +140,7 @@ public class Melee {
             }
             //Trying to play an Alchemy Card as the first Card.
             else if (isEmpty) {
+                //Cannot play as first Card if you have a Basic Weapon Card.
                 if(player.getHand().getNumSw() > 0|| player.getHand().getNumAr() > 0 || player.getHand().getNumSo() > 0
                 || player.getHand().getNumDe() > 0) {
                     toPrint = "ERROR: Cannot play an Alchemy Card as the first Card when you have a " +
@@ -130,6 +149,7 @@ public class Melee {
                     output.println(toPrint);
                     return false;
                 }
+                //Cannot play as first Card if you have a Merlin Card.
                 else if(player.getHand().getNumMe() > 0) {
                     toPrint = "ERROR: Cannot play an Alchemy Card as the first Card when you have a " +
                             "Merlin card.";
@@ -137,6 +157,7 @@ public class Melee {
                     output.println(toPrint);
                     return false;
                 }
+                //Cannot play as first Card if you have an Apprentice Card.
                 else if(player.getHand().getNumAp() > 0) {
                     toPrint = "ERROR: Cannot play an Alchemy Card as the first Card when you have an " +
                     "Apprentice card.";
@@ -147,7 +168,7 @@ public class Melee {
             }
         }
 
-        //Playing a Card if possible.
+        //Playing a Card if possible (i.e. the method has not returned yet).
         toPrint = String.format
                 ("Player %d played: %s\n", playerInd + 1,
                         card);
@@ -157,7 +178,12 @@ public class Melee {
         return true;
     }
 
-    //Helper method used to determine if a a Player can play an Alchemy Card after the suit for the melee has been set.
+    /*
+    Purpose: Helper method used to determine if a Player can play an Alchemy Card after the suit for the melee has
+    been set.
+    Parameters: -player: The Player trying to play the Alchemy Card.
+    Returns: true if they can play an Alchemy Card, false otherwise.
+     */
     private boolean canPlayAl(Player player) {
         boolean canPlay = true;
         if("Sw".equals(this.suit) && player.getHand().getNumSw() > 0) canPlay = false;
@@ -168,34 +194,44 @@ public class Melee {
         return canPlay;
     }
 
-    public String getSuit() {
-        return suit;
-    }
-
-    //Method used to determine whether 'player' can play a card.
+    /*
+    * Purpose: This method is used to determine whether there is any Card AT ALL that a Player can play.
+    * Parameters: -player: The Player who we are trying to determine if they can play a Card.
+    * Returns: true if there is a Card in the Player's hand that they can play, false otherwise.*/
     public boolean canPlayCard(Player player) {
         //Can always play with Merlin or Apprentice.
         if(player.getHand().getNumMe() > 0 || player.getHand().getNumAp() > 0) return true;
         //For playing an Alchemy card first.
         else if (suit == null && player.getHand().getNumCards() == player.getHand().getNumAl()) return true;
+        //For playing a Basic Weapon first.
         else if(suit == null && (player.getHand().getNumSw() > 0 || player.getHand().getNumAr() > 0 ||
                 player.getHand().getNumSo() > 0 || player.getHand().getNumDe() > 0)) return true;
+        //For playing a Basic Weapon or Alchemy Card after the suit for the Melee has been set.
         else if (suit != null) {
             //Sw
             if(suit.equals("Sw") && player.getHand().getNumSw() > 0) return true;
-                //Ar
+            //Ar
             else if(suit.equals("Ar") && player.getHand().getNumAr() > 0) return true;
-                //So
+            //So
             else if(suit.equals("So") && player.getHand().getNumSo() > 0) return true;
-                //De
+            //De
             else if(suit.equals("De") && player.getHand().getNumDe() > 0) return true;
-                //Al
+            //Al
             else return player.getHand().getNumAl() > 0;
         }
         return false;
     }
 
+    /*
+    * Purpose: This method is used to have a Player discard a Card from their hand in the case where they cannot play
+    * a Card.
+    * Parameters: -input: Scanner from which input is received.
+    *             -output: PrintWriter to which output is written for testing.
+    *             -currPlayer: The index of the Player who is discarding a Card in the Game's 'players' array.
+    *             -player: Player object representing the Player that is discarding a Card.
+    * Returns: true if a valid Card is chosen to discard and false otherwise.*/
     public boolean discardCard(Scanner input, PrintWriter output, byte currPlayer, Player player) {
+        //Display the hand of the Player and prompt them to choose a Card to discard.
         String toPrint = String.format("Player %d please choose a card to discard as there is no Card you can play: ",
                 currPlayer + 1);
         System.out.println(toPrint);
@@ -205,11 +241,14 @@ public class Melee {
         System.out.printf(toPrint);
         output.println(toPrint);
 
+        //Determine the Player's choice of Card and display it.
         byte choice = input.nextByte();
         toPrint = String.format("%d\n", choice);
         System.out.printf(toPrint);
         output.printf(toPrint);
 
+        /*If the choice is between 1 and the number of Cards in the Player's hand, the chosen Card is discarded
+        * successfully.*/
         if (choice >= 1 && choice <= player.getHand().getNumCards()) {
             choice -= 1;                                                 //Convert to array index.
 
@@ -220,14 +259,16 @@ public class Melee {
             System.out.printf("%s", toPrint);
             output.printf("%s", toPrint);
 
-            //Remove the Card from the Player's hand and remove 5 HP.
+            //Remove the Card from the Player's hand and remove 5 HP (shaming).
             player.getHand().removeCard(choice);
             player.setHP(player.getHP() - 5);
 
             //Increment the number of times the Player has been shamed.
             player.setNumTimesShamed(player.getNumTimesShamed() + 1);
             return true;
-        } else {
+        }
+        //Display an error message if the user made an invalid choice.
+        else {
             toPrint = String.format("ERROR: Please enter a value between 1 and %d.", player.getNumCards());
             System.out.println(toPrint);
             output.println(toPrint);
@@ -235,16 +276,9 @@ public class Melee {
         }
     }
 
-    public int getStarter() {
-        return starter;
-    }
-
-    public void setStarter(int starter) {
-        this.starter = starter;
-    }
-
-    /*This method is used to determine the loser of a Melee. It returns the index
-    of the Player in the Game's 'players' array that lost the Melee.*/
+    /*Purpose: This method is used to determine the loser of a Melee. It returns the index of the Player in the Game's
+    'players' array that lost the Melee.
+    Returns: The index of the Player in the Game's 'players' array that lost the Melee or null if there was no loser.*/
     public Byte computeLoser() {
         byte min_value = Byte.MAX_VALUE;
         Byte loser = null;
@@ -266,4 +300,22 @@ public class Melee {
         }
         return loser;
     }
+
+    //GETTER AND SETTER METHODS
+    public Card[] getPlayed() {
+        return played;
+    }
+
+    public String getSuit() {
+        return suit;
+    }
+
+    public int getStarter() {
+        return starter;
+    }
+
+    public void setStarter(int starter) {
+        this.starter = starter;
+    }
+
 }

@@ -251,12 +251,12 @@ class GameTest {
         int p3NumCards = overrideDecks[2].getNumCards();
 
         game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output), overrideDecks, 1);
-        assertTrue(output.toString().contains(String.format("Player 1 please choose a card:\n%s\nEnter a number between " +
-                        "1 and %d:", p1Hand, p1NumCards)));
-        assertTrue(output.toString().contains(String.format("Player 2 please choose a card:\n%s\nEnter a number between " +
-                "1 and %d:", p2Hand, p2NumCards)));
-        assertTrue(output.toString().contains(String.format("Player 3 please choose a card:\n%s\nEnter a number between " +
-                "1 and %d:", p3Hand, p3NumCards)));
+        assertTrue(output.toString().contains(String.format("Player 1-Jake please choose a card:\n%s\nEnter a number " +
+                "between 1 and %d:", p1Hand, p1NumCards)));
+        assertTrue(output.toString().contains(String.format("Player 2-Caroline please choose a card:\n%s\nEnter a number " +
+                "between 1 and %d:", p2Hand, p2NumCards)));
+        assertTrue(output.toString().contains(String.format("Player 3-Alex please choose a card:\n%s\nEnter a number " +
+                "between 1 and %d:", p3Hand, p3NumCards)));
     }
 
     @Test
@@ -484,7 +484,7 @@ class GameTest {
                 currIndex+=toFind.length();
             }
         }
-        //Check that the error message was displayed 3 times.
+
         assertEquals(3, numOccurences);
         //Check that the Alchemy cards weren't played.
         assertEquals(new Card("Sw", (byte) 12), summary[0].getPlayed()[1]);
@@ -1042,6 +1042,7 @@ class GameTest {
         overrideDecks[0] = new Deck();
         overrideDecks[0].addCard(new Card("Sw", (byte) 7));
 
+        //Players 2 and 3 will not be able to play a Card and will be shamed.
         overrideDecks[1] = new Deck();
         overrideDecks[1].addCard(new Card("Ar", (byte) 2));
 
