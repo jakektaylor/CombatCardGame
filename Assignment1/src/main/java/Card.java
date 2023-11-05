@@ -4,9 +4,9 @@ import java.util.HashSet;
 public class Card {
     //All the suits in the Game.
     public static final HashSet<String> SUITS = new HashSet<>(Arrays.asList("Sw", "Ar", "So", "De"));
-    private String type;                                //One of {"Sw", "Ar", "So", "De", "Me", "Ap", "Al"}
+    private String type;                                            //One of {"Sw", "Ar", "So", "De", "Me", "Ap", "Al"}
     private Byte value;                       //The value of the Card (initially null for Merlin and Apprentice Cards)
-    private Byte damage;                                //The injury points inflicted by the Card.
+    private Byte damage;                                                //The injury points inflicted by the Card.
     public Card(String type, Byte value) {
         this.type = type;
         this.value = value;
@@ -44,7 +44,7 @@ public class Card {
         Card other = (Card) obj;
         //Check that both cards have the same type and value.
         if (!(this.value == null)) return this.value.equals(other.value) && this.type.equals(other.type);
-        else return this.value == other.value && this.type.equals(other.type);
+        else return null == other.value && this.type.equals(other.type);
     }
 
     //GETTERS AND SETTERS

@@ -7,105 +7,250 @@ public class Game {
     private Player[] players;                   //Array to hold the different Player objects.
     private Deck deck;                          //The Game Deck from which Cards are dealt.
     private int nextRoundStarter;               //Index of the Player in 'players' to start the next round.
+    private final StringBuilder divider;        //Used to divide up different sections when displaying information.
+    private ArrayList<Melee[]> roundSummaries;       //Contains a list of all of the Melees played in each round.
 
     public Game() {
         numPlayers = 0;
         this.deck = Deck.createGameDeck();
+        nextRoundStarter = 0;
+        divider = new StringBuilder();
+        for(int i=0;i<160;i++) divider.append("-");
     }
 
-    /*
-    * Purpose: This method is responsible for getting the number of Players, player names and initial HP of each
-    * Player. It also sets the initial value of Game-related parameters and shuffles the Deck and deals each Player
-    * Cards.
-    * Parameters: -input: Scanner from which input is collected.
-    *             -output: PrintWriter to write output to for testing.
-    * */
-    public void setupGame(Scanner input, PrintWriter output) {
+    /*Purpose: The purpose of this method is to determine the number of Players that will be Playing the Game.
+    * Parameters: input-Scanner to gather input from
+    *             output-PrintWriter to write output to
+    */
+    public void setNumPlayers(Scanner input, PrintWriter output) {
         //Determine the number of players.
-        byte result = -1;
+        byte result;
         String toPrint;                                             //Variable to hold any Strings to be displayed.
-        while (result < 3 || result > 5) {
-            toPrint = "Please enter the number of players (3-5):\n";
-            System.out.printf(toPrint);
-            output.printf(toPrint);
+        toPrint = "Please enter the number of players (3-5):\n";
+        System.out.printf(toPrint);
+        output.printf(toPrint);
 
-            result = input.nextByte();
-
-            toPrint = String.format("%d\n", result);
-            System.out.printf(toPrint);
-            output.printf(toPrint);
-            if (result < 3 || result > 5) {
-                toPrint = "ERROR: Invalid number of players.";
-                System.out.println(toPrint);
-                output.println(toPrint);
-            }
+        numPlayers = input.nextByte();
+        toPrint = String.format("%d\n", numPlayers);
+        System.out.printf(toPrint);
+        output.printf(toPrint);
+        if (numPlayers < 3 || numPlayers > 5) {
+            toPrint = "ERROR: Invalid number of players.";
+            System.out.println(toPrint);
+            output.println(toPrint);
+        } else {
+            players = new Player[numPlayers];
+            input.nextLine();
         }
-        numPlayers =  result;
+    }
 
-        //Determine the names of the players and create a Player object for each player.
-        players = new Player[numPlayers];
-        input.nextLine();
+    /*Purpose: This method is responsible for determining the name of a given Player.
+    * Parameters: playerIndex-The index of the Player whose name we are trying to determine in the 'players' array.
+    *             input-Scanner used to get the name
+    *             output-Used to write output of the program to
+    * Returns: true if a valid Player name is entered, false otherwise.
+    */
+    public boolean setPlayerName(int playerIndex, Scanner input, PrintWriter output) {
+        String name;
+        String toPrint;
+        toPrint = String.format("Please enter a name for Player %d:\n", playerIndex+1);
+        System.out.printf(toPrint);
+        output.printf(toPrint);
 
-        for(int i=0;i<numPlayers;i++) {
-            String name = "";
-            while(name.isEmpty()) {
-                toPrint = String.format("Please enter a name for Player %d:\n", i+1);
-                System.out.printf(toPrint);
-                output.printf(toPrint);
+        name = input.nextLine();
+        toPrint = String.format("%s\n", name);
+        System.out.printf(toPrint);
+        output.printf(toPrint);
 
-                name = input.nextLine();
-                toPrint = String.format("%s\n", name);
-                System.out.printf(toPrint);
-                output.printf(toPrint);
-                if (name.isEmpty()) {
-                    toPrint = "ERROR: Player name must be non-empty.";
-                    System.out.println(toPrint);
-                    output.println(toPrint);
-                }
-            }
-            players[i] = new Player(name);
+        if (name.isEmpty()) {
+            toPrint = "ERROR: Player name must be non-empty.";
+            System.out.println(toPrint);
+            output.println(toPrint);
+            return false;
         }
+        players[playerIndex] = new Player(name);
+        return true;
+    }
 
-        //Determine the initial number of health points for each Player.
+    /*Purpose: THe purpose of this method is to set the number of health points for each Player.
+    * Returns: true if a valid HP value is entered, false otherwise.
+    */
+    public boolean setHP(Scanner input, PrintWriter output) {
+        String toPrint;
         int HP = -1;
-        while(HP <= 0) {
-            toPrint = "Please enter the number of health points:\n";
-            System.out.printf(toPrint);
-            output.printf(toPrint);
 
-            if(input.hasNextInt()) {
-                HP = input.nextInt();
-                toPrint = String.format("%d\n", HP);
-                System.out.println(toPrint);
-                output.println(toPrint);
-            } else {
-                input.nextLine();
-            }
-            if(HP <= 0) {
-                toPrint = "ERROR: Invalid number of health points.";
-                System.out.println(toPrint);
-                output.println(toPrint);
-            }
+        toPrint = "Please enter the number of health points:\n";
+        System.out.printf(toPrint);
+        output.printf(toPrint);
+
+        if(input.hasNextInt()) {
+            HP = input.nextInt();
+            toPrint = String.format("%d\n", HP);
+            System.out.println(toPrint);
+            output.println(toPrint);
+        } else {
+            input.nextLine();
+        }
+        if(HP <= 0) {
+            toPrint = "ERROR: Invalid number of health points.";
+            System.out.println(toPrint);
+            output.println(toPrint);
+            return false;
         }
         for (Player p : players) p.setHP(HP);
-
-        //Set the starter of the next round to be the first Player created.
-        nextRoundStarter = 0;
-
-        //Deal cards
-        deck.shuffle();
-        dealCards();
+        return true;
     }
 
-    /*
-    * Purpose: The purpose of this method is to deal 12 Cards from the Game Deck to each Player.
-    */
+    /* Purpose: The purpose of this method is to deal 12 Cards from the Game Deck to each Player.*/
     public void dealCards() {
+        deck.shuffle();
         for(int i=0;i<numPlayers;i++) {
             for(int j=0; j < 12;j++) players[i].dealCard(this.deck.getCards().get(i*12 + j));
         }
-
     }
+
+    /*
+     * Purpose: This method is responsible for getting the number of Players, player names and initial HP of each
+     * Player. It also sets the initial value of Game-related parameters and shuffles the Deck and deals each Player
+     * Cards.
+     * Parameters: -input: Scanner from which input is collected.
+     *             -output: PrintWriter to write output to for testing.
+     * */
+    public void setupGame(Scanner input, PrintWriter output) {
+        while(numPlayers < 3 || numPlayers > 5) setNumPlayers(input, output);    //Determine the number of players.
+
+        for(int i=0;i<numPlayers;i++) {
+            while(!setPlayerName(i, input, output));
+        }
+
+        while(!setHP(input, output));
+    }
+
+    /*Purpose: The purpose of this method is to handle the starting of a round. This includes dealing a new hand of
+    * Cards to each Player, overriding their hands if necessary and displaying the initial hand of each Player.
+    */
+    public void beginRound(PrintWriter output, Deck[] overrideDecks) {
+        dealCards();
+
+        //Override the Decks of each Player.
+        if (overrideDecks != null) {
+            for(int i=0;i<getNumPlayers();i++) {
+                if (overrideDecks[i] != null) playerAt(i).overrideDeck(overrideDecks[i]);
+            }
+        }
+
+        System.out.println(divider);
+        //Display the initial 'hand' of each Player at the start of a round.
+        for(int i=0;i<numPlayers;i++) {
+            String toPrint = String.format("Hand for Player %d-%s:\n%s\n", i+1, playerAt(i).getName(), playerAt(i).displayHand());
+            System.out.printf(toPrint);
+            output.printf(toPrint);
+        }
+        System.out.println(divider);
+    }
+
+    /* Purpose: The purpose of this method is to play an individual Melee. */
+    public Melee playMelee(Scanner input, PrintWriter output, int meleeStarter) {
+        Melee current = new Melee(getNumPlayers());
+        current.setStarter(meleeStarter);
+        String toPrint;
+        for (int j = 0; j < numPlayers; j++) {
+
+            byte currPlayer = (byte) ((current.getStarter() + j) % numPlayers);   //Index of the current Player.
+
+            //Player cannot play a Card.
+            if (!current.canPlayCard(playerAt(currPlayer))) {
+                //Wait until the Player chooses a valid Card to discard.
+                while (!current.discardCard(input, output, currPlayer, playerAt(currPlayer)));
+                toPrint = "Resulting hand:\n" + playerAt(currPlayer).displayHand();
+                System.out.println(toPrint);
+                output.println(toPrint);
+
+                //Check if the Player reached 0 HP. If so, the Game ends early (shaming).
+                if(playerAt(currPlayer).getHP() == 0) {
+                    //Clear the injury decks and number of times shamed of the other Players.
+                    for(int k =0;k<numPlayers;k++) {
+                        if(k != currPlayer) {
+                            playerAt(k).getInjuryDeck().clear();
+                            playerAt(k).setNumTimesShamed(0);
+                        }
+                    }
+                    displayRoundSummary(output);
+                    displayWinner(output, true);
+                    return null;
+                }
+            }
+
+            //Player can play a Card.
+            else {
+                //Loop until the Player has chosen a valid Card to play.
+                while (true) {
+                    //Display the prompt.
+                    toPrint = String.format("Player %d-%s please choose a card:\n%s\nEnter a number between " +
+                                    "1 and %d:\n", currPlayer + 1, playerAt(currPlayer).getName(),
+                            this.playerAt(currPlayer).displayHand(),
+                            this.playerAt(currPlayer).getNumCards());
+                    System.out.printf(toPrint);
+                    output.printf(toPrint);
+
+                    //Get input from the user which is a number corresponding to the Card they want to play.
+                    byte selection = input.nextByte();
+                    toPrint = String.format("%d\n", selection);
+                    System.out.println(toPrint);
+                    output.println(toPrint);
+
+                    if (selection < 1 || selection > playerAt(currPlayer).getNumCards()) {
+                        toPrint = String.format("ERROR: Card selection must be between 1 and %d.\n",
+                                playerAt(currPlayer).getNumCards());
+                        System.out.println(toPrint);
+                        output.println(toPrint);
+                    } else {
+                        selection -= (byte) 1;                             //Convert to an array index.
+
+                        //Add the played Card to the Melee's 'played' array.
+                        boolean played = current.playCard(currPlayer, playerAt(currPlayer),
+                                playerAt(currPlayer).getHand().getCards().get(selection), input, output);
+
+                        //Remove the Card from the Player's hand.
+                        if (played) {
+                            playerAt(currPlayer).getHand().removeCard(selection);
+                            toPrint = "Resulting hand:\n" + playerAt(currPlayer).displayHand();
+                            System.out.println(toPrint);
+                            output.println(toPrint);
+                            break;
+                        }
+                    }
+                }
+            }
+            System.out.println(divider);
+        }
+        //Determine the loser and add the Cards played in the Melee to their injury Deck (if there was a loser).
+        current.computeLoser();
+        if (current.getLoser() != null) {
+            //Compute the total injury points the loser accumulated this Melee.
+            int totalInjury = 0;
+            for (Card c : current.getPlayed()) {
+                if (c != null) {
+                    playerAt(current.getLoser()).addInjuryCard(c);
+                    totalInjury += c.getDamage();
+                }
+            }
+            toPrint = String.format("Player %d-%s lost the Melee. The total injury points they " +
+                            "accumulated from this Melee is %d.\n", current.getLoser() + 1,
+                    playerAt(current.getLoser()).getName(), totalInjury);
+            System.out.println(toPrint);
+            output.println(toPrint);
+        } else {
+            toPrint = "No loser for this Melee. All Cards played have the same value.\n";
+            System.out.println(toPrint);
+            output.println(toPrint);
+        }
+        System.out.println(divider);
+
+        return current;
+    }
+
+
 
     /*
     * Purpose: The purpose of this method is to play a single round of a Game.
@@ -118,129 +263,18 @@ public class Game {
     */
     public Melee[] playRound(Scanner input, PrintWriter output, Deck[] overrideDecks, int numMelees) {
 
-        //Override the Decks of each Player.
-        if (overrideDecks != null) {
-            for(int i=0;i<getNumPlayers();i++) {
-                if (overrideDecks[i] != null) playerAt(i).overrideDeck(overrideDecks[i]);
-            }
-        }
+        beginRound(output, overrideDecks);          //Set up the round.
 
-        //Create a String to divide up different sections of the output.
-        StringBuilder divider = new StringBuilder();
-        for(int i=0;i<160;i++) divider.append("-");
-
-        System.out.println(divider);
-        //Display the initial 'hand' of each Player at the start of a round.
-        for(int i=0;i<numPlayers;i++) {
-            String toPrint = String.format("Hand for Player %d-%s:\n%s\n", i+1, playerAt(i).getName(), playerAt(i).displayHand());
-            System.out.printf(toPrint);
-            output.printf(toPrint);
-        }
-        System.out.println(divider);
-
-        //Start the Melees.
+        //Play the Melees
         Melee[] summary = new Melee[numMelees];
-        int nextMeleeStarter = nextRoundStarter;    //Variable to store the index of the Player to start the next Melee.
+        Integer nextMeleeStarter = nextRoundStarter;    //Variable to store the index of the Player to start the next Melee.
         for(int i=0;i<numMelees;i++) {
-            summary[i] = new Melee(getNumPlayers());
-            summary[i].setStarter(nextMeleeStarter);
-            String toPrint;
-            //Have each Player make a move.
-            for (int j = 0; j < numPlayers; j++) {
-
-                byte currPlayer = (byte) ((summary[i].getStarter() + j) % numPlayers);   //Index of the current Player.
-
-                //Player cannot play a Card.
-                if (!summary[i].canPlayCard(playerAt(currPlayer))) {
-                    //Wait until the Player chooses a valid Card to discard.
-                    while (!summary[i].discardCard(input, output, currPlayer, playerAt(currPlayer)));
-                    toPrint = "Resulting hand:\n" + playerAt(currPlayer).displayHand();
-                    System.out.println(toPrint);
-                    output.println(toPrint);
-
-                    //Check if the Player reached 0 HP. If so, the Game ends.
-                    if(playerAt(currPlayer).getHP() == 0) {
-
-                        //Clear the injury decks and number of times shamed of the other Players.
-                        for(int k =0;k<numPlayers;k++) {
-                            if(k != currPlayer) {
-                                playerAt(k).getInjuryDeck().clear();
-                                playerAt(k).setNumTimesShamed(0);
-                            }
-                        }
-                        displayRoundSummary(output);
-                        displayWinner(output, true);
-                        return null;
-                    }
-                }
-
-                //Player can play a Card.
-                else {
-                    //Loop until the Player has chosen a valid Card to play.
-                    while (true) {
-                        //Display the prompt.
-                        toPrint = String.format("Player %d-%s please choose a card:\n%s\nEnter a number between " +
-                                        "1 and %d:\n", currPlayer + 1, playerAt(currPlayer).getName(),
-                                this.playerAt(currPlayer).displayHand(),
-                                this.playerAt(currPlayer).getNumCards());
-                        System.out.printf(toPrint);
-                        output.printf(toPrint);
-
-                        //Get input from the user which is a number corresponding to the Card they want to play.
-                        byte selection = input.nextByte();
-                        toPrint = String.format("%d\n", selection);
-                        System.out.println(toPrint);
-                        output.println(toPrint);
-
-                        if (selection < 1 || selection > playerAt(currPlayer).getNumCards()) {
-                            toPrint = String.format("ERROR: Card selection must be between 1 and %d.\n",
-                                    playerAt(currPlayer).getNumCards());
-                            System.out.println(toPrint);
-                            output.println(toPrint);
-                        } else {
-                            selection -= (byte) 1;                             //Convert to an array index.
-
-                            //Add the played Card to the Melee's 'played' array.
-                            boolean played = summary[i].playCard(currPlayer, playerAt(currPlayer),
-                                    playerAt(currPlayer).getHand().getCards().get(selection), input, output);
-
-                            //Remove the Card from the Player's hand.
-                            if (played) {
-                                playerAt(currPlayer).getHand().removeCard(selection);
-                                toPrint = "Resulting hand:\n" + playerAt(currPlayer).displayHand();
-                                System.out.println(toPrint);
-                                output.println(toPrint);
-                                break;
-                            }
-                        }
-                    }
-                }
-                System.out.println(divider);
+            summary[i] = playMelee(input, output, nextMeleeStarter);
+            if(summary[i] == null) {
+                return null;
             }
-            //Determine the loser and add the Cards played in the Melee to their injury Deck (if there was a loser).
-            Byte loser = summary[i].computeLoser();
-            if (loser != null) {
-                //Compute the total injury points the loser accumulated this Melee.
-                int totalInjury = 0;
-                for (Card c : summary[i].getPlayed()) {
-                    if (c != null) {
-                        playerAt(loser).addInjuryCard(c);
-                        totalInjury += c.getDamage();
-                    }
-                }
-                toPrint = String.format("Player %d-%s lost the Melee. The total injury points they " +
-                        "accumulated from this Melee is %d.\n", loser + 1, playerAt(loser).getName(), totalInjury);
-                System.out.println(toPrint);
-                output.println(toPrint);
-                nextMeleeStarter = loser;               //Have the loser start the next Melee.
-            } else {
-                toPrint = "No loser for this Melee. All Cards played have the same value.\n";
-                System.out.println(toPrint);
-                output.println(toPrint);
-            }
-            System.out.println(divider);
+            if(summary[i].getLoser() != null) nextMeleeStarter = summary[i].getLoser();
         }
-        //END OF THE ROUND
 
         //Inflict the injury points each Player has accumulated.
         for(Player p: players) p.setHP(p.getHP() - p.getInjuryDeck().getInjuryPoints());
@@ -308,9 +342,6 @@ public class Game {
                         p.getInjuryDeck().clear();
                         p.setNumTimesShamed(0);
                     }
-                    //Deal each Player a new hand.
-                    deck.shuffle();
-                    dealCards();
                 }
             }
         }
@@ -327,9 +358,6 @@ public class Game {
                         p.getInjuryDeck().clear();
                         p.setNumTimesShamed(0);
                     }
-                    //Deal each Player a new hand.
-                    deck.shuffle();
-                    dealCards();
                 }
             }
         }
@@ -403,5 +431,9 @@ public class Game {
 
     public Player[] getPlayers() {
         return players;
+    }
+
+    public int getNextRoundStarter() {
+        return nextRoundStarter;
     }
 }

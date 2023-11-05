@@ -124,6 +124,7 @@ class GameTest {
         Game game = new Game();
         StringWriter output = new StringWriter();
         game.setupGame(new Scanner("4\nJake\nCaroline\nAlex\nJohn\n300\n"), new PrintWriter(output));
+        game.dealCards();
         assertEquals(12, game.playerAt(0).getNumCards());
         assertEquals(12, game.playerAt(1).getNumCards());
         assertEquals(12, game.playerAt(2).getNumCards());
@@ -665,9 +666,10 @@ class GameTest {
         }
         Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output),
                 overrideDecks, 1);
-        Byte loser = summary[0].computeLoser();
+        summary[0].computeLoser();
         assertTrue(output.toString().contains(String.format("Player %d-%s lost the Melee. The total injury points they " +
-                        "accumulated from this Melee is %d.\n", loser + 1, game.playerAt(loser).getName(), 15)));
+                        "accumulated from this Melee is %d.\n", summary[0].getLoser() + 1,
+                game.playerAt(summary[0].getLoser()).getName(), 15)));
     }
 
     @Test
@@ -716,9 +718,11 @@ class GameTest {
         overrideDecks[2].addCard(new Card("De", (byte) 12));
         Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output),
                 overrideDecks, 1);
+
+        summary[0].computeLoser();
         //Check that there was no loser and that the message was displayed.
         assertAll(()->assertTrue(output.toString().contains("No loser for this Melee. All Cards played have the same value.\n")),
-                ()->assertNull(summary[0].computeLoser()));
+                ()->assertNull(summary[0].getLoser()));
     }
 
     @Test
@@ -746,8 +750,9 @@ class GameTest {
         Melee[] summary = game.playRound(new Scanner("1\n1\n1\n1" +
                         "\n1\n1\n"), new PrintWriter(output),
                 overrideDecks, 2);
+        summary[0].computeLoser();
         //Check that the loser of the first Melee, Player 3, started the second Melee.
-        assertEquals((int)summary[0].computeLoser(), summary[1].getStarter());
+        assertEquals((int)summary[0].getLoser(), summary[1].getStarter());
     }
 
     @Test

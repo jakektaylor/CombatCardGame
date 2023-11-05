@@ -356,7 +356,8 @@ class MeleeTest {
         p4.getHand().addCard(new Card("Al", (byte) 12));
         melee.playCard((byte) 4, p4, p4.getHand().getCards().get(0), new Scanner(""),
                 new PrintWriter(output));
-        assertEquals((byte) 0, melee.computeLoser());
+        melee.computeLoser();
+        assertEquals((byte) 0, melee.getLoser());
     }
 
     @Test
@@ -379,7 +380,8 @@ class MeleeTest {
         p4.getHand().addCard(new Card("Al", (byte) 2));
         melee.playCard((byte) 4, p4, p4.getHand().getCards().get(0), new Scanner(""),
                 new PrintWriter(output));
-        assertEquals((byte) 3, melee.computeLoser());
+        melee.computeLoser();
+        assertEquals((byte) 3, melee.getLoser());
     }
 
     @Test
@@ -400,8 +402,8 @@ class MeleeTest {
         Player p5 = new Player("");
         p5.getHand().addCard(new Card("Ar", (byte) 2));
         melee.discardCard(new Scanner("1\n"), new PrintWriter(output), (byte) 4, p5);
-
-        assertEquals((byte) 1, melee.computeLoser());
+        melee.computeLoser();
+        assertEquals((byte) 1, melee.getLoser());
     }
 
     @Test
@@ -424,6 +426,7 @@ class MeleeTest {
         p5.getHand().addCard(new Card("Al", (byte) 10));
         melee.playCard((byte) 4, p5, p5.getHand().getCards().get(0), new Scanner(""),
                 new PrintWriter(output));
-        assertNull(melee.computeLoser());
+        melee.computeLoser();
+        assertNull(melee.getLoser());
     }
 }

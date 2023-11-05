@@ -6,12 +6,15 @@ public class Melee {
     /*Array to hold all the Cards played in a Melee, where the index 'i' corresponds to the Card played by the ith
     Player in the Game's 'players' array.*/
     private Card[] played;
-    private String suit;                        //One of {"Sw", "Ar", "So", "De"}
+    private String suit;                  //One of {"Sw", "Ar", "So", "De"}
     private int starter;                  //The index of the Player in the Game's 'players' array who started the Melee
+    private Integer loser;               //The index of the Player in the Game's 'players' array who lost the melee,
+
     public Melee(byte numPlayers) {
         played = new Card[numPlayers];
         for(int i=0;i<numPlayers;i++) played[i] = null;
         suit = null;
+        loser = null;
     }
 
     /*
@@ -279,9 +282,8 @@ public class Melee {
     /*Purpose: This method is used to determine the loser of a Melee. It returns the index of the Player in the Game's
     'players' array that lost the Melee.
     Returns: The index of the Player in the Game's 'players' array that lost the Melee or null if there was no loser.*/
-    public Byte computeLoser() {
+    public void computeLoser() {
         byte min_value = Byte.MAX_VALUE;
-        Byte loser = null;
         for(int i=0;i<played.length;i++) {
             if(played[i] == null) continue;
             boolean ignore = false;
@@ -295,10 +297,9 @@ public class Melee {
 
             if(!ignore && played[i].getValue() < min_value) {
                 min_value = played[i].getValue();
-                loser= (byte)i;
+                loser= i;
             }
         }
-        return loser;
     }
 
     //GETTER AND SETTER METHODS
@@ -312,6 +313,10 @@ public class Melee {
 
     public int getStarter() {
         return starter;
+    }
+
+    public Integer getLoser() {
+        return loser;
     }
 
     public void setStarter(int starter) {

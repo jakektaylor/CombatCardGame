@@ -1,10 +1,10 @@
 
 public class Player {
 
-    private String name;                            //The name of the Player.
-    private int hp;                                 //The number of health points the Player currently has.
-    private Deck hand;                              //A Deck representing the Cards in the Player's hand.
-    private Deck injuryDeck;                        //Injury Deck to which Cards are added when a Player loses a Melee.
+    private String name;                          //The name of the Player.
+    private int hp;                               //The number of health points the Player currently has.
+    private Deck hand;                            //A Deck representing the Cards in the Player's hand.
+    private Deck injuryDeck;                      //Injury Deck to which Cards are added when a Player loses a Melee.
     private int numTimesShamed;                  //The number of times the Player has been shamed in the current round.
 
     public Player(String name) {
@@ -13,6 +13,14 @@ public class Player {
         this.hand = new Deck();
         this.injuryDeck = new Deck();
         this.numTimesShamed = 0;
+    }
+
+    /*Purpose: The purpose of this method is to compare two Player objects.*/
+    @Override
+    public boolean equals(Object other) {
+        Player op = (Player) other;
+        return this.name.equals(op.name) && this.hp == op.hp && this.hand.equals(op.hand) &&
+                this.injuryDeck.equals(op.injuryDeck) && this.numTimesShamed == op.numTimesShamed;
     }
 
     /*
@@ -49,7 +57,8 @@ public class Player {
     * Purpose: This method is responsible for computing the total injury points inflicted upon a Player in a round,
     * which includes the injury points inflicted by each Card in their injury Deck and 5 injury points for each time
     * they were shamed.
-    * Returns: The total injury points inflicted upon a Player in a round.*/
+    * Returns: The total injury points inflicted upon a Player in a round.
+    */
     public int computeTotalInjury() {
         return injuryDeck.getInjuryPoints() + (5 * numTimesShamed);
     }

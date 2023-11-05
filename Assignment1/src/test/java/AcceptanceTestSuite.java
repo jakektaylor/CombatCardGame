@@ -103,7 +103,7 @@ public class AcceptanceTestSuite {
 
         int initialHP = 240;                                             //The initial health of each Player.
         game.setupGame(new Scanner(String.format("3\nJake\nCaroline\nAlex\n%d\n", initialHP)), new PrintWriter(output));
-
+        game.dealCards();
         /*Before overriding the Decks, check that each Player has been given 12 Cards*/
         for(int i=0;i<game.getNumPlayers();i++) assertEquals(12, game.playerAt(i).getNumCards());
 
