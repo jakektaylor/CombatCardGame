@@ -49,6 +49,16 @@ public class Deck {
         cardCounts.put(card.getType(), cardCounts.get(card.getType()) + 1);
     }
 
+    /*Purpose: This method is responsible for replacing one Card in the Deck with a different Card.
+    Parameters: card-The Card to add to the Deck.
+                index-int corresponding to the index of the Card in the Deck to be replaced.
+     */
+    public void replaceCard(Card card, int index) {
+        removeCard(index);
+        cards.add(index, card);
+        cardCounts.put(card.getType(), cardCounts.get(card.getType()) + 1);
+    }
+
     /*
     * Purpose: The purpose of this method is to remove a given Card from the Deck.
     * Parameters: index-The index of the Card in the 'cards' ArrayList to remove.

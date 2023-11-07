@@ -166,7 +166,7 @@ public class Part3StepDefinitions {
         game.setupGame(new Scanner(input.toString()), new PrintWriter(output));
         input = new StringBuilder();                                                //Reset the input StringBuilder
 
-        if(scenario.equals("B")) {
+        if(scenario.equals("B") || scenario.equals("C")) {
             //Create the override Deck for P1
             overrideDecks[0].addCard(new Card("Ar", (byte) 1));
             overrideDecks[0].addCard(new Card("Me", null));
@@ -177,7 +177,7 @@ public class Part3StepDefinitions {
             overrideDecks[0].addCard(new Card("So", (byte) 10));
             overrideDecks[0].addCard(new Card("So", (byte) 15));
             overrideDecks[0].addCard(new Card("De", (byte) 2));
-            overrideDecks[0].addCard(new Card("De", (byte) 5));
+            overrideDecks[0].addCard(new Card("De", (byte) 4));
             overrideDecks[0].addCard(new Card("De", (byte) 13));
             overrideDecks[0].addCard(new Card("De", (byte) 14));
 
@@ -192,7 +192,7 @@ public class Part3StepDefinitions {
             overrideDecks[1].addCard(new Card("Al", (byte) 15));
             overrideDecks[1].addCard(new Card("De", (byte) 1));
             overrideDecks[1].addCard(new Card("De", (byte) 8));
-            overrideDecks[1].addCard(new Card("De", (byte) 12));
+            overrideDecks[1].addCard(new Card("De", (byte) 11));
             overrideDecks[1].addCard(new Card("Al", (byte) 1));
 
             //Create the override Deck for P3
@@ -205,10 +205,13 @@ public class Part3StepDefinitions {
             overrideDecks[2].addCard(new Card("So", (byte) 9));
             overrideDecks[2].addCard(new Card("So", (byte) 14));
             overrideDecks[2].addCard(new Card("De", (byte) 3));
-            overrideDecks[2].addCard(new Card("De", (byte) 4));
-            overrideDecks[2].addCard(new Card("De", (byte) 11));
+            overrideDecks[2].addCard(new Card("De", (byte) 5));
+            overrideDecks[2].addCard(new Card("De", (byte) 12));
             overrideDecks[2].addCard(new Card("De", (byte) 15));
         }
+        //Modify some of the Cards if the scenario is C.
+        if (scenario.equals("C")) overrideDecks[2].replaceCard(new Card("Ar", (byte) 3), 0);
+
         //Begin the round.
         game.beginRound(new PrintWriter(output), overrideDecks);
         currentRound = new Melee[12];
@@ -220,6 +223,12 @@ public class Part3StepDefinitions {
         currentRound[melee-1] = game.playMelee(new Scanner(input.toString()),
                 new PrintWriter(output));
         input = new StringBuilder();                    //Reset the StringBuilder.
+    }
+
+    /*General Step Definition for playing a Merlin or Apprentice Card at the start of a Melee.*/
+    @When("{string} plays {string} and gives it the suit {string} and assigns the value {int} to it")
+    public void plays_and_gives_it_the_suit_and_assigns_the_value_to_it(String player, String type, String suit, Integer value) {
+        input.append(String.format("1\n%s\n%d\n", suit, value));
     }
 
     /*General Step Definition for a Player playing a Merlin or Apprentice Card after the first Card has been played.*/
