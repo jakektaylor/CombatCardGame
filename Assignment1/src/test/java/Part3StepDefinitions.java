@@ -53,7 +53,8 @@ public class Part3StepDefinitions {
         input.append(String.format("%d\n", hp));
     }
 
-    //Round 1-----------------------------------------------------------------------------------------------------------
+    //Beginning Rounds--------------------------------------------------------------------------------------------------
+    // Beginning the first round in Scenario A
     @When("begin the first round and distribute 12 cards to each player")
     public void begin_the_first_round_and_distribute_cards_to_each_player() {
         game.setupGame(new Scanner(input.toString()), new PrintWriter(output));
@@ -106,41 +107,7 @@ public class Part3StepDefinitions {
         currentRound = new Melee[12];
     }
 
-    @When("Melee {int} has no loser")
-    public void melee_has_no_loser(Integer melee) {
-        currentRound[melee-1] = game.playMelee(new Scanner(input.toString()),
-                new PrintWriter(output));
-        input = new StringBuilder();                    //Reset the StringBuilder.
-    }
-
-    /*General Step Definition for a Player playing a Merlin or Apprentice Card after the first Card has been played.*/
-    @When("{string} plays {string} and assigns {int} to it")
-    public void play_me_or_ap(String name, String cardType, Integer value) {
-        input.append(String.format("1\n%d\n", value));
-    }
-
-    /*General Step Definition for a Player playing a Card that is not a Merlin or Apprentice.*/
-    @When("{string} plays {string}")
-    public void playCard(String name, String card) {
-        input.append("1\n");
-    }
-
-    /*General Step Definition for the end of a Melee when there is a loser.*/
-    @When("{string} is the loser and accumulates {int} injury points from Melee {int}")
-    public void player_is_the_loser_and_accumulates_injury_points_from_melee(String name, Integer injuryPoints,
-                                                                             Integer melee) {
-        Melee current = game.playMelee(new Scanner(input.toString()), new PrintWriter(output));
-        currentRound[melee-1] = current;
-        assertEquals(name, game.playerAt(currentRound[melee-1].getLoser()).getName());
-        input = new StringBuilder();                    //Reset the StringBuilder.
-    }
-
-    /*General Step Definition for the end of a round*/
-    @When("round {int} ends")
-    public void round_ends(Integer int1) {
-        roundSummaries.add(game.getRoundResult(new PrintWriter(output), currentRound));
-    }
-
+    //Beginning the second round in Scenario A
     @When("begin the second round and distribute 12 cards to each player")
     public void begin_the_second_round_and_distribute_cards_to_each_player() {
         //Create the override Decks for the second round.
@@ -193,13 +160,154 @@ public class Part3StepDefinitions {
         currentRound = new Melee[12];
     }
 
+    @When("we begin the first round and distribute {int} cards to each player in Scenario {string}")
+    public void we_begin_the_first_round_and_distribute_cards_to_each_player_in_scenario(Integer numCards,
+                                                                                         String scenario) {
+        game.setupGame(new Scanner(input.toString()), new PrintWriter(output));
+        input = new StringBuilder();                                                //Reset the input StringBuilder
+
+        if(scenario.equals("B")) {
+            //Create the override Deck for P1
+            overrideDecks[0].addCard(new Card("Ar", (byte) 1));
+            overrideDecks[0].addCard(new Card("Me", null));
+            overrideDecks[0].addCard(new Card("Sw", (byte) 5));
+            overrideDecks[0].addCard(new Card("Sw", (byte) 12));
+            overrideDecks[0].addCard(new Card("So", (byte) 1));
+            overrideDecks[0].addCard(new Card("So", (byte) 7));
+            overrideDecks[0].addCard(new Card("So", (byte) 10));
+            overrideDecks[0].addCard(new Card("So", (byte) 15));
+            overrideDecks[0].addCard(new Card("De", (byte) 2));
+            overrideDecks[0].addCard(new Card("De", (byte) 5));
+            overrideDecks[0].addCard(new Card("De", (byte) 13));
+            overrideDecks[0].addCard(new Card("De", (byte) 14));
+
+            //Create the override Deck for P2
+            overrideDecks[1].addCard(new Card("Ar", (byte) 2));
+            overrideDecks[1].addCard(new Card("Sw", (byte) 2));
+            overrideDecks[1].addCard(new Card("Sw", (byte) 10));
+            overrideDecks[1].addCard(new Card("Sw", (byte) 11));
+            overrideDecks[1].addCard(new Card("So", (byte) 3));
+            overrideDecks[1].addCard(new Card("So", (byte) 8));
+            overrideDecks[1].addCard(new Card("So", (byte) 13));
+            overrideDecks[1].addCard(new Card("Al", (byte) 15));
+            overrideDecks[1].addCard(new Card("De", (byte) 1));
+            overrideDecks[1].addCard(new Card("De", (byte) 8));
+            overrideDecks[1].addCard(new Card("De", (byte) 12));
+            overrideDecks[1].addCard(new Card("Al", (byte) 1));
+
+            //Create the override Deck for P3
+            overrideDecks[2].addCard(new Card("Sw", (byte) 1));
+            overrideDecks[2].addCard(new Card("Sw", (byte) 3));
+            overrideDecks[2].addCard(new Card("Sw", (byte) 4));
+            overrideDecks[2].addCard(new Card("Sw", (byte) 13));
+            overrideDecks[2].addCard(new Card("So", (byte) 2));
+            overrideDecks[2].addCard(new Card("So", (byte) 4));
+            overrideDecks[2].addCard(new Card("So", (byte) 9));
+            overrideDecks[2].addCard(new Card("So", (byte) 14));
+            overrideDecks[2].addCard(new Card("De", (byte) 3));
+            overrideDecks[2].addCard(new Card("De", (byte) 4));
+            overrideDecks[2].addCard(new Card("De", (byte) 11));
+            overrideDecks[2].addCard(new Card("De", (byte) 15));
+        }
+        //Begin the round.
+        game.beginRound(new PrintWriter(output), overrideDecks);
+        currentRound = new Melee[12];
+    }
+
+    //General step definition for when a Melee has no loser.
+    @When("Melee {int} has no loser")
+    public void melee_has_no_loser(Integer melee) {
+        currentRound[melee-1] = game.playMelee(new Scanner(input.toString()),
+                new PrintWriter(output));
+        input = new StringBuilder();                    //Reset the StringBuilder.
+    }
+
+    /*General Step Definition for a Player playing a Merlin or Apprentice Card after the first Card has been played.*/
+    @When("{string} plays {string} and assigns {int} to it")
+    public void play_me_or_ap(String name, String cardType, Integer value) {
+        input.append(String.format("1\n%d\n", value));
+    }
+
+    /*General Step Definition for a Player playing a Card that is not a Merlin or Apprentice.*/
+    @When("{string} plays {string}")
+    public void playCard(String name, String card) {
+        input.append("1\n");
+    }
+
+    /*General Step Definition for the end of a Melee when there is a loser.*/
+    @When("{string} is the loser and accumulates {int} injury points from Melee {int}")
+    public void player_is_the_loser_and_accumulates_injury_points_from_melee(String name, Integer injuryPoints,
+                                                                             Integer melee) {
+        Melee current = game.playMelee(new Scanner(input.toString()), new PrintWriter(output));
+        currentRound[melee-1] = current;
+        assertEquals(name, game.playerAt(currentRound[melee-1].getLoser()).getName());
+        input = new StringBuilder();                    //Reset the StringBuilder.
+    }
+
+    /*General Step Definition for the end of a round.*/
+    @When("round {int} ends")
+    public void round_ends(Integer integer) {
+        roundSummaries.add(game.getRoundResult(new PrintWriter(output), currentRound));
+    }
+
+    /*General Step Definition for when a Player must discard a Card.*/
+    @When("{string} discards {string} and immediately suffers {int} injury points due to shaming")
+    public void discards_and_immediately_suffers_injury_points_due_to_shaming(String string, String string2, Integer int1) {
+        input.append("1\n");
+        currentRound[0] = game.playMelee(new Scanner(input.toString()), new PrintWriter(output));
+    }
+
+
+    /*General Step definition for checking that a Game ends after a given round.*/
     @Then("the Game ends after round {int}")
     public void the_game_ends_after_round(Integer roundNumber) {
         assertNull(roundSummaries.get(roundNumber-1));
     }
+
+    /*General Step definition for checking that a Game ends during (i.e. before the end of) a round.*/
+    @Then("the Game ends before the round ends")
+    public void the_game_ends_before_the_round_ends() {
+        boolean roundIncomplete = false;
+        for(int i=0;i<12;i++) if(currentRound[i] == null) roundIncomplete = true;
+        assertTrue(roundIncomplete);
+        assertNull(currentRound[0]);
+    }
+
+    /*General step definition for checking the HP of a Player.*/
+    @Then("{string} has {int} HP")
+    public void has_hp(String name, Integer hp) {
+        Player player = getPlayer(name);
+        assertEquals(hp, player.getHP());
+    }
+
+    /*Purpose: General step definition for checking that a Game has 2 winners.*/
+    @Then("{string} and {string} are the winners")
+    public void and_are_the_winners(String p1Name, String p2Name) {
+        assertEquals(2, game.getWinners().size());
+        assertTrue(game.getWinners().contains(getPlayer(p1Name)));
+        assertTrue(game.getWinners().contains(getPlayer(p2Name)));
+    }
+
+    /*Purpose: General step definition for checking that a Game has no winner.*/
     @Then("the Game has no winner")
     public void the_game_has_no_winner() {
         assertEquals(0, game.getWinners().size());
     }
 
+    //HELPER FUNCTIONS
+
+    /*Purpose: This function is responsible for finding the corresponding Player object with a given name.
+    * Parameters: name-The name of the Player
+    * Returns: The Player object in the Game's 'players' array with the given name, or null if no such Player exists
+    */
+    private Player getPlayer(String name) {
+        Player p = null;
+        for(int i=0;i<game.getNumPlayers();i++) {
+            if(game.playerAt(i).getName().equals(name)) {
+               p = game.playerAt(i);
+               break;
+            }
+        }
+        return p;
+    }
 }

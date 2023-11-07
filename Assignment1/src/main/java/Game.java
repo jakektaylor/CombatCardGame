@@ -180,6 +180,7 @@ public class Game {
 
                 //Check if the Player reached 0 HP. If so, the Game ends early (shaming).
                 if(playerAt(currPlayer).getHP() == 0) {
+                    System.out.println(divider);
                     //Clear the injury decks and number of times shamed of the other Players.
                     for(int k =0;k<numPlayers;k++) {
                         if(k != currPlayer) {
