@@ -154,7 +154,7 @@ public class Part2StepDefinitions {
 
     @When("Joe is the loser with 25 points injury points for this Melee")
     public void joe_is_the_loser_with_25_injury_points_for_this_melee() {
-        melees[0] = game.playMelee(new Scanner(input.toString()), new PrintWriter(output), game.getNextRoundStarter());
+        melees[0] = game.playMelee(new Scanner(input.toString()), new PrintWriter(output));
         input = new StringBuilder();                    //Reset the input for the next Melee
     }
 
@@ -182,7 +182,7 @@ public class Part2StepDefinitions {
     }
     @When("Joe is the loser with 40 injury points for this Melee")
     public void joe_is_the_loser_with_injury_points_for_this_melee() {
-        melees[1] = game.playMelee(new Scanner(input.toString()), new PrintWriter(output), melees[0].getLoser());
+        melees[1] = game.playMelee(new Scanner(input.toString()), new PrintWriter(output));
         input = new StringBuilder();                    //Reset the input for the next Melee
     }
 
@@ -205,7 +205,7 @@ public class Part2StepDefinitions {
     }
     @When("Fred is the loser with 25 injury points for this Melee")
     public void fred_is_the_loser_with_injury_points_for_this_melee() {
-        melees[2] = game.playMelee(new Scanner(input.toString()), new PrintWriter(output), melees[1].getLoser());
+        melees[2] = game.playMelee(new Scanner(input.toString()), new PrintWriter(output));
         input = new StringBuilder();                    //Reset the input for the next Melee
     }
 
@@ -228,7 +228,7 @@ public class Part2StepDefinitions {
     }
     @When("Paul is the loser with 25 points of injury for this melee")
     public void paul_is_the_loser_with_points_of_injury_for_this_melee() {
-        melees[3] = game.playMelee(new Scanner(input.toString()), new PrintWriter(output), melees[2].getLoser());
+        melees[3] = game.playMelee(new Scanner(input.toString()), new PrintWriter(output));
     }
     @Then("Fred has accumulated 25 injury points this round")
     public void fred_has_accumulated_injury_points_this_round() {

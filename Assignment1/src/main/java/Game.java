@@ -7,8 +7,11 @@ public class Game {
     private Player[] players;                   //Array to hold the different Player objects.
     private Deck deck;                          //The Game Deck from which Cards are dealt.
     private int nextRoundStarter;               //Index of the Player in 'players' to start the next round.
+    private int nextMeleeStarter;               //The Player that will start the next Melee.
     private final StringBuilder divider;        //Used to divide up different sections when displaying information.
-    private ArrayList<Melee[]> roundSummaries;       //Contains a list of all of the Melees played in each round.
+
+    private ArrayList<Player> winners;    //When the Game ends, it is populated with the winning players (if any).
+
 
     public Game() {
         numPlayers = 0;
@@ -16,6 +19,7 @@ public class Game {
         nextRoundStarter = 0;
         divider = new StringBuilder();
         for(int i=0;i<160;i++) divider.append("-");
+        winners = new ArrayList<>();
     }
 
     /*Purpose: The purpose of this method is to determine the number of Players that will be Playing the Game.
@@ -147,12 +151,20 @@ public class Game {
             output.printf(toPrint);
         }
         System.out.println(divider);
+
+        nextMeleeStarter = nextRoundStarter;                    //Set the Player to start the first Melee.
     }
 
-    /* Purpose: The purpose of this method is to play an individual Melee. */
-    public Melee playMelee(Scanner input, PrintWriter output, int meleeStarter) {
+    /* Purpose: The purpose of this method is to play an individual Melee.
+    Parameters: input: -Scanner that provides user input
+                output-PrintWriter that is written to for testing
+                meleeStarter-The index of the Player in the 'players' array who starts the Melee
+    Returns: A Melee object summarizing what occurred in the Melee unless a Player reaches 0HP in the Melee due to
+    shaming, in which case 'null' is returned.
+    */
+    public Melee playMelee(Scanner input, PrintWriter output) {
         Melee current = new Melee(getNumPlayers());
-        current.setStarter(meleeStarter);
+        current.setStarter(nextMeleeStarter);
         String toPrint;
         for (int j = 0; j < numPlayers; j++) {
 
@@ -176,7 +188,7 @@ public class Game {
                         }
                     }
                     displayRoundSummary(output);
-                    displayWinner(output, true);
+                    computeWinners(output, true);
                     return null;
                 }
             }
@@ -240,6 +252,8 @@ public class Game {
                     playerAt(current.getLoser()).getName(), totalInjury);
             System.out.println(toPrint);
             output.println(toPrint);
+
+            nextMeleeStarter = current.getLoser();                      //Set the nextMeleeStarter
         } else {
             toPrint = "No loser for this Melee. All Cards played have the same value.\n";
             System.out.println(toPrint);
@@ -267,15 +281,24 @@ public class Game {
 
         //Play the Melees
         Melee[] summary = new Melee[numMelees];
-        Integer nextMeleeStarter = nextRoundStarter;    //Variable to store the index of the Player to start the next Melee.
         for(int i=0;i<numMelees;i++) {
-            summary[i] = playMelee(input, output, nextMeleeStarter);
+            summary[i] = playMelee(input, output);
             if(summary[i] == null) {
                 return null;
             }
-            if(summary[i].getLoser() != null) nextMeleeStarter = summary[i].getLoser();
         }
+        //End the round.
+        return getRoundResult(output, summary);
+    }
 
+    /*Purpose: This method is called after the Melees for a round have been played and is responsible for applying
+    injury points to each Player, displaying a summary for the round and preparing the Game state for the next round. It
+    can also cause the Game to end if a Player reaches 0 HP.
+    Parameters: output-PrintWriter to which output is written for testing
+                summary-Melee[] consisting of all Melees played in the round
+    Return: summary if the Game is not over, otherwise returns null.
+    */
+    public Melee[] getRoundResult(PrintWriter output, Melee[] summary) {
         //Inflict the injury points each Player has accumulated.
         for(Player p: players) p.setHP(p.getHP() - p.getInjuryDeck().getInjuryPoints());
 
@@ -285,7 +308,7 @@ public class Game {
         //End the Game if a Player has reached 0 HP.
         for(Player p:players) {
             if(p.getHP() == 0) {
-                displayWinner(output, false);
+                computeWinners(output, false);
                 return null;
             }
         }
@@ -364,12 +387,11 @@ public class Game {
         return summaries;
     }
 
-    /*Purpose:Helper method used to indicate that the game is over and display the winners(s) of the Game.
+    /*Purpose:Helper method used to indicate that the game is over and compute and display the winners(s) of the Game.
     * Parameters: -output: PrintWriter to which output is written to for testing
     *             -isShamingEnding: boolean variable that is true when the Game has ended early due to shaming.
     */
-    void displayWinner(PrintWriter output, boolean isShamingEnding) {
-        ArrayList<Player> winners = new ArrayList<>();
+    void computeWinners(PrintWriter output, boolean isShamingEnding) {
         int maxHP = 0;
 
         //Determine the max HP among the Players.
@@ -409,7 +431,6 @@ public class Game {
             System.out.printf(toPrint.toString());
             output.printf(toPrint.toString());
         }
-
     }
 
     //GETTER METHODS
@@ -436,4 +457,5 @@ public class Game {
     public int getNextRoundStarter() {
         return nextRoundStarter;
     }
+    public ArrayList<Player> getWinners() {return winners;}
 }
