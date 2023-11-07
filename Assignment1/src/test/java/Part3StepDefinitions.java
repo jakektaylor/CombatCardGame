@@ -166,7 +166,7 @@ public class Part3StepDefinitions {
         game.setupGame(new Scanner(input.toString()), new PrintWriter(output));
         input = new StringBuilder();                                                //Reset the input StringBuilder
 
-        if(scenario.equals("B") || scenario.equals("C")) {
+        if(scenario.equals("B") || scenario.equals("C") || scenario.equals("D")) {
             //Create the override Deck for P1
             overrideDecks[0].addCard(new Card("Ar", (byte) 1));
             overrideDecks[0].addCard(new Card("Me", null));
@@ -211,6 +211,10 @@ public class Part3StepDefinitions {
         }
         //Modify some of the Cards if the scenario is C.
         if (scenario.equals("C")) overrideDecks[2].replaceCard(new Card("Ar", (byte) 3), 0);
+        if(scenario.equals("D")) {
+            overrideDecks[1].replaceCard(new Card("Al", (byte) 14), overrideDecks[1].getNumCards() - 1);
+            overrideDecks[0].replaceCard(new Card("Ap", null), 1);
+        }
 
         //Begin the round.
         game.beginRound(new PrintWriter(output), overrideDecks);
@@ -287,6 +291,13 @@ public class Part3StepDefinitions {
     public void has_hp(String name, Integer hp) {
         Player player = getPlayer(name);
         assertEquals(hp, player.getHP());
+    }
+
+    /*Purpose: General step definition for checking that a Game has a single winner.*/
+    @Then("{string} is the winner")
+    public void is_the_winner(String winner) {
+        assertEquals(1, game.getWinners().size());
+        assertTrue(game.getWinners().contains(getPlayer(winner)));
     }
 
     /*Purpose: General step definition for checking that a Game has 2 winners.*/
