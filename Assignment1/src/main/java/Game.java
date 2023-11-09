@@ -174,9 +174,6 @@ public class Game {
             if (!current.canPlayCard(playerAt(currPlayer))) {
                 //Wait until the Player chooses a valid Card to discard.
                 while (!current.discardCard(input, output, currPlayer, playerAt(currPlayer)));
-                toPrint = "Resulting hand:\n" + playerAt(currPlayer).displayHand();
-                System.out.println(toPrint);
-                output.println(toPrint);
 
                 //Check if the Player reached 0 HP. If so, the Game ends early (shaming).
                 if(playerAt(currPlayer).getHP() == 0) {
@@ -221,44 +218,19 @@ public class Game {
                         selection -= (byte) 1;                             //Convert to an array index.
 
                         //Add the played Card to the Melee's 'played' array.
-                        boolean played = current.playCard(currPlayer, playerAt(currPlayer),
-                                playerAt(currPlayer).getHand().getCards().get(selection), input, output);
-
-                        //Remove the Card from the Player's hand.
-                        if (played) {
-                            playerAt(currPlayer).getHand().removeCard(selection);
-                            toPrint = "Resulting hand:\n" + playerAt(currPlayer).displayHand();
-                            System.out.println(toPrint);
-                            output.println(toPrint);
-                            break;
-                        }
+                        if(current.playCard(currPlayer, playerAt(currPlayer),
+                                playerAt(currPlayer).getHand().getCards().get(selection), input, output)) break;
                     }
                 }
             }
             System.out.println(divider);
         }
         //Determine the loser and add the Cards played in the Melee to their injury Deck (if there was a loser).
-        current.computeLoser();
+        current.computeLoser(players, output);
         if (current.getLoser() != null) {
-            //Compute the total injury points the loser accumulated this Melee.
-            int totalInjury = 0;
-            for (Card c : current.getPlayed()) {
-                if (c != null) {
-                    playerAt(current.getLoser()).addInjuryCard(c);
-                    totalInjury += c.getDamage();
-                }
-            }
-            toPrint = String.format("Player %d-%s lost the Melee. The total injury points they " +
-                            "accumulated from this Melee is %d.\n", current.getLoser() + 1,
-                    playerAt(current.getLoser()).getName(), totalInjury);
-            System.out.println(toPrint);
-            output.println(toPrint);
-
             nextMeleeStarter = current.getLoser();                      //Set the nextMeleeStarter
         } else {
-            toPrint = "No loser for this Melee. All Cards played have the same value.\n";
-            System.out.println(toPrint);
-            output.println(toPrint);
+
         }
         System.out.println(divider);
 

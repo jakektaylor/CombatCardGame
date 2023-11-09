@@ -29,6 +29,7 @@ public class Melee {
     *          false otherwise
     */
     public boolean playCard(byte playerInd, Player player, Card card, Scanner input, PrintWriter output) {
+
         //Check if this is the first Card played.
         boolean isEmpty = true;
         for (int i = 0; i < played.length; i++) {
@@ -178,6 +179,14 @@ public class Melee {
         System.out.printf("%s", toPrint);
         output.printf("%s", toPrint);
         played[playerInd] = card;
+
+        //Remove the Card from the Player's hand and display their resulting hand.
+        if(player != null) {
+            player.getHand().removeCard(card);
+            toPrint = "Resulting hand:\n" + player.displayHand();
+            System.out.println(toPrint);
+            output.println(toPrint);
+        }
         return true;
     }
 
@@ -268,6 +277,12 @@ public class Melee {
 
             //Increment the number of times the Player has been shamed.
             player.setNumTimesShamed(player.getNumTimesShamed() + 1);
+
+            //Display the resulting hand of the Player.
+            toPrint = "Resulting hand:\n" + player.displayHand();
+            System.out.println(toPrint);
+            output.println(toPrint);
+
             return true;
         }
         //Display an error message if the user made an invalid choice.
@@ -279,10 +294,11 @@ public class Melee {
         }
     }
 
-    /*Purpose: This method is used to determine the loser of a Melee. It returns the index of the Player in the Game's
+    /*Purpose: This method is used to determine the loser of a Melee and if there is a loser, add the Cards from the
+    Melee to their injuryDeck. It returns the index of the Player in the Game's
     'players' array that lost the Melee.
     Returns: The index of the Player in the Game's 'players' array that lost the Melee or null if there was no loser.*/
-    public void computeLoser() {
+    public void computeLoser(Player[] players, PrintWriter output) {
         byte min_value = Byte.MAX_VALUE;
         for(int i=0;i<played.length;i++) {
             if(played[i] == null) continue;
@@ -299,6 +315,27 @@ public class Melee {
                 min_value = played[i].getValue();
                 loser= i;
             }
+        }
+        //If the loser isn't null, add the Cards from the Melee to their injury Deck.
+        String toPrint;
+        if(loser != null && players != null) {
+            int totalInjury = 0;                    //The total injury points accumulated IN THIS MELEE
+            Player player = players[loser];
+            for (Card c : played) {
+                if (c != null) {
+                    player.addInjuryCard(c);
+                    totalInjury += c.getDamage();
+                }
+            }
+            toPrint = String.format("Player %d-%s lost the Melee. The total injury points they " +
+                            "accumulated from this Melee is %d.\n", loser + 1,
+                    player.getName(), totalInjury);
+            System.out.println(toPrint);
+            output.println(toPrint);
+        } else if (loser == null) {
+            toPrint = "No loser for this Melee. All Cards played have the same value.\n";
+            System.out.println(toPrint);
+            output.println(toPrint);
         }
     }
 

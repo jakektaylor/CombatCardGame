@@ -60,13 +60,22 @@ public class Deck {
     }
 
     /*
-    * Purpose: The purpose of this method is to remove a given Card from the Deck.
+    * Purpose: The purpose of this method is to remove a given Card from the Deck using the index of the Card.
     * Parameters: index-The index of the Card in the 'cards' ArrayList to remove.
     */
     public void removeCard(int index) {
         String cardType = cards.get(index).getType();
         cardCounts.put(cardType, cardCounts.get(cardType) - 1);
         cards.remove(index);
+    }
+
+    /*
+     * Purpose: The purpose of this method is to remove a given Card from the Deck by providing a Card object to remove.
+     * Parameters: card-The Card in the 'cards' ArrayList to remove.
+    */
+    public void removeCard(Card card) {
+        cardCounts.put(card.getType(), cardCounts.get(card.getType()) - 1);
+        cards.remove(card);
     }
 
     /*This method returns a String representation of the Deck.*/

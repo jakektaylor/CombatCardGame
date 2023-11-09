@@ -666,7 +666,7 @@ class GameTest {
         }
         Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output),
                 overrideDecks, 1);
-        summary[0].computeLoser();
+        summary[0].computeLoser(game.getPlayers(), new PrintWriter(output));
         assertTrue(output.toString().contains(String.format("Player %d-%s lost the Melee. The total injury points they " +
                         "accumulated from this Melee is %d.\n", summary[0].getLoser() + 1,
                 game.playerAt(summary[0].getLoser()).getName(), 15)));
@@ -719,7 +719,7 @@ class GameTest {
         Melee[] summary = game.playRound(new Scanner("1\n1\n1\n"), new PrintWriter(output),
                 overrideDecks, 1);
 
-        summary[0].computeLoser();
+        summary[0].computeLoser(game.getPlayers(), new PrintWriter(output));
         //Check that there was no loser and that the message was displayed.
         assertAll(()->assertTrue(output.toString().contains("No loser for this Melee. All Cards played have the same value.\n")),
                 ()->assertNull(summary[0].getLoser()));
@@ -750,7 +750,7 @@ class GameTest {
         Melee[] summary = game.playRound(new Scanner("1\n1\n1\n1" +
                         "\n1\n1\n"), new PrintWriter(output),
                 overrideDecks, 2);
-        summary[0].computeLoser();
+        summary[0].computeLoser(game.getPlayers(), new PrintWriter(output));
         //Check that the loser of the first Melee, Player 3, started the second Melee.
         assertEquals((int)summary[0].getLoser(), summary[1].getStarter());
     }
