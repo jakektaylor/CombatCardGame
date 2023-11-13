@@ -17,7 +17,7 @@ Feature: ScenarioB
     And "P3" discards "Sw1" and immediately suffers 5 injury points due to shaming
 
     #Game ends----------------------------------------------------------------------------------------------------------
-    Then the Game ends before the round ends
+    Then the Game ends before the end of the first round
     And  "P3" has 0 HP
     And  "P1" has 5 HP
     And  "P2" has 5 HP

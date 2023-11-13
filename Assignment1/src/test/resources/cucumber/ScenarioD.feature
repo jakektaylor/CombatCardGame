@@ -20,7 +20,7 @@ Feature: ScenarioD
     And "P1" plays "Ap" and gives it the suit "Sw" and assigns the value 1 to it
     And "P2" plays "Sw2"
     And "P3" plays "Sw3"
-    And "P1" is the loser and accumulates 35 injury points from Melee 2
+    And "P1" is the loser and accumulates 15 injury points from Melee 2
     #-------Melee 3-----------------------------------------------------------------------------------------------------
     And "P1" plays "Sw5"
     And "P2" plays "Sw10"
@@ -66,7 +66,7 @@ Feature: ScenarioD
     And "P2" plays "De11"
     And "P3" plays "De12"
     And "P2" is the loser and accumulates 15 injury points from Melee 11
-    #-------Melee 12----------------------------------------------------------------------------------------------------
+    #-------Melee 12 (Melee where the leader starts with a legal Alchemy Card)------------------------------------------
     And "P2" plays "Al14"
     And "P3" plays "De15"
     And "P1" plays "De14"

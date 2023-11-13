@@ -1,11 +1,10 @@
 Feature: Part1
-  Scenario Outline:
-    Given we have started a game
+  Scenario Outline: Part1
+    Given we have started a game and are in the final Melee of a round
     When P1 plays the card "<P1>"
     And  P2 plays the card "<P2>"
     And  P3 plays the card "<P3>"
     And  P4 plays the card "<P4>"
-    And  we execute the melee
     Then the loser is <Loser>
     And  <Loser> accumulates <InjuryPoints>.
     Examples:

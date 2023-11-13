@@ -16,7 +16,7 @@ Feature: ScenarioC
     And "P2" plays "Ar2"
     And "P3" plays "Ar3"
     And "P1" is the loser and accumulates 15 injury points from Melee 1
-    #-------Melee 2-----------------------------------------------------------------------------------------------------
+    #-------Melee 2 (Melee with a leader starting with a Merlin Card)---------------------------------------------------
     And "P1" plays "Me" and gives it the suit "Sw" and assigns the value 1 to it
     And "P2" plays "Sw2"
     And "P3" plays "Sw3"

@@ -1,5 +1,5 @@
 Feature: Robustness
-  Scenario:
+  Scenario: Robustness
     Given we start a game
 
     # Game setup
@@ -13,10 +13,11 @@ Feature: Robustness
     And enter "Paul" as name for the third player
     And Try to input initial health points as -10
     And set initial health points of players at 50
-    And We begin round 1 and distribute 12 cards to each player
 
+    #We begin the round
+    When We begin round 1 and distribute 12 cards to each player
     #Melee 1------------------------------------------------------------------------------------------------------------
-    When Fred tries to play an Alchemy when he as basic weapons and Me or Ap
+    And Fred tries to play an Alchemy when he has basic weapons and Me or Ap
     And Fred plays So11
 
     And Joe tries to play a Sword card when he has a Sorcery card
@@ -27,7 +28,7 @@ Feature: Robustness
 
     And Paul plays So7
 
-    And Joe is the loser with 25 points injury points for this Melee
+    And Joe is the loser with 25 injury points for this Melee
 
     #Melee 2------------------------------------------------------------------------------------------------------------
     And Joe starts with Ar8
@@ -62,9 +63,9 @@ Feature: Robustness
     And Paul is the loser with 25 points of injury for this melee
 
     #End of Scenario
-    Then Fred has accumulated 25 injury points this round
-    And  Joe has accumulated 65 injury points this round
-    And  Paul has accumulated 25 injury points this round
+    Then Fred has accumulated 25 injury points
+    And  Joe has accumulated 65 injury points
+    And  Paul has accumulated 25 injury points
 
 
 

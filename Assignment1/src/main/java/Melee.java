@@ -6,7 +6,7 @@ public class Melee {
     /*Array to hold all the Cards played in a Melee, where the index 'i' corresponds to the Card played by the ith
     Player in the Game's 'players' array.*/
     private Card[] played;
-    private String suit;                  //One of {"Sw", "Ar", "So", "De"}
+    private String suit;                  //One of {"Sw", "Ar", "So", "De", null}
     private int starter;                  //The index of the Player in the Game's 'players' array who started the Melee
     private Integer loser;               //The index of the Player in the Game's 'players' array who lost the melee,
 
@@ -294,10 +294,11 @@ public class Melee {
         }
     }
 
-    /*Purpose: This method is used to determine the loser of a Melee and if there is a loser, add the Cards from the
-    Melee to their injuryDeck. It returns the index of the Player in the Game's
-    'players' array that lost the Melee.
-    Returns: The index of the Player in the Game's 'players' array that lost the Melee or null if there was no loser.*/
+    /*  Purpose: This method is used to determine the loser of a Melee and, if there is a loser, add the Cards from the
+        Melee to their injuryDeck.
+        Parameters: -players: Array of Players in the Game
+                    -output: PrintWriter to write output to for testing
+    */
     public void computeLoser(Player[] players, PrintWriter output) {
         byte min_value = Byte.MAX_VALUE;
         for(int i=0;i<played.length;i++) {

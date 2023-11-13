@@ -28,7 +28,6 @@ public class Game {
     */
     public void setNumPlayers(Scanner input, PrintWriter output) {
         //Determine the number of players.
-        byte result;
         String toPrint;                                             //Variable to hold any Strings to be displayed.
         toPrint = "Please enter the number of players (3-5):\n";
         System.out.printf(toPrint);
@@ -48,10 +47,10 @@ public class Game {
         }
     }
 
-    /*Purpose: This method is responsible for determining the name of a given Player.
-    * Parameters: playerIndex-The index of the Player whose name we are trying to determine in the 'players' array.
+    /*Purpose: This method is responsible for creating and setting the name of a given Player.
+    * Parameters: playerIndex-The index of the Player we are creating and setting the name of in the 'players' array
     *             input-Scanner used to get the name
-    *             output-Used to write output of the program to
+    *             output-Used to write output of the program to for testing
     * Returns: true if a valid Player name is entered, false otherwise.
     */
     public boolean setPlayerName(int playerIndex, Scanner input, PrintWriter output) {
@@ -105,7 +104,7 @@ public class Game {
         return true;
     }
 
-    /* Purpose: The purpose of this method is to deal 12 Cards from the Game Deck to each Player.*/
+    /* Purpose: The purpose of this method is to shuffle the Game Deck and  deal 12 Cards to each Player.*/
     public void dealCards() {
         deck.shuffle();
         for(int i=0;i<numPlayers;i++) {
@@ -132,6 +131,9 @@ public class Game {
 
     /*Purpose: The purpose of this method is to handle the starting of a round. This includes dealing a new hand of
     * Cards to each Player, overriding their hands if necessary and displaying the initial hand of each Player.
+    * Parameters:   -output: PrintWriter to which output is written to for testing
+    *               -overrideDecks: Array of Deck objects used to override the Cards given to each Player in a round if
+    *               not null
     */
     public void beginRound(PrintWriter output, Deck[] overrideDecks) {
         dealCards();
@@ -142,11 +144,11 @@ public class Game {
                 if (overrideDecks[i] != null) playerAt(i).overrideDeck(overrideDecks[i]);
             }
         }
-
         System.out.println(divider);
         //Display the initial 'hand' of each Player at the start of a round.
         for(int i=0;i<numPlayers;i++) {
-            String toPrint = String.format("Hand for Player %d-%s:\n%s\n", i+1, playerAt(i).getName(), playerAt(i).displayHand());
+            String toPrint = String.format("Hand for Player %d-%s:\n%s\n", i+1, playerAt(i).getName(),
+                    playerAt(i).displayHand());
             System.out.printf(toPrint);
             output.printf(toPrint);
         }
@@ -156,10 +158,9 @@ public class Game {
     }
 
     /* Purpose: The purpose of this method is to play an individual Melee.
-    Parameters: input: -Scanner that provides user input
-                output-PrintWriter that is written to for testing
-                meleeStarter-The index of the Player in the 'players' array who starts the Melee
-    Returns: A Melee object summarizing what occurred in the Melee unless a Player reaches 0HP in the Melee due to
+    Parameters: -input: Scanner that provides user input
+                -output: PrintWriter that is written to for testing
+    Returns: A Melee object summarizing what occurred in the Melee unless a Player reaches 0 HP in the Melee due to
     shaming, in which case 'null' is returned.
     */
     public Melee playMelee(Scanner input, PrintWriter output) {
@@ -229,8 +230,6 @@ public class Game {
         current.computeLoser(players, output);
         if (current.getLoser() != null) {
             nextMeleeStarter = current.getLoser();                      //Set the nextMeleeStarter
-        } else {
-
         }
         System.out.println(divider);
 
@@ -243,8 +242,8 @@ public class Game {
     * Purpose: The purpose of this method is to play a single round of a Game.
     * Parameters: -input: Scanner from which input is provided
     *             -output: PrintWriter to which output is written for testing
-    *             -overrideDecks-an array of Decks used to override the Cards dealt to each Player if it is not null
-    *             -numMelees-the number of Melees to play in the round (12 is used when the Game is actually played)
+    *             -overrideDecks: An array of Decks used to override the Cards dealt to each Player if it is not null
+    *             -numMelees: The number of Melees to play in the round (12 is used when the Game is actually played)
     * Returns: Melee[] summary: An array of 'numMelees' Melee objects that provides the details of what occurred in
     *                           each Melee. It is 'null' if a Player reaches 0 HP to indicate that the Game is over.
     */
@@ -324,7 +323,7 @@ public class Game {
     * */
     public ArrayList<Melee[]> play(Scanner input, PrintWriter output, Deck[][] overrideDeckArray, Integer numRounds, Integer meleesPerRound) {
         setupGame(input, output);
-        ArrayList<Melee[]> summaries = new ArrayList<>();                 //ArrayList to hold each of the round summaries.
+        ArrayList<Melee[]> summaries = new ArrayList<>();            //ArrayList to hold each of the round summaries.
 
         //If overrideDeckArray is not null, we are testing.
         if(overrideDeckArray != null) {
@@ -395,15 +394,13 @@ public class Game {
                 toPrint.append(String.format(", %s", winners.get(i).getName()));
             }
             toPrint.append("\n");
-            System.out.printf(toPrint.toString());
-            output.printf(toPrint.toString());
         }
         //No winners.
         else {
             toPrint.append("No winners...\n");
-            System.out.printf(toPrint.toString());
-            output.printf(toPrint.toString());
         }
+        System.out.printf(toPrint.toString());
+        output.printf(toPrint.toString());
     }
 
     //GETTER METHODS

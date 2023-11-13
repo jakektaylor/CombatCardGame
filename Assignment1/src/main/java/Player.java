@@ -15,7 +15,9 @@ public class Player {
         this.numTimesShamed = 0;
     }
 
-    /*Purpose: The purpose of this method is to compare two Player objects.*/
+    /*Purpose: The purpose of this method is to compare two Player objects.
+    * Parameters: -other: Another Player Object to which this Player Object is being compared
+    * */
     @Override
     public boolean equals(Object other) {
         Player op = (Player) other;

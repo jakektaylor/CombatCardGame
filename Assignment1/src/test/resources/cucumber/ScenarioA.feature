@@ -10,8 +10,8 @@ Feature: ScenarioA
     And set initial health points at 150
 
     #Round 1------------------------------------------------------------------------------------------------------------
-    When begin the first round and distribute 12 cards to each player
-    #-------Melee 1-----------------------------------------------------------------------------------------------------
+    When we begin the first round and distribute 12 cards to each player in Scenario "A"
+    #-------Melee 1 (Melee with no loser)-------------------------------------------------------------------------------
     And "P1" plays "Ar1"
     And "P2" plays "Me" and assigns 1 to it
     And "P3" plays "Me" and assigns 1 to it
@@ -21,7 +21,7 @@ Feature: ScenarioA
     And "P2" plays "Ar3"
     And "P3" plays "Ap" and assigns 5 to it
     And "P1" is the loser and accumulates 15 injury points from Melee 2
-    #-------Melee 3-----------------------------------------------------------------------------------------------------
+    #-------Melee 3 (Melee with a non-leader playing a legal Alchemy Card)----------------------------------------------
     And "P1" plays "Ar5"
     And "P2" plays "Ar4"
     And "P3" plays "Al4"
@@ -40,7 +40,7 @@ Feature: ScenarioA
     And "P3" plays "Sw7"
     And "P1" plays "Sw9"
     And "P2" plays "Sw1"
-    And "P2" is the loser and accumulates 15 injury points from Melee 6
+    And "P2" is the loser and accumulates 25 injury points from Melee 6
     #-------Melee 7-----------------------------------------------------------------------------------------------------
     And "P2" plays "Sw12"
     And "P3" plays "Sw11"
@@ -65,7 +65,7 @@ Feature: ScenarioA
     And "P2" plays "So9"
     And "P3" plays "So8"
     And "P1" plays "So7"
-    And "P1" is the loser and accumulates 25 injury points from Melee 11
+    And "P1" is the loser and accumulates 15 injury points from Melee 11
     #-------Melee 12----------------------------------------------------------------------------------------------------
     And "P1" plays "So15"
     And "P2" plays "So12"
@@ -74,7 +74,7 @@ Feature: ScenarioA
 
     And round 1 ends
     #Round 2------------------------------------------------------------------------------------------------------------
-    And begin the second round and distribute 12 cards to each player
+    And we begin the second round and distribute 12 cards to each player
     #-------Melee 1-----------------------------------------------------------------------------------------------------
     And "P2" plays "Sw2"
     And "P3" plays "Sw3"
